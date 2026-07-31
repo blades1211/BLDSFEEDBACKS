@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLDS Secure Command Center - Ultimate Edition v3</title>
+    <title>BLDS Secure Command Center - Ultimate Edition v4</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -53,17 +53,6 @@
             --text-muted: #a7f3d0;
             --accent: #34d399;
             --accent-hover: #10b981;
-        }
-
-        [data-theme="light"] {
-            --bg-main: #f1f5f9;
-            --bg-card: #ffffff;
-            --bg-hover: #e2e8f0;
-            --border-color: #cbd5e1;
-            --text-main: #0f172a;
-            --text-muted: #64748b;
-            --accent: #2563eb;
-            --accent-hover: #1d4ed8;
         }
 
         * {
@@ -475,7 +464,7 @@
 </head>
 <body>
 
-    <!-- Audio Alert (GitHub / Web Audio API fallback) -->
+    <!-- Audio Alert (GitHub Direct URL) -->
     <audio id="alert-audio" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <!-- Alert Popup Banner -->
@@ -500,7 +489,7 @@
             
             <div class="auth-hints">
                 <strong>Catatan Hak Akses:</strong><br>
-                • Owner & Friend (Full Privileges + Lorenzo Role-Based Custom): <code>Lorenzo</code>, <code>Nayotama</code>, <code>Prince</code><br>
+                • Owner & Friend (Full Privileges + Lorenzo Custom): <code>Lorenzo</code>, <code>Nayotama</code>, <code>Prince</code><br>
                 • Admin Tier: <code>BLDS-ZAVINO-006</code>, <code>BLDS-REHAN-007</code><br>
                 • User Biasa / Guest: Bebas
             </div>
@@ -781,7 +770,6 @@
                                 <option value="cyberpunk">Cyberpunk Neon</option>
                                 <option value="oled">OLED Pitch Black</option>
                                 <option value="emerald">Emerald Forest</option>
-                                <option value="light">Auto Light Mode</option>
                             </select>
                         </div>
                         <div class="form-group" style="margin-top: 20px;">
@@ -817,15 +805,10 @@
         let currentUser = null;
         const ownerAndFriendsList = ["lorenzo", "nayotama", "prince"];
 
-        // Auto Dark/Light mode switch based on system time
+        // Auto Dark/Light mode switch or checking time
         function checkAutoThemeByTime() {
             const hour = new Date().getHours();
-            // Jika jam 6 pagi sampai 6 sore, set light mode otomatis jika belum diatur manual
-            if(hour >= 6 && hour < 18) {
-                document.documentElement.setAttribute('data-theme', 'light');
-                const selector = document.getElementById('theme-selector');
-                if(selector) selector.value = 'light';
-            }
+            // Optional background intelligence
         }
         checkAutoThemeByTime();
 
@@ -878,7 +861,7 @@
             const badge = document.getElementById("display-role");
             const badgeIcon = document.getElementById("badge-icon");
 
-            // Atur tombol kirim pesan inbox: HANYA Admin & Owner yang bisa kirim
+            // Tombol kirim pesan inbox: Hanya Admin & Owner
             const btnSend = document.getElementById("btn-send-msg");
             if(currentUser.role === "user") {
                 if(btnSend) btnSend.classList.add("hidden");
@@ -894,7 +877,6 @@
                 document.getElementById("menu-admin-tools").classList.remove("hidden");
                 document.getElementById("menu-approval").classList.remove("hidden");
 
-                // Role-based custom khusus Lorenzo
                 if(currentUser.name.toLowerCase() === "lorenzo") {
                     document.getElementById("lorenzo-custom-box").classList.remove("hidden");
                 }
@@ -945,7 +927,6 @@
             document.getElementById('page-title').innerText = titles[tabId] || 'Command Center';
         }
 
-        // Inbox Modal Controls
         function openSendMsgModal() {
             document.getElementById("msg-modal").classList.remove("hidden");
         }
