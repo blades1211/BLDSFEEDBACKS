@@ -71,7 +71,6 @@
         .glow-sphere-2 { width: 500px; height: 500px; background: #888888; bottom: -150px; right: -100px; animation-delay: -9s; }
         @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.05); } 100% { transform: translate(-40px, 80px) scale(0.95); } }
 
-        /* Logo Glow & Diperbesar */
         .animated-logo {
             animation: floatingLogo 4s ease-in-out infinite;
             filter: drop-shadow(0 0 16px var(--accent-glow-strong));
@@ -169,7 +168,7 @@
         .hero-btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
         .hero-btn-secondary:hover { border-color: var(--accent-white); transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
 
-        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; }
+        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; width: 100%; }
         .rating-summary-card { padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
         .avg-rating-value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
         .avg-stars-display { color: #facc15; font-size: 1.1rem; }
@@ -241,7 +240,7 @@
     <audio id="github-audio-alert" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <div id="loading-screen">
-        <img src="logo.png" alt="Logo" class="animated-logo" style="width: 60px; height: 60px;">
+        <div class="animated-logo" style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-white); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--bg-base);">B</div>
         <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING SYSTEM...</span>
         <div class="progress-bar-container">
             <div class="progress-bar" id="loading-bar"></div>
@@ -257,7 +256,6 @@
     <!-- Modal Nama Pengguna -->
     <div class="modal-overlay active" id="name-modal">
         <div class="modal-box glass-card">
-            <img src="logo.png" alt="Logo" class="animated-logo" style="width: 50px; height: 50px; margin-bottom: 10px;">
             <h2 class="text-glow-blds" style="font-size: 1.3rem;">IDENTIFIKASI PENGGUNA</h2>
             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; margin-bottom: 15px;">Masukkan nama Anda untuk mengakses platform BLDS.</p>
             
@@ -303,7 +301,6 @@
     <header>
         <div class="nav-container">
             <a href="#" class="brand" onclick="switchPage('home-page')">
-                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
                 <span class="brand-text text-glow-blds">BLDS FEEDBACK</span>
             </a>
             <div class="nav-menu" style="display: flex; align-items: center; gap: 10px;">
@@ -320,7 +317,6 @@
         <!-- PAGE 1: HOME PAGE -->
         <section id="home-page" class="page-section active">
             <div class="hero">
-                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
                 <h1 class="text-glow-blds">BLACKLIGHTDOMS FEEDBACK</h1>
                 <p>Silakan pilih menu di bawah untuk mengirim feedback atau memasukkan Special Code Anda.</p>
                 
@@ -354,7 +350,7 @@
                 </div>
 
                 <div class="glass-card form-card">
-                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback</h2>
+                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback (Publik)</h2>
                     <form id="feedback-form">
                         <div class="input-group">
                             <label>Nama Anda</label>
@@ -405,7 +401,7 @@
                     <div class="feedback-list" id="feedback-feed">
                         <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted);">
                             <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.2rem; margin-bottom: 8px;"></i>
-                            <p>Memuat feedback...</p>
+                            <p>Memuat feedback publik...</p>
                         </div>
                     </div>
                 </div>
@@ -547,20 +543,20 @@
     </footer>
 
     <script>
-        /* FIREBASE CONFIG */
+        /* FIREBASE CONFIG DISESUAIKAN KE DATABASE KAMU */
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "ISI_API_KEY_ANDA",
+            authDomain: "blds-2806d.firebaseapp.com",
+            databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "blds-2806d",
+            storageBucket: "blds-2806d.appspot.com",
+            messagingSenderId: "ISI_SENDER_ID",
+            appId: "ISI_APP_ID"
         };
 
         let db = null;
         try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+            if (firebaseConfig.apiKey !== "ISI_API_KEY_ANDA") {
                 firebase.initializeApp(firebaseConfig);
                 db = firebase.database();
             }
@@ -568,7 +564,7 @@
             console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
         }
 
-        /* KNOWN SPECIAL CODES ROLES SETUP & Role-Based Custom Lorenzo */
+        /* KNOWN SPECIAL CODES ROLES SETUP */
         const KNOWN_CODES = {
             "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true, Priority: 10 },
             "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
@@ -652,7 +648,6 @@
             });
         }
 
-        /* Auto Dark/Light Mode based on local time */
         function initTheme() {
             let savedTheme = localStorage.getItem("blds_theme");
             if (!savedTheme) {
@@ -682,7 +677,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        /* Audio Alert (GitHub Direct / Web Audio API) */
         function playAudioAlert() {
             try {
                 const audio = document.getElementById("github-audio-alert");
@@ -695,7 +689,6 @@
             }
         }
 
-        /* STAR RATING INPUT */
         function initStarRating() {
             const stars = document.querySelectorAll("#star-rating i");
             stars.forEach(star => {
@@ -717,7 +710,7 @@
             });
         }
 
-        /* FEEDBACK SUBMISSION */
+        /* FEEDBACK SUBMISSION (PUBLIK KE FIREBASE) */
         document.getElementById("feedback-form").addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -752,8 +745,10 @@
                     submitBtn.disabled = false;
                     if (!err) {
                         playAudioAlert();
-                        showToast("Feedback berhasil dikirim!", "success");
+                        showToast("Feedback publik berhasil dikirim!", "success");
                         resetFeedbackForm();
+                    } else {
+                        showToast("Gagal mengirim ke Firebase. Cek Rules database!", "error");
                     }
                 });
             } else {
@@ -776,6 +771,7 @@
             highlightStars(0);
         }
 
+        /* INISIALISASI LISTENER GLOBAL SUPAYA PUBLIK BISA LIHAT */
         function initFirebaseListeners() {
             if (db) {
                 db.ref("WebsiteSettings/AnnouncementData").on("value", (snapshot) => {
@@ -805,11 +801,14 @@
                     bannedUsers = Object.values(data).map(n => n.toLowerCase());
                 });
 
+                /* Mengambil seluruh data dari root Feedback secara global tanpa filter user */
                 db.ref("Feedback").on("value", (snapshot) => {
                     const data = snapshot.val();
                     allFeedbacks = [];
                     if (data) {
-                        Object.keys(data).forEach(key => allFeedbacks.push({ id: key, ...data[key] }));
+                        Object.keys(data).forEach(key => {
+                            allFeedbacks.push({ id: key, ...data[key] });
+                        });
                     }
                     applyFilterAndSearch();
                 });
@@ -893,7 +892,7 @@
                 feedContainer.innerHTML = `
                     <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted); padding: 30px;">
                         <i class="fa-solid fa-inbox" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
-                        <p>Belum ada feedback.</p>
+                        <p>Belum ada feedback publik.</p>
                     </div>`;
                 return;
             }
@@ -961,7 +960,6 @@
             }).join("");
         }
 
-        /* SPECIAL CODE VERIFICATION */
         document.getElementById("code-form").addEventListener("submit", (e) => {
             e.preventDefault();
             const rawVal = document.getElementById("special-code-input").value.trim().toUpperCase();
@@ -996,7 +994,6 @@
             }
         });
 
-        /* DRAGGABLE FLOATING ADMIN PANEL */
         function makePanelDraggable() {
             const panel = document.getElementById("admin-panel");
             const header = document.getElementById("admin-panel-header");
@@ -1051,7 +1048,6 @@
             }
         }
 
-        /* INBOX SYSTEM FUNCTIONS */
         function openSendInboxModal() { document.getElementById("inbox-modal").classList.add("active"); }
         function closeSendInboxModal() { document.getElementById("inbox-modal").classList.remove("active"); }
 
@@ -1069,7 +1065,6 @@
             showToast("Pesan sistem terkirim!", "success");
         }
 
-        /* ADMIN CODE GENERATOR */
         function generateAdminCode() {
             const nameInput = document.getElementById("gen-admin-name").value.trim().toUpperCase() || "STAFF";
             const randNum = Math.floor(100 + Math.random() * 900);
@@ -1078,7 +1073,6 @@
             showToast("Admin Code berhasil digenerate!", "success");
         }
 
-        /* ADDITIONAL FEATURES */
         function openActivityTimeline() {
             showToast("User Activity Timeline: 14 Active Sessions Online.", "info");
         }
@@ -1095,14 +1089,13 @@
             }
         }
 
-        /* FULL CODE FILE GENERATOR & DOWNLOAD (.html) */
         function downloadFullCodeAsFile() {
             const htmlContent = document.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_command_center_complete.html';
+            a.download = 'blds_feedback_public_center.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
@@ -1111,7 +1104,6 @@
             showToast("Full Code berhasil didownload sebagai file!", "success");
         }
 
-        /* ADMIN ACTIONS & ANNOUNCEMENT MANAGEMENT */
         function promptReply(fbId) {
             const replyText = prompt("Masukkan balasan Admin:");
             if (replyText) {
