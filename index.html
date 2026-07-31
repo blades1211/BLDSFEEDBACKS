@@ -4,11 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackLightDoms - Premium Feedback Platform</title>
+    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
+    <!-- Firebase SDKs (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -687,6 +690,7 @@
         <div class="glow-sphere glow-sphere-2"></div>
     </div>
 
+    <!-- Sticky Announcement Bar -->
     <div id="announcement-bar">
         <i class="fa-solid fa-bullhorn" style="color: #facc15; font-size: 1rem;"></i>
         <span class="announcement-sender-badge" id="announcement-sender"><i class="fa-solid fa-user-shield"></i> ADMIN</span>
@@ -694,6 +698,7 @@
         <span id="announcement-text">Selamat datang di Platform Feedback Resmi BlackLightDoms.</span>
     </div>
 
+    <!-- Loading Screen -->
     <div id="loading-screen">
         <img src="logo.png" alt="BLDS Logo" class="animated-logo" style="width: 80px; height: 80px;">
         <h2 class="text-glow-blds" style="margin-top: 12px; font-size: 1.3rem;">BLACKLIGHTDOMS</h2>
@@ -702,6 +707,7 @@
         </div>
     </div>
 
+    <!-- Mandatory Name Modal -->
     <div class="modal-overlay" id="name-modal">
         <div class="modal-box glass-card">
             <img src="logo.png" alt="BLDS Logo" class="animated-logo" style="width: 60px; height: 60px;">
@@ -717,6 +723,7 @@
         </div>
     </div>
 
+    <!-- Custom Title & Name Modal -->
     <div class="modal-overlay" id="title-modal">
         <div class="modal-box glass-card">
             <h3>Pengaturan Profil Admin</h3>
@@ -744,6 +751,7 @@
         </div>
     </div>
 
+    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="#" class="brand" onclick="switchPage('home-page')">
@@ -758,8 +766,10 @@
         </div>
     </header>
 
+    <!-- Main Dynamic Section -->
     <main>
         
+        <!-- PAGE 1: HOME PAGE -->
         <section id="home-page" class="page-section active">
             <div class="hero">
                 <img src="logo.png" alt="BLDS Logo" class="animated-logo">
@@ -777,6 +787,7 @@
             </div>
         </section>
 
+        <!-- PAGE 2: FEEDBACK PAGE -->
         <section id="feedback-page" class="page-section">
             <div class="feedback-container">
                 
@@ -784,6 +795,7 @@
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
                 </button>
 
+                <!-- RATING SUMMARY BOX -->
                 <div class="glass-card rating-summary-card">
                     <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rata-Rata Rating Platform</div>
                     <div class="avg-rating-value" id="avg-rating-text">0.0</div>
@@ -853,6 +865,7 @@
             </div>
         </section>
 
+        <!-- PAGE 3: SPECIAL CODE PAGE -->
         <section id="special-page" class="page-section">
             <div style="max-width: 450px; margin: 0 auto; width: 100%;">
                 
@@ -877,6 +890,7 @@
 
     </main>
 
+    <!-- DRAGGABLE FLOATING ADMIN PANEL -->
     <div class="glass-card draggable-admin-panel" id="admin-panel">
         <div class="panel-header" id="admin-panel-header">
             <span><i class="fa-solid fa-user-gear"></i> Admin Floating Panel</span>
@@ -910,6 +924,7 @@
 
     <div id="toast-container"></div>
 
+    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="social-links">
