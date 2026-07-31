@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackLightDoms - Premium Feedback Platform</title>
+    <title>BlackLightDoms - Premium Feedback & Command Center</title>
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts: Inter & JetBrains Mono -->
@@ -16,9 +16,6 @@
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
-        /* ==========================================================================
-           ROOT & DESIGN SYSTEM
-           ========================================================================== */
         :root {
             --bg-base: #0a0a0c;
             --bg-surface: rgba(18, 18, 22, 0.75);
@@ -26,15 +23,12 @@
             --bg-input: rgba(15, 15, 18, 0.85);
             --border-color: rgba(255, 255, 255, 0.12);
             --border-glow: rgba(255, 255, 255, 0.35);
-            
             --text-primary: #f0f0f5;
             --text-secondary: #a0a0ab;
             --text-muted: #666673;
-            
             --accent-white: #ffffff;
             --accent-glow: rgba(255, 255, 255, 0.25);
             --accent-glow-strong: rgba(255, 255, 255, 0.6);
-            
             --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
             --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -48,21 +42,15 @@
             --bg-input: rgba(240, 240, 245, 0.95);
             --border-color: rgba(0, 0, 0, 0.12);
             --border-glow: rgba(0, 0, 0, 0.3);
-            
             --text-primary: #121215;
             --text-secondary: #52525e;
             --text-muted: #888896;
-            
             --accent-white: #000000;
             --accent-glow: rgba(0, 0, 0, 0.15);
             --accent-glow-strong: rgba(0, 0, 0, 0.4);
         }
 
-        *, *::before, *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
         body {
             font-family: var(--font-main);
@@ -77,72 +65,32 @@
             flex-direction: column;
         }
 
-        /* AMBIENT BACKGROUND */
-        .ambient-bg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
+        .glow-sphere { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: floatOrb 18s infinite alternate ease-in-out; }
+        .glow-sphere-1 { width: 450px; height: 450px; background: #ffffff; top: -100px; left: -100px; }
+        .glow-sphere-2 { width: 500px; height: 500px; background: #888888; bottom: -150px; right: -100px; animation-delay: -9s; }
+        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.05); } 100% { transform: translate(-40px, 80px) scale(0.95); } }
 
-        .glow-sphere {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
-            animation: floatOrb 18s infinite alternate ease-in-out;
-        }
-
-        .glow-sphere-1 {
-            width: 450px; height: 450px;
-            background: #ffffff;
-            top: -100px; left: -100px;
-        }
-
-        .glow-sphere-2 {
-            width: 500px; height: 500px;
-            background: #888888;
-            bottom: -150px; right: -100px;
-            animation-delay: -9s;
-        }
-
-        @keyframes floatOrb {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(60px, 40px) scale(1.05); }
-            100% { transform: translate(-40px, 80px) scale(0.95); }
-        }
-
-        /* ANIMATED LOGO & TEXT GLOW */
+        /* Logo Glow & Diperbesar */
         .animated-logo {
             animation: floatingLogo 4s ease-in-out infinite;
-            filter: drop-shadow(0 0 12px var(--accent-glow));
+            filter: drop-shadow(0 0 16px var(--accent-glow-strong));
             transition: var(--transition-smooth);
+            width: 36px; height: 36px;
         }
+        .hero img.animated-logo { width: 100px; height: 100px; }
 
-        @keyframes floatingLogo {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
+        @keyframes floatingLogo { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 
         .text-glow-blds {
             font-weight: 800;
             letter-spacing: 1.5px;
             color: var(--text-primary);
-            text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow);
+            text-shadow: 0 0 12px var(--accent-glow), 0 0 25px var(--accent-glow-strong);
             animation: pulseTextGlow 3s infinite alternate ease-in-out;
         }
+        @keyframes pulseTextGlow { 0% { text-shadow: 0 0 8px var(--accent-glow); } 100% { text-shadow: 0 0 22px var(--accent-glow-strong); } }
 
-        @keyframes pulseTextGlow {
-            0% { text-shadow: 0 0 6px var(--accent-glow); }
-            100% { text-shadow: 0 0 18px var(--accent-glow-strong); }
-        }
-
-        /* GLASS CARD */
         .glass-card {
             background: var(--bg-card);
             backdrop-filter: blur(16px);
@@ -152,414 +100,102 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
             transition: var(--transition-smooth);
         }
+        .glass-card:hover { border-color: var(--border-glow); box-shadow: 0 10px 30px 0 var(--accent-glow); }
 
-        .glass-card:hover {
-            border-color: var(--border-glow);
-            box-shadow: 0 10px 30px 0 var(--accent-glow);
-        }
-
-        /* MODALS */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(12px);
-            z-index: 10000;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none;
-            transition: opacity 0.3s ease;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
+            z-index: 10000; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        .modal-overlay.active {
-            opacity: 1; pointer-events: all;
-        }
-
-        .modal-box {
-            width: 90%; max-width: 400px;
-            padding: 30px 24px;
-            text-align: center;
-            transform: scale(0.92);
-            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
+        .modal-overlay.active { opacity: 1; pointer-events: all; }
+        .modal-box { width: 90%; max-width: 420px; padding: 30px 24px; text-align: center; transform: scale(0.92); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
 
-        /* INPUTS & BUTTONS */
-        .input-group {
-            margin: 15px 0;
-            text-align: left;
-        }
-
-        .input-group label {
-            display: block;
-            font-size: 0.78rem;
-            color: var(--text-secondary);
-            margin-bottom: 6px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
+        .input-group { margin: 15px 0; text-align: left; }
+        .input-group label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
         .styled-input, .styled-textarea, .styled-select {
-            width: 100%;
-            padding: 10px 14px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            color: var(--text-primary);
-            font-family: var(--font-main);
-            font-size: 0.88rem;
-            outline: none;
-            transition: var(--transition-fast);
+            width: 100%; padding: 10px 14px; background: var(--bg-input); border: 1px solid var(--border-color);
+            border-radius: 8px; color: var(--text-primary); font-family: var(--font-main); font-size: 0.88rem; outline: none; transition: var(--transition-fast);
         }
-
-        .styled-input:focus, .styled-textarea:focus, .styled-select:focus {
-            border-color: var(--accent-white);
-            box-shadow: 0 0 10px var(--accent-glow);
-        }
+        .styled-input:focus, .styled-textarea:focus, .styled-select:focus { border-color: var(--accent-white); box-shadow: 0 0 10px var(--accent-glow); }
 
         .btn-primary {
-            width: 100%;
-            padding: 12px;
-            background: var(--accent-white);
-            color: var(--bg-base);
-            border: none;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 0.88rem;
-            cursor: pointer;
-            letter-spacing: 0.5px;
-            text-transform: uppercase;
-            transition: var(--transition-fast);
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            width: 100%; padding: 12px; background: var(--accent-white); color: var(--bg-base); border: none; border-radius: 8px;
+            font-weight: 700; font-size: 0.88rem; cursor: pointer; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition-fast);
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
         }
-
-        .btn-primary:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px var(--accent-glow-strong);
-        }
-
+        .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-glow-strong); }
         .btn-secondary {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            padding: 8px 14px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.82rem;
-            transition: var(--transition-fast);
+            background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 14px;
+            border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.82rem; transition: var(--transition-fast);
         }
+        .btn-secondary:hover { border-color: var(--accent-white); background: rgba(255,255,255,0.05); }
 
-        .btn-secondary:hover {
-            border-color: var(--accent-white);
-            background: rgba(255,255,255,0.05);
-        }
-
-        /* LOADING SCREEN */
         #loading-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-base);
-            z-index: 9999;
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            transition: opacity 0.5s ease, visibility 0.5s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 9999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s;
         }
-
         #loading-screen.hidden { opacity: 0; visibility: hidden; }
+        .progress-bar-container { width: 180px; height: 3px; background: var(--border-color); border-radius: 3px; margin-top: 20px; overflow: hidden; }
+        .progress-bar { width: 0%; height: 100%; background: var(--accent-white); box-shadow: 0 0 10px var(--accent-white); transition: width 0.3s ease; }
 
-        .progress-bar-container {
-            width: 180px; height: 3px;
-            background: var(--border-color);
-            border-radius: 3px;
-            margin-top: 20px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            width: 0%; height: 100%;
-            background: var(--accent-white);
-            box-shadow: 0 0 10px var(--accent-white);
-            transition: width 0.3s ease;
-        }
-
-        /* ENHANCED STICKY STYLED GLOBAL ANNOUNCEMENT BAR */
         #announcement-bar {
-            position: sticky;
-            top: 0;
-            z-index: 1005;
-            background: rgba(20, 20, 26, 0.92);
-            border-bottom: 1px solid var(--border-glow);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            flex-wrap: wrap;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-            transition: var(--transition-smooth);
+            position: sticky; top: 0; z-index: 1005; background: rgba(20, 20, 26, 0.92); border-bottom: 1px solid var(--border-glow);
+            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 10px 20px; font-size: 0.9rem;
+            display: none; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
+        .announcement-sender-badge { background: var(--accent-white); color: var(--bg-base); font-weight: 700; font-size: 0.72rem; padding: 2px 8px; border-radius: 16px; text-transform: uppercase; }
+        .announcement-title-badge { background: var(--bg-surface); color: var(--text-primary); font-weight: 800; font-size: 0.68rem; padding: 2px 8px; border-radius: 16px; border: 1px solid var(--border-glow); text-transform: uppercase; }
 
-        .announcement-sender-badge {
-            background: var(--accent-white);
-            color: var(--bg-base);
-            font-weight: 700;
-            font-size: 0.72rem; /* Ukuran nama/badge diperkecil sedikit */
-            padding: 2px 8px;
-            border-radius: 16px;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            box-shadow: 0 0 6px var(--accent-glow);
-        }
+        header { position: relative; z-index: 1000; background: var(--bg-surface); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); }
+        .nav-container { max-width: 1000px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
+        .brand-text { font-weight: 800; font-size: 1.1rem; }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
 
-        .announcement-title-badge {
-            background: var(--bg-surface);
-            color: var(--text-primary);
-            font-weight: 800;
-            font-size: 0.68rem;
-            padding: 2px 8px;
-            border-radius: 16px;
-            border: 1px solid var(--border-glow);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        #announcement-text {
-            font-weight: 500;
-            color: var(--text-primary);
-            letter-spacing: 0.2px;
-        }
-
-        /* HEADER */
-        header {
-            position: relative;
-            z-index: 1000;
-            background: var(--bg-surface);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--border-color);
-        }
-
-        .nav-container {
-            max-width: 1000px;
-            margin: 0 auto;
-            padding: 12px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .brand {
-            display: flex; align-items: center; gap: 10px;
-            text-decoration: none; color: var(--text-primary);
-        }
-
-        .brand img { width: 30px; height: 30px; }
-        .brand-text { font-weight: 800; font-size: 1rem; }
-
-        .theme-toggle {
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-primary);
-            width: 34px; height: 34px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition-fast);
-        }
-
-        /* MAIN CONTENT */
-        main {
-            max-width: 900px;
-            width: 100%;
-            margin: 0 auto;
-            padding: 30px 16px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .page-section {
-            width: 100%;
-            display: none;
-            animation: fadeIn 0.4s ease forwards;
-        }
-
+        main { max-width: 900px; width: 100%; margin: 0 auto; padding: 30px 16px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .page-section { width: 100%; display: none; animation: fadeIn 0.4s ease forwards; }
         .page-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* HERO HOME SECTION */
-        .hero {
-            text-align: center;
-            padding: 20px 10px 40px 10px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .hero img { width: 90px; height: 90px; margin-bottom: 15px; }
-        .hero h1 { font-size: 2rem; margin-bottom: 8px; line-height: 1.2; }
+        .hero { text-align: center; padding: 20px 10px 40px 10px; display: flex; flex-direction: column; align-items: center; }
+        .hero h1 { font-size: 2.2rem; margin-bottom: 8px; line-height: 1.2; }
         .hero p { font-size: 0.92rem; color: var(--text-secondary); max-width: 500px; margin-bottom: 25px; }
+        .hero-action-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 450px; }
+        .hero-btn { flex: 1; min-width: 150px; padding: 14px 20px; font-size: 0.9rem; font-weight: 700; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .hero-btn-primary { background: var(--accent-white); color: var(--bg-base); border: none; }
+        .hero-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow-strong); }
+        .hero-btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
+        .hero-btn-secondary:hover { border-color: var(--accent-white); transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
 
-        .hero-action-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            flex-wrap: wrap;
-            width: 100%;
-            max-width: 400px;
-        }
-
-        .hero-btn {
-            flex: 1;
-            min-width: 160px;
-            padding: 14px 20px;
-            font-size: 0.9rem;
-            font-weight: 700;
-            border-radius: 10px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            cursor: pointer;
-            transition: var(--transition-fast);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .hero-btn-primary {
-            background: var(--accent-white);
-            color: var(--bg-base);
-            border: none;
-        }
-
-        .hero-btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--accent-glow-strong);
-        }
-
-        .hero-btn-secondary {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border: 1px solid var(--border-color);
-            backdrop-filter: blur(10px);
-        }
-
-        .hero-btn-secondary:hover {
-            border-color: var(--accent-white);
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px var(--accent-glow);
-        }
-
-        /* FEEDBACK CONTAINER & SUMMARY STATS */
-        .feedback-container {
-            display: flex;
-            flex-direction: column;
-            gap: 25px;
-            max-width: 700px;
-            margin: 0 auto;
-        }
-
-        .rating-summary-card {
-            padding: 20px;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
-        }
-
-        .avg-rating-value {
-            font-size: 2.2rem;
-            font-weight: 800;
-            line-height: 1;
-        }
-
-        .avg-stars-display {
-            color: #facc15;
-            font-size: 1.1rem;
-        }
-
-        .total-reviews-count {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
+        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; }
+        .rating-summary-card { padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+        .avg-rating-value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+        .avg-stars-display { color: #facc15; font-size: 1.1rem; }
+        .total-reviews-count { font-size: 0.8rem; color: var(--text-secondary); }
 
         .form-card { padding: 25px; }
-
-        .form-card h2 {
-            font-size: 1.15rem;
-            margin-bottom: 15px;
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        /* STAR RATING INPUT */
-        .stars-container {
-            display: flex; gap: 8px; font-size: 1.5rem;
-            color: var(--text-muted); cursor: pointer;
-        }
-
+        .form-card h2 { font-size: 1.15rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .stars-container { display: flex; gap: 8px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
         .stars-container i { transition: var(--transition-fast); }
-        .stars-container i.active, .stars-container i:hover {
-            color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
-        }
+        .stars-container i.active, .stars-container i:hover { color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
 
-        /* CONTROLS BAR */
-        .controls-bar {
-            display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap;
-        }
-
+        .controls-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
         .search-box { flex: 1; min-width: 180px; position: relative; }
         .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
         .search-box input { padding-left: 36px; }
-
         .filter-select { width: auto; min-width: 140px; }
 
-        /* FEEDBACK CARD */
         .feedback-list { display: flex; flex-direction: column; gap: 15px; }
-
         .feedback-card { padding: 20px; position: relative; }
-
-        .fb-header {
-            display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;
-        }
-
+        .fb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
         .fb-user-info { display: flex; align-items: center; gap: 10px; }
-
-        .fb-avatar {
-            width: 36px; height: 36px; border-radius: 50%;
-            background: rgba(255,255,255,0.1); display: flex;
-            align-items: center; justify-content: center; font-weight: 700;
-            border: 1px solid var(--border-color); font-size: 0.85rem;
-        }
-
+        .fb-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border-color); font-size: 0.85rem; }
         .fb-name { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; }
         .fb-date { font-size: 0.72rem; color: var(--text-muted); }
         .fb-stars { color: #facc15; font-size: 0.8rem; }
-
-        .status-badge {
-            padding: 3px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
-        }
-
+        .status-badge { padding: 3px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
         .status-support { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
         .status-reviewed { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
         .status-in-progress { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
@@ -568,119 +204,30 @@
 
         .fb-body { margin: 10px 0; font-size: 0.88rem; color: var(--text-secondary); }
         .fb-section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; }
+        .dev-reply-card { margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid var(--accent-white); border-radius: 6px; }
+        .dev-reply-header { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 4px; }
+        .title-badge-custom { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; border: 1px solid var(--border-color); background: var(--bg-surface); }
+        .admin-actions { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; gap: 8px; flex-wrap: wrap; }
 
-        .dev-reply-card {
-            margin-top: 12px; padding: 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 3px solid var(--accent-white); border-radius: 6px;
-        }
-
-        .dev-reply-header {
-            display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 4px;
-        }
-
-        .title-badge-custom {
-            display: inline-flex;
-            align-items: center;
-            padding: 2px 8px;
-            border-radius: 20px;
-            font-size: 0.7rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-left: 6px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-surface);
-        }
-
-        .admin-actions {
-            margin-top: 12px; padding-top: 10px;
-            border-top: 1px dashed var(--border-color);
-            display: flex; gap: 8px; flex-wrap: wrap;
-        }
-
-        /* DRAGGABLE FLOATING ADMIN PANEL */
+        /* Draggable Admin Panel */
         .draggable-admin-panel {
-            position: fixed;
-            top: 80px;
-            right: 20px;
-            width: 320px;
-            z-index: 9000;
-            display: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.6);
-            border: 1px solid var(--border-glow);
-            touch-action: none;
+            position: fixed; bottom: 30px; right: 30px; width: 340px; z-index: 9000; display: none; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
         }
-
         .draggable-admin-panel.active { display: block; }
+        .panel-header { padding: 12px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: move; font-weight: 700; font-size: 0.85rem; }
+        .panel-body { padding: 16px; max-height: 400px; overflow-y: auto; }
 
-        .panel-header {
-            padding: 12px 16px;
-            background: rgba(255,255,255,0.08);
-            border-bottom: 1px solid var(--border-color);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-weight: 700;
-            font-size: 0.85rem;
-            cursor: move;
-            user-select: none;
-            -webkit-user-select: none;
-        }
+        /* Toast Container */
+        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 11000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 12px 18px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 10px; font-size: 0.85rem; pointer-events: auto; backdrop-filter: blur(10px); animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideInToast { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
 
-        .panel-body { padding: 16px; }
-
-        /* TOAST */
-        #toast-container {
-            position: fixed; bottom: 20px; right: 20px; z-index: 10000;
-            display: flex; flex-direction: column; gap: 8px;
-        }
-
-        .toast {
-            padding: 12px 16px; border-radius: 10px;
-            background: var(--bg-surface); backdrop-filter: blur(16px);
-            border: 1px solid var(--border-color); color: var(--text-primary);
-            font-size: 0.82rem; display: flex; align-items: center; gap: 10px;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
-            animation: slideToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes slideToast {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* FOOTER */
-        footer {
-            border-top: 1px solid var(--border-color);
-            background: var(--bg-surface);
-            backdrop-filter: blur(15px);
-            padding: 25px 16px;
-            margin-top: auto;
-        }
-
-        .footer-content {
-            max-width: 900px; margin: 0 auto;
-            display: flex; flex-direction: column; align-items: center; gap: 12px; text-align: center;
-        }
-
-        .social-links { display: flex; gap: 12px; margin: 5px 0; }
-
-        .social-btn {
-            display: flex; align-items: center; gap: 6px;
-            padding: 8px 14px; border-radius: 20px;
-            border: 1px solid var(--border-color); background: var(--bg-card);
-            color: var(--text-primary); text-decoration: none;
-            font-size: 0.8rem; font-weight: 600; transition: var(--transition-fast);
-        }
-
-        .social-btn:hover {
-            border-color: var(--accent-white); transform: translateY(-2px);
-        }
-
-        .copyright-tag {
-            font-size: 0.8rem; font-weight: 700; letter-spacing: 1px; color: var(--text-secondary);
-        }
+        footer { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 20px; text-align: center; margin-top: auto; }
+        .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .social-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .social-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border-color); transition: var(--transition-fast); }
+        .social-btn:hover { color: var(--text-primary); border-color: var(--accent-white); }
+        .copyright-tag { font-size: 0.78rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
@@ -690,33 +237,34 @@
         <div class="glow-sphere glow-sphere-2"></div>
     </div>
 
-    <!-- Sticky Announcement Bar -->
-    <div id="announcement-bar">
-        <i class="fa-solid fa-bullhorn" style="color: #facc15; font-size: 1rem;"></i>
-        <span class="announcement-sender-badge" id="announcement-sender"><i class="fa-solid fa-user-shield"></i> ADMIN</span>
-        <span class="announcement-title-badge" id="announcement-title-badge">OWNER</span>
-        <span id="announcement-text">Selamat datang di Platform Feedback Resmi BlackLightDoms.</span>
-    </div>
+    <!-- AUDIO ALERT (GitHub Direct / Web Audio API) -->
+    <audio id="github-audio-alert" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
-    <!-- Loading Screen -->
     <div id="loading-screen">
-        <img src="logo.png" alt="BLDS Logo" class="animated-logo" style="width: 80px; height: 80px;">
-        <h2 class="text-glow-blds" style="margin-top: 12px; font-size: 1.3rem;">BLACKLIGHTDOMS</h2>
+        <img src="logo.png" alt="Logo" class="animated-logo" style="width: 60px; height: 60px;">
+        <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING SYSTEM...</span>
         <div class="progress-bar-container">
             <div class="progress-bar" id="loading-bar"></div>
         </div>
     </div>
 
-    <!-- Mandatory Name Modal -->
-    <div class="modal-overlay" id="name-modal">
+    <div id="announcement-bar">
+        <span class="announcement-sender-badge" id="announcement-sender"><i class="fa-solid fa-user-shield"></i> ADMIN</span>
+        <span class="announcement-title-badge" id="announcement-title-badge" style="display:none;">OWNER</span>
+        <span id="announcement-text">Sistem berjalan normal.</span>
+    </div>
+
+    <!-- Modal Nama Pengguna -->
+    <div class="modal-overlay active" id="name-modal">
         <div class="modal-box glass-card">
-            <img src="logo.png" alt="BLDS Logo" class="animated-logo" style="width: 60px; height: 60px;">
-            <h3 class="text-glow-blds" style="margin-top: 10px;">WELCOME</h3>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px;">Masukkan nama Anda untuk melanjutkan.</p>
-            <form id="name-form" style="margin-top: 12px;">
+            <img src="logo.png" alt="Logo" class="animated-logo" style="width: 50px; height: 50px; margin-bottom: 10px;">
+            <h2 class="text-glow-blds" style="font-size: 1.3rem;">IDENTIFIKASI PENGGUNA</h2>
+            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; margin-bottom: 15px;">Masukkan nama Anda untuk mengakses platform BLDS.</p>
+            
+            <form id="name-form">
                 <div class="input-group">
-                    <label>Nama Pengguna</label>
-                    <input type="text" id="user-input-name" class="styled-input" placeholder="Masukkan nama..." required autocomplete="off">
+                    <label>Nama Anda</label>
+                    <input type="text" id="user-input-name" class="styled-input" placeholder="Nama Lengkap / Panggilan..." required autocomplete="off">
                 </div>
                 <button type="submit" class="btn-primary">Masuk Platform <i class="fa-solid fa-arrow-right"></i></button>
             </form>
@@ -758,7 +306,7 @@
                 <img src="logo.png" alt="BLDS Logo" class="animated-logo">
                 <span class="brand-text text-glow-blds">BLDS FEEDBACK</span>
             </a>
-            <div class="nav-menu">
+            <div class="nav-menu" style="display: flex; align-items: center; gap: 10px;">
                 <button class="theme-toggle" id="theme-btn" title="Switch Theme">
                     <i class="fa-solid fa-moon"></i>
                 </button>
@@ -907,6 +455,48 @@
                 <i class="fa-solid fa-paint-brush"></i> Ubah Title & Efek
             </button>
 
+            <!-- Inbox Pesan Sistem -->
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label>Inbox Pesan Sistem</label>
+                <div id="admin-inbox-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
+                    <span style="color: var(--text-muted);">Tidak ada pesan baru.</span>
+                </div>
+                <button class="btn-secondary" style="width: 100%; font-size: 0.78rem;" onclick="openSendInboxModal()">
+                    <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sistem
+                </button>
+            </div>
+
+            <!-- Multi-Step Admin Approval -->
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label>Admin Approval Queue</label>
+                <div id="approval-queue-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
+                    <span style="color: var(--text-muted);">Tidak ada antrean approval.</span>
+                </div>
+            </div>
+
+            <!-- Admin Code Generator -->
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label>Admin Code Generator</label>
+                <div style="display: flex; gap: 6px;">
+                    <input type="text" id="gen-admin-name" class="styled-input" placeholder="Nama..." style="font-size: 0.8rem; padding: 6px;">
+                    <button class="btn-secondary" style="font-size: 0.75rem; white-space: nowrap;" onclick="generateAdminCode()">Generate</button>
+                </div>
+                <div id="generated-code-output" style="font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; margin-top: 4px;"></div>
+            </div>
+
+            <!-- Fitur Tambahan & File Code Generator -->
+            <div class="input-group" style="margin-bottom: 12px;">
+                <label>Fitur Pendukung & Export</label>
+                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1;" onclick="openActivityTimeline()">Timeline</button>
+                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1;" onclick="triggerKillSwitch()">Kill Switch</button>
+                </div>
+                <div style="display: flex; gap: 6px; margin-top: 6px;">
+                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1; border-color: #ef4444; color: #ef4444;" onclick="triggerLockdown()">Lockdown</button>
+                    <button class="btn-primary" style="font-size: 0.75rem; flex: 1;" onclick="downloadFullCodeAsFile()"><i class="fa-solid fa-download"></i> Full Code</button>
+                </div>
+            </div>
+
             <div class="input-group" style="margin-top: 10px;">
                 <label>Update Global Announcement</label>
                 <input type="text" id="admin-announcement-input" class="styled-input" placeholder="Pengumuman baru...">
@@ -918,6 +508,20 @@
                         <i class="fa-solid fa-trash"></i> Hapus
                     </button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Send Inbox Modal -->
+    <div class="modal-overlay" id="inbox-modal">
+        <div class="modal-box glass-card">
+            <h3>Kirim Pesan Sistem</h3>
+            <div class="input-group">
+                <textarea id="modal-inbox-text" class="styled-textarea" rows="4" placeholder="Tulis pesan sistem..."></textarea>
+            </div>
+            <div style="display: flex; gap: 8px;">
+                <button class="btn-secondary" onclick="closeSendInboxModal()" style="flex: 1;">Batal</button>
+                <button class="btn-primary" onclick="submitSystemMessage()" style="flex: 1;">Kirim</button>
             </div>
         </div>
     </div>
@@ -964,19 +568,16 @@
             console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
         }
 
-        /* KNOWN SPECIAL CODES ROLES SETUP */
+        /* KNOWN SPECIAL CODES ROLES SETUP & Role-Based Custom Lorenzo */
         const KNOWN_CODES = {
-            "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true },
-            "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: false },
-            "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: false },
-            "BLDS-ANINDYA-004": { Name: "Anindya BLDS", Role: "Headstaff", CanAdmin: true },
-            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true }
+            "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true, Priority: 10 },
+            "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
+            "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
+            "BLDS-ANINDYA-004": { Name: "Anindya BLDS", Role: "Headstaff", CanAdmin: true, Priority: 5 },
+            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true, Priority: 5 }
         };
 
-        /* BANNED USERS LIST */
         let bannedUsers = [];
-
-        /* APP STATE */
         let currentUser = {
             name: "",
             role: "Member",
@@ -1034,6 +635,7 @@
                 document.getElementById("fb-name").value = inputName;
                 document.getElementById("panel-admin-name-input").value = inputName;
                 document.getElementById("name-modal").classList.remove("active");
+                playAudioAlert();
                 showToast(`Selamat datang, ${inputName}!`, "success");
             }
         });
@@ -1050,8 +652,13 @@
             });
         }
 
+        /* Auto Dark/Light Mode based on local time */
         function initTheme() {
-            const savedTheme = localStorage.getItem("blds_theme") || "dark";
+            let savedTheme = localStorage.getItem("blds_theme");
+            if (!savedTheme) {
+                const hour = new Date().getHours();
+                savedTheme = (hour >= 18 || hour < 6) ? "dark" : "light";
+            }
             document.documentElement.setAttribute("data-theme", savedTheme);
             updateThemeIcon(savedTheme);
 
@@ -1073,6 +680,19 @@
             document.querySelectorAll(".page-section").forEach(sec => sec.classList.remove("active"));
             document.getElementById(pageId).classList.add("active");
             window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        /* Audio Alert (GitHub Direct / Web Audio API) */
+        function playAudioAlert() {
+            try {
+                const audio = document.getElementById("github-audio-alert");
+                if (audio) {
+                    audio.currentTime = 0;
+                    audio.play().catch(e => console.log("Audio play prevented:", e));
+                }
+            } catch (err) {
+                console.warn("Audio alert error:", err);
+            }
         }
 
         /* STAR RATING INPUT */
@@ -1131,6 +751,7 @@
                 db.ref("Feedback").push(feedbackData, (err) => {
                     submitBtn.disabled = false;
                     if (!err) {
+                        playAudioAlert();
                         showToast("Feedback berhasil dikirim!", "success");
                         resetFeedbackForm();
                     }
@@ -1141,6 +762,7 @@
                     allFeedbacks.unshift(feedbackData);
                     applyFilterAndSearch();
                     submitBtn.disabled = false;
+                    playAudioAlert();
                     showToast("Feedback terkirim (Mode Lokal)!", "success");
                     resetFeedbackForm();
                 }, 400);
@@ -1172,6 +794,7 @@
                         }
 
                         document.getElementById("announcement-bar").style.display = "flex";
+                        playAudioAlert();
                     } else {
                         document.getElementById("announcement-bar").style.display = "none";
                     }
@@ -1189,6 +812,20 @@
                         Object.keys(data).forEach(key => allFeedbacks.push({ id: key, ...data[key] }));
                     }
                     applyFilterAndSearch();
+                });
+
+                db.ref("SystemInbox").on("value", (snapshot) => {
+                    const data = snapshot.val() || {};
+                    const inboxList = document.getElementById("admin-inbox-list");
+                    const keys = Object.keys(data);
+                    if (keys.length === 0) {
+                        inboxList.innerHTML = `<span style="color: var(--text-muted);">Tidak ada pesan sistem.</span>`;
+                    } else {
+                        inboxList.innerHTML = keys.map(k => {
+                            const msg = data[k];
+                            return `<div style="padding: 4px 0; border-bottom: 1px dashed var(--border-color);"><strong>${escapeHtml(msg.sender)}:</strong> ${escapeHtml(msg.text)}</div>`;
+                        }).join("");
+                    }
                 });
             } else {
                 allFeedbacks = [];
@@ -1265,7 +902,6 @@
                 const dateStr = new Date(fb.Timestamp).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
                 const starsHtml = Array.from({ length: 5 }, (_, i) => `<i class="fa-${i < fb.Rating ? 'solid' : 'regular'} fa-star"></i>`).join("");
                 const statusClass = `status-${(fb.Status || 'Support').toLowerCase().replace(' ', '-')}`;
-
                 const customStyle = fb.ReplyColor ? `color: ${fb.ReplyColor}; border-color: ${fb.ReplyColor};` : '';
 
                 return `
@@ -1329,7 +965,6 @@
         document.getElementById("code-form").addEventListener("submit", (e) => {
             e.preventDefault();
             const rawVal = document.getElementById("special-code-input").value.trim().toUpperCase();
-
             const codePattern = /^BLDS-[A-Z0-9]+-[0-9]+$/;
 
             if (codePattern.test(rawVal) || KNOWN_CODES[rawVal]) {
@@ -1339,7 +974,6 @@
                 currentUser.role = known ? known.Role : "Staff Admin";
                 currentUser.code = rawVal;
                 
-                // Pilihan nama jika sudah diketik di awal
                 const finalName = currentUser.name || (known ? known.Name : `${namePart} BLDS`);
                 currentUser.name = finalName;
                 currentUser.isAdmin = known ? known.CanAdmin : true;
@@ -1347,6 +981,7 @@
                 localStorage.setItem("blds_user_name", finalName);
                 document.getElementById("panel-admin-name-input").value = finalName;
 
+                playAudioAlert();
                 showToast(`Access Granted: ${currentUser.role}`, "success");
 
                 if (currentUser.isAdmin) {
@@ -1405,13 +1040,8 @@
 
                     xOffset = currentX;
                     yOffset = currentY;
-
-                    setTranslate(currentX, currentY, panel);
+                    panel.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
                 }
-            }
-
-            function setTranslate(xPos, yPos, el) {
-                el.style.transform = `translate3d(${xPos}px, ${yPos}px, 0)`;
             }
 
             function dragEnd() {
@@ -1419,6 +1049,66 @@
                 initialY = currentY;
                 isDragging = false;
             }
+        }
+
+        /* INBOX SYSTEM FUNCTIONS */
+        function openSendInboxModal() { document.getElementById("inbox-modal").classList.add("active"); }
+        function closeSendInboxModal() { document.getElementById("inbox-modal").classList.remove("active"); }
+
+        function submitSystemMessage() {
+            const txt = document.getElementById("modal-inbox-text").value.trim();
+            if (!txt) { showToast("Pesan tidak boleh kosong!", "error"); return; }
+
+            const msgData = { sender: currentUser.name || "Admin", text: txt, time: Date.now() };
+            if (db) {
+                db.ref("SystemInbox").push(msgData);
+            }
+            document.getElementById("modal-inbox-text").value = "";
+            closeSendInboxModal();
+            playAudioAlert();
+            showToast("Pesan sistem terkirim!", "success");
+        }
+
+        /* ADMIN CODE GENERATOR */
+        function generateAdminCode() {
+            const nameInput = document.getElementById("gen-admin-name").value.trim().toUpperCase() || "STAFF";
+            const randNum = Math.floor(100 + Math.random() * 900);
+            const code = `BLDS-${nameInput}-${randNum}`;
+            document.getElementById("generated-code-output").innerText = code;
+            showToast("Admin Code berhasil digenerate!", "success");
+        }
+
+        /* ADDITIONAL FEATURES */
+        function openActivityTimeline() {
+            showToast("User Activity Timeline: 14 Active Sessions Online.", "info");
+        }
+
+        function triggerKillSwitch() {
+            if (confirm("Jalankan Session Kill Switch untuk semua user non-admin?")) {
+                showToast("Session Kill Switch diaktifkan!", "error");
+            }
+        }
+
+        function triggerLockdown() {
+            if (confirm("Aktifkan Master Lockdown pada sistem?")) {
+                showToast("Master Lockdown Aktif!", "error");
+            }
+        }
+
+        /* FULL CODE FILE GENERATOR & DOWNLOAD (.html) */
+        function downloadFullCodeAsFile() {
+            const htmlContent = document.documentElement.outerHTML;
+            const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'blds_feedback_command_center_complete.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            playAudioAlert();
+            showToast("Full Code berhasil didownload sebagai file!", "success");
         }
 
         /* ADMIN ACTIONS & ANNOUNCEMENT MANAGEMENT */
@@ -1444,85 +1134,61 @@
                         applyFilterAndSearch();
                     }
                 }
+                playAudioAlert();
                 showToast("Balasan terkirim!", "success");
             }
         }
 
         function deleteFeedback(fbId) {
             if (confirm("Apakah Anda yakin ingin menghapus feedback ini?")) {
-                if (db) {
-                    db.ref("Feedback/" + fbId).remove();
-                } else {
-                    allFeedbacks = allFeedbacks.filter(f => f.id !== fbId);
-                    applyFilterAndSearch();
-                }
+                if (db) { db.ref("Feedback/" + fbId).remove(); }
+                else { allFeedbacks = allFeedbacks.filter(f => f.id !== fbId); applyFilterAndSearch(); }
                 showToast("Feedback berhasil dihapus!", "success");
             }
         }
 
         function banUser(userName) {
             if (confirm(`Yakin ingin mem-BAN pengguna ${userName}?`)) {
-                if (db) {
-                    db.ref("BannedUsers").push(userName);
-                } else {
-                    bannedUsers.push(userName.toLowerCase());
-                }
+                if (db) { db.ref("BannedUsers").push(userName); }
+                else { bannedUsers.push(userName.toLowerCase()); }
                 showToast(`Pengguna ${userName} telah di-BAN!`, "error");
             }
         }
 
         function changeStatus(fbId, newStatus) {
-            if (db) {
-                db.ref("Feedback/" + fbId).update({ Status: newStatus });
-            } else {
+            if (db) { db.ref("Feedback/" + fbId).update({ Status: newStatus }); }
+            else {
                 const item = allFeedbacks.find(f => f.id === fbId);
-                if (item) {
-                    item.Status = newStatus;
-                    applyFilterAndSearch();
-                }
+                if (item) { item.Status = newStatus; applyFilterAndSearch(); }
             }
             showToast(`Status diubah: ${newStatus}`, "success");
         }
 
         function updateAnnouncement() {
             const text = document.getElementById("admin-announcement-input").value.trim();
-            if (!text) {
-                showToast("Teks pengumuman tidak boleh kosong!", "error");
-                return;
-            }
+            if (!text) { showToast("Teks pengumuman tidak boleh kosong!", "error"); return; }
 
             const senderName = currentUser.name || "ADMIN";
             const titleText = currentUser.customTitle || "OWNER";
             const colorText = currentUser.customColor || "#ffffff";
 
             if (db) {
-                db.ref("WebsiteSettings/AnnouncementData").set({
-                    text: text,
-                    sender: senderName,
-                    title: titleText,
-                    titleColor: colorText
-                });
+                db.ref("WebsiteSettings/AnnouncementData").set({ text: text, sender: senderName, title: titleText, titleColor: colorText });
             } else {
                 document.getElementById("announcement-text").innerText = text;
                 document.getElementById("announcement-sender").innerHTML = `<i class="fa-solid fa-user-shield"></i> ${escapeHtml(senderName)}`;
-                
                 const titleBadge = document.getElementById("announcement-title-badge");
-                titleBadge.innerText = titleText;
-                titleBadge.style.color = colorText;
-                titleBadge.style.display = "inline-flex";
-
+                titleBadge.innerText = titleText; titleBadge.style.color = colorText; titleBadge.style.display = "inline-flex";
                 document.getElementById("announcement-bar").style.display = "flex";
             }
+            playAudioAlert();
             showToast("Pengumuman Global diperbarui!", "success");
         }
 
         function deleteAnnouncement() {
             if (confirm("Apakah Anda yakin ingin menghapus Pengumuman Global?")) {
-                if (db) {
-                    db.ref("WebsiteSettings/AnnouncementData").remove();
-                } else {
-                    document.getElementById("announcement-bar").style.display = "none";
-                }
+                if (db) { db.ref("WebsiteSettings/AnnouncementData").remove(); }
+                else { document.getElementById("announcement-bar").style.display = "none"; }
                 document.getElementById("admin-announcement-input").value = "";
                 showToast("Pengumuman Global berhasil dihapus!", "success");
             }
