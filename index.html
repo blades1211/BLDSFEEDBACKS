@@ -236,7 +236,7 @@
         <div class="glow-sphere glow-sphere-2"></div>
     </div>
 
-    <!-- AUDIO ALERT (GitHub Direct / Web Audio API) -->
+    <!-- AUDIO ALERT -->
     <audio id="github-audio-alert" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <div id="loading-screen">
@@ -443,7 +443,7 @@
         <div class="panel-body">
             
             <div class="input-group" style="margin-bottom: 12px;">
-                <label>Nama Admin Anda (Diubah di Panel)</label>
+                <label>Nama Admin Anda</label>
                 <input type="text" id="panel-admin-name-input" class="styled-input" placeholder="Ubah nama admin...">
             </div>
 
@@ -462,7 +462,7 @@
                 </button>
             </div>
 
-            <!-- Multi-Step Admin Approval -->
+            <!-- Admin Approval Queue -->
             <div class="input-group" style="margin-bottom: 12px;">
                 <label>Admin Approval Queue</label>
                 <div id="approval-queue-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
@@ -543,28 +543,26 @@
     </footer>
 
     <script>
-        /* FIREBASE CONFIG DISESUAIKAN KE DATABASE KAMU */
+        /* FIREBASE CONFIG TERHUBUNG PERMANEN */
         const firebaseConfig = {
-            apiKey: "ISI_API_KEY_ANDA",
+            apiKey: "AIzaSyCOSl8oDM6gnZRIOHiOSTlXKOVQ4xLX2nc",
             authDomain: "blds-2806d.firebaseapp.com",
             databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app",
             projectId: "blds-2806d",
-            storageBucket: "blds-2806d.appspot.com",
-            messagingSenderId: "ISI_SENDER_ID",
-            appId: "ISI_APP_ID"
+            storageBucket: "blds-2806d.firebasestorage.app",
+            messagingSenderId: "653918116860",
+            appId: "1:653918116860:web:4458b7df805c577c7f3079",
+            measurementId: "G-5QK3T8JH6Z"
         };
 
         let db = null;
         try {
-            if (firebaseConfig.apiKey !== "ISI_API_KEY_ANDA") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-            }
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
         } catch (e) {
-            console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
+            console.warn("Firebase inisialisasi gagal:", e);
         }
 
-        /* KNOWN SPECIAL CODES ROLES SETUP */
         const KNOWN_CODES = {
             "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true, Priority: 10 },
             "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
@@ -710,7 +708,7 @@
             });
         }
 
-        /* FEEDBACK SUBMISSION (PUBLIK KE FIREBASE) */
+        /* FEEDBACK SUBMISSION KE FIREBASE CLOUD */
         document.getElementById("feedback-form").addEventListener("submit", (e) => {
             e.preventDefault();
 
@@ -726,7 +724,6 @@
 
             const suggestion = document.getElementById("fb-suggestion").value.trim();
             const criticism = document.getElementById("fb-criticism").value.trim();
-
             const submitBtn = document.getElementById("fb-submit-btn");
             submitBtn.disabled = true;
 
@@ -745,22 +742,15 @@
                     submitBtn.disabled = false;
                     if (!err) {
                         playAudioAlert();
-                        showToast("Feedback publik berhasil dikirim!", "success");
+                        showToast("Feedback publik berhasil dikirim ke Cloud!", "success");
                         resetFeedbackForm();
                     } else {
-                        showToast("Gagal mengirim ke Firebase. Cek Rules database!", "error");
+                        showToast("Gagal mengirim ke Firebase. Cek koneksi!", "error");
                     }
                 });
             } else {
-                setTimeout(() => {
-                    feedbackData.id = "local_" + Date.now();
-                    allFeedbacks.unshift(feedbackData);
-                    applyFilterAndSearch();
-                    submitBtn.disabled = false;
-                    playAudioAlert();
-                    showToast("Feedback terkirim (Mode Lokal)!", "success");
-                    resetFeedbackForm();
-                }, 400);
+                submitBtn.disabled = false;
+                showToast("Database tidak terhubung!", "error");
             }
         });
 
@@ -771,7 +761,7 @@
             highlightStars(0);
         }
 
-        /* INISIALISASI LISTENER GLOBAL SUPAYA PUBLIK BISA LIHAT */
+        /* REAL-TIME LISTENERS DARI FIREBASE CLOUD */
         function initFirebaseListeners() {
             if (db) {
                 db.ref("WebsiteSettings/AnnouncementData").on("value", (snapshot) => {
@@ -790,7 +780,6 @@
                         }
 
                         document.getElementById("announcement-bar").style.display = "flex";
-                        playAudioAlert();
                     } else {
                         document.getElementById("announcement-bar").style.display = "none";
                     }
@@ -801,7 +790,6 @@
                     bannedUsers = Object.values(data).map(n => n.toLowerCase());
                 });
 
-                /* Mengambil seluruh data dari root Feedback secara global tanpa filter user */
                 db.ref("Feedback").on("value", (snapshot) => {
                     const data = snapshot.val();
                     allFeedbacks = [];
@@ -826,9 +814,6 @@
                         }).join("");
                     }
                 });
-            } else {
-                allFeedbacks = [];
-                applyFilterAndSearch();
             }
         }
 
@@ -1056,9 +1041,7 @@
             if (!txt) { showToast("Pesan tidak boleh kosong!", "error"); return; }
 
             const msgData = { sender: currentUser.name || "Admin", text: txt, time: Date.now() };
-            if (db) {
-                db.ref("SystemInbox").push(msgData);
-            }
+            if (db) { db.ref("SystemInbox").push(msgData); }
             document.getElementById("modal-inbox-text").value = "";
             closeSendInboxModal();
             playAudioAlert();
@@ -1073,21 +1056,9 @@
             showToast("Admin Code berhasil digenerate!", "success");
         }
 
-        function openActivityTimeline() {
-            showToast("User Activity Timeline: 14 Active Sessions Online.", "info");
-        }
-
-        function triggerKillSwitch() {
-            if (confirm("Jalankan Session Kill Switch untuk semua user non-admin?")) {
-                showToast("Session Kill Switch diaktifkan!", "error");
-            }
-        }
-
-        function triggerLockdown() {
-            if (confirm("Aktifkan Master Lockdown pada sistem?")) {
-                showToast("Master Lockdown Aktif!", "error");
-            }
-        }
+        function openActivityTimeline() { showToast("User Activity Timeline: 14 Active Sessions Online.", "info"); }
+        function triggerKillSwitch() { if (confirm("Jalankan Session Kill Switch untuk semua user?")) { showToast("Session Kill Switch diaktifkan!", "error"); } }
+        function triggerLockdown() { if (confirm("Aktifkan Master Lockdown pada sistem?")) { showToast("Master Lockdown Aktif!", "error"); } }
 
         function downloadFullCodeAsFile() {
             const htmlContent = document.documentElement.outerHTML;
@@ -1095,20 +1066,19 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_public_center.html';
+            a.download = 'blds_feedback_cloud.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             playAudioAlert();
-            showToast("Full Code berhasil didownload sebagai file!", "success");
+            showToast("Full Code berhasil didownload!", "success");
         }
 
         function promptReply(fbId) {
             const replyText = prompt("Masukkan balasan Admin:");
             if (replyText) {
                 const senderName = currentUser.name || "Developer";
-
                 if (db) {
                     db.ref("Feedback/" + fbId).update({
                         Reply: replyText,
@@ -1116,15 +1086,6 @@
                         ReplyTitle: currentUser.customTitle,
                         ReplyColor: currentUser.customColor
                     });
-                } else {
-                    const item = allFeedbacks.find(f => f.id === fbId);
-                    if (item) {
-                        item.Reply = replyText;
-                        item.ReplySender = senderName;
-                        item.ReplyTitle = currentUser.customTitle;
-                        item.ReplyColor = currentUser.customColor;
-                        applyFilterAndSearch();
-                    }
                 }
                 playAudioAlert();
                 showToast("Balasan terkirim!", "success");
@@ -1134,7 +1095,6 @@
         function deleteFeedback(fbId) {
             if (confirm("Apakah Anda yakin ingin menghapus feedback ini?")) {
                 if (db) { db.ref("Feedback/" + fbId).remove(); }
-                else { allFeedbacks = allFeedbacks.filter(f => f.id !== fbId); applyFilterAndSearch(); }
                 showToast("Feedback berhasil dihapus!", "success");
             }
         }
@@ -1142,17 +1102,12 @@
         function banUser(userName) {
             if (confirm(`Yakin ingin mem-BAN pengguna ${userName}?`)) {
                 if (db) { db.ref("BannedUsers").push(userName); }
-                else { bannedUsers.push(userName.toLowerCase()); }
                 showToast(`Pengguna ${userName} telah di-BAN!`, "error");
             }
         }
 
         function changeStatus(fbId, newStatus) {
             if (db) { db.ref("Feedback/" + fbId).update({ Status: newStatus }); }
-            else {
-                const item = allFeedbacks.find(f => f.id === fbId);
-                if (item) { item.Status = newStatus; applyFilterAndSearch(); }
-            }
             showToast(`Status diubah: ${newStatus}`, "success");
         }
 
@@ -1166,12 +1121,6 @@
 
             if (db) {
                 db.ref("WebsiteSettings/AnnouncementData").set({ text: text, sender: senderName, title: titleText, titleColor: colorText });
-            } else {
-                document.getElementById("announcement-text").innerText = text;
-                document.getElementById("announcement-sender").innerHTML = `<i class="fa-solid fa-user-shield"></i> ${escapeHtml(senderName)}`;
-                const titleBadge = document.getElementById("announcement-title-badge");
-                titleBadge.innerText = titleText; titleBadge.style.color = colorText; titleBadge.style.display = "inline-flex";
-                document.getElementById("announcement-bar").style.display = "flex";
             }
             playAudioAlert();
             showToast("Pengumuman Global diperbarui!", "success");
@@ -1180,7 +1129,6 @@
         function deleteAnnouncement() {
             if (confirm("Apakah Anda yakin ingin menghapus Pengumuman Global?")) {
                 if (db) { db.ref("WebsiteSettings/AnnouncementData").remove(); }
-                else { document.getElementById("announcement-bar").style.display = "none"; }
                 document.getElementById("admin-announcement-input").value = "";
                 showToast("Pengumuman Global berhasil dihapus!", "success");
             }
