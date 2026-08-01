@@ -387,7 +387,7 @@
                 <div class="glass-card form-card" style="text-align: center;">
                     <i class="fa-solid fa-shield-halved text-glow" style="font-size: 1.8rem; margin-bottom: 8px;"></i>
                     <h2 style="justify-content: center;">SPECIAL CODE</h2>
-                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan kode rahasia/staff Anda (Format: BLDS-NAMA-NOMOR).</p>
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan special code Anda untuk mengaktifkan panel admin.</p>
                     <form id="form-special-submit">
                         <div class="input-group">
                             <input type="text" id="special-code-val" class="styled-input" style="text-align: center; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 1px;" placeholder="BLDS-NAMA-001" required autocomplete="off">
@@ -512,7 +512,9 @@
             "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true },
             "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: true },
             "BLDS-ANINDYA-004": { Name: "Anindya BLDS", Role: "Headstaff", CanAdmin: true },
-            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true }
+            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true },
+            "BLDS-ZAVINO-006": { Name: "Zavino BLDS", Role: "Staff Admin", CanAdmin: true },
+            "BLDS-REHAN-007": { Name: "Rehan BLDS", Role: "Staff Admin", CanAdmin: true }
         };
 
         let bannedList = [];
@@ -929,27 +931,24 @@
         document.getElementById("form-special-submit").addEventListener("submit", (e) => {
             e.preventDefault();
             const inputVal = document.getElementById("special-code-val").value.trim().toUpperCase();
-            const regexCode = /^BLDS-[A-Z0-9]+-[0-9]+$/;
 
-            if (regexCode.test(inputVal) || PRESET_STAFF_CODES[inputVal]) {
+            if (PRESET_STAFF_CODES[inputVal]) {
                 const staffData = PRESET_STAFF_CODES[inputVal];
-                const nameExt = inputVal.split('-')[1] || "STAFF";
 
-                globalUser.role = staffData ? staffData.Role : "Staff Admin";
+                globalUser.role = staffData.Role;
                 globalUser.code = inputVal;
-                
-                const finalN = globalUser.name || (staffData ? staffData.Name : `${nameExt} BLDS`);
-                globalUser.name = finalN;
-                globalUser.isAdmin = staffData ? staffData.CanAdmin : true;
+                globalUser.name = staffData.Name;
+                globalUser.isAdmin = staffData.CanAdmin;
 
-                localStorage.setItem("blds_v4_name", finalN);
+                localStorage.setItem("blds_v4_name", staffData.Name);
                 localStorage.setItem("blds_v4_admin", globalUser.isAdmin);
                 localStorage.setItem("blds_v4_role", globalUser.role);
 
-                document.getElementById("panel-admin-name-field").value = finalN;
+                document.getElementById("panel-admin-name-field").value = staffData.Name;
+                document.getElementById("fb-input-name").value = staffData.Name;
 
                 playAudioNotification();
-                showToast(`Access Granted: ${globalUser.role}`, "success");
+                showToast(`Access Granted: ${staffData.Name} (${globalUser.role})`, "success");
 
                 if (globalUser.isAdmin) {
                     document.getElementById("floating-admin-panel").classList.add("active");
@@ -959,7 +958,7 @@
                     switchPage('page-home');
                 }
             } else {
-                showToast("Format Kode salah! Gunakan format BLDS-NAMA-NOMOR", "error");
+                showToast("Special Code tidak valid!", "error");
             }
         });
 
