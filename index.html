@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackLightDoms - Premium Feedback & Command Center v4</title>
-    <!-- Font Awesome -->
+    <title>BlackLightDoms - Premium Feedback & Command Center v4.1</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs (Compat v9.23.0) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -180,7 +177,7 @@
         .fb-date { font-size: 0.7rem; color: var(--text-muted); }
         .fb-stars-display { color: #facc15; font-size: 0.78rem; }
         
-        .status-pill { padding: 2px 8px; border-radius: 20px; font-size: 0.65s; font-weight: 700; text-transform: uppercase; font-size: 0.65rem; }
+        .status-pill { padding: 2px 8px; border-radius: 20px; font-weight: 700; text-transform: uppercase; font-size: 0.65rem; }
         .st-support { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
         .st-reviewed { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139,92,246,0.3); }
         .st-progress { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
@@ -233,12 +230,11 @@
         <div class="glow-sphere glow-2"></div>
     </div>
 
-    <!-- AUDIO NOTIFICATION -->
     <audio id="success-sound" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <div id="loading-screen">
         <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--accent-white); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--bg-base); font-size: 1.2rem;">B</div>
-        <span class="text-glow" style="font-size: 1rem; margin-top: 12px;">LOADING SYSTEM v4...</span>
+        <span class="text-glow" style="font-size: 1rem; margin-top: 12px;">LOADING SYSTEM v4.1...</span>
     </div>
 
     <div id="announcement-bar">
@@ -246,7 +242,6 @@
         <span id="announcement-text-view">Sistem berjalan normal.</span>
     </div>
 
-    <!-- Modal Identifikasi Nama -->
     <div class="modal-overlay active" id="modal-name">
         <div class="modal-box glass-card">
             <h2 class="text-glow" style="font-size: 1.2rem; margin-bottom: 4px;">IDENTIFIKASI PENGGUNA</h2>
@@ -261,7 +256,6 @@
         </div>
     </div>
 
-    <!-- Modal Admin Title & Style Customizer -->
     <div class="modal-overlay" id="modal-admin-title">
         <div class="modal-box glass-card">
             <h3>Pengaturan Title Admin</h3>
@@ -285,7 +279,6 @@
         </div>
     </div>
 
-    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="#" class="brand text-glow" onclick="switchPage('page-home')">BLDS FEEDBACK</a>
@@ -301,7 +294,6 @@
     </header>
 
     <main>
-        <!-- PAGE 1: HOME -->
         <section id="page-home" class="page-section active">
             <div class="hero">
                 <h1 class="text-glow">BLACKLIGHTDOMS FEEDBACK</h1>
@@ -317,14 +309,12 @@
             </div>
         </section>
 
-        <!-- PAGE 2: FEEDBACK -->
         <section id="page-feedback" class="page-section">
             <div class="feedback-wrapper">
                 <button class="btn-secondary" onclick="switchPage('page-home')" style="width: auto; align-self: flex-start;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
                 </button>
 
-                <!-- RATING SUMMARY -->
                 <div class="glass-card rating-card">
                     <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rata-Rata Rating Platform</div>
                     <div class="avg-number" id="stats-avg-val">0.0</div>
@@ -334,7 +324,6 @@
                     <div style="font-size: 0.78rem; color: var(--text-secondary);" id="stats-total-reviews">0 Ulasan Feedback</div>
                 </div>
 
-                <!-- SUBMIT FORM -->
                 <div class="glass-card form-card">
                     <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback (Publik)</h2>
                     <form id="form-submit-feedback">
@@ -366,7 +355,6 @@
                     </form>
                 </div>
 
-                <!-- CONTROLS & FEED -->
                 <div>
                     <div class="controls-row">
                         <div class="search-container">
@@ -391,7 +379,6 @@
             </div>
         </section>
 
-        <!-- PAGE 3: SPECIAL CODE -->
         <section id="page-special" class="page-section">
             <div style="max-width: 420px; margin: 0 auto; width: 100%;">
                 <button class="btn-secondary" onclick="switchPage('page-home')" style="width: auto; margin-bottom: 14px;">
@@ -412,7 +399,6 @@
         </section>
     </main>
 
-    <!-- DRAGGABLE FLOATING ADMIN PANEL -->
     <div class="glass-card draggable-admin-panel" id="floating-admin-panel">
         <div class="panel-header" id="panel-drag-header">
             <span><i class="fa-solid fa-user-gear"></i> Admin Floating Panel</span>
@@ -431,13 +417,11 @@
                 <i class="fa-solid fa-paint-brush"></i> Ubah Title & Efek
             </button>
 
-            <!-- Quick Controls Info -->
             <div class="input-group" style="margin-bottom: 10px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color);">
                 <label style="color: #60a5fa;"><i class="fa-solid fa-circle-info"></i> Info Kontrol Admin</label>
                 <p style="font-size: 0.72rem; color: var(--text-secondary);">Tombol **Reply, Status, Ban, & Hapus** aktif langsung di setiap Kartu Feedback!</p>
             </div>
 
-            <!-- System Inbox -->
             <div class="input-group" style="margin-bottom: 10px;">
                 <label>Inbox Pesan Sistem</label>
                 <div id="admin-inbox-box" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; max-height: 90px; overflow-y: auto; font-size: 0.75rem; margin-bottom: 6px;">
@@ -448,7 +432,6 @@
                 </button>
             </div>
 
-            <!-- Code Generator -->
             <div class="input-group" style="margin-bottom: 10px;">
                 <label>Admin Code Generator</label>
                 <div style="display: flex; gap: 5px;">
@@ -458,7 +441,6 @@
                 <div id="gen-code-result" style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-top: 3px;"></div>
             </div>
 
-            <!-- File Download & Utility -->
             <div class="input-group" style="margin-bottom: 10px;">
                 <label>Export File & Fitur</label>
                 <div style="display: flex; gap: 5px; margin-top: 4px;">
@@ -478,7 +460,6 @@
         </div>
     </div>
 
-    <!-- Inbox Modal Custom -->
     <div class="modal-overlay" id="modal-inbox-send">
         <div class="modal-box glass-card">
             <h3>Kirim Pesan Sistem</h3>
@@ -506,7 +487,6 @@
         <div class="copyright">Blacklightdoms©2026</div>
     </footer>
 
-    <!-- FIREBASE AND APP LOGIC SCRIPT -->
     <script>
         const firebaseConfig = {
             apiKey: "AIzaSyCOSl8oDM6gnZRIOHiOSTlXKOVQ4xLX2nc",
@@ -1077,13 +1057,13 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_cloud_v4.html';
+            a.download = 'blds_feedback_cloud_v4.1.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             playAudioNotification();
-            showToast("Full Code v4 berhasil didownload!", "success");
+            showToast("Full Code v4.1 berhasil didownload!", "success");
         }
 
         function adminPromptReply(id) {
