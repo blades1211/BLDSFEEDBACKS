@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackLightDoms - Premium Feedback & Command Center</title>
+    <title>BlackLightDoms - Dominion Bot & Command Center</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -75,7 +75,6 @@
             width: 36px; height: 36px;
         }
         .hero img.animated-logo { width: 100px; height: 100px; }
-
         @keyframes floatingLogo { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
 
         .text-glow-blds {
@@ -205,23 +204,28 @@
         .title-badge-custom { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; border: 1px solid var(--border-color); background: var(--bg-surface); }
         .admin-actions { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; gap: 8px; flex-wrap: wrap; }
 
-        /* Dominion Bot Chat UI Styling */
-        .chat-container { display: flex; flex-direction: column; height: 500px; max-width: 650px; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden; }
-        .chat-header { padding: 14px 20px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+        /* Dominion Bot Chat UI Styling (ChatGPT / Gemini / Claude Inspired) */
+        .chat-container { display: flex; flex-direction: column; height: 560px; max-width: 750px; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden; }
+        .chat-header { padding: 14px 20px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
+        .bot-profile-info { display: flex; align-items: center; gap: 12px; }
         .bot-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-white); color: var(--bg-base); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; box-shadow: 0 0 12px var(--accent-glow-strong); }
-        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--bg-input); }
-        .chat-bubble { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.88rem; line-height: 1.5; word-wrap: break-word; }
+        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: var(--bg-input); }
+        .chat-bubble { max-width: 82%; padding: 14px 18px; border-radius: 12px; font-size: 0.88rem; line-height: 1.6; word-wrap: break-word; }
         .chat-bubble.bot { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 2px; }
         .chat-bubble.user { background: var(--accent-white); color: var(--bg-base); font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
         
+        /* Code Block Styling inside chat */
+        .chat-bubble pre { background: #111116; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; margin: 8px 0; color: #38bdf8; }
+        .chat-bubble code { font-family: var(--font-mono); background: rgba(255,255,255,0.08); padding: 2px 5px; border-radius: 4px; font-size: 0.82rem; }
+
         /* Thinking Animation */
-        .chat-thinking { display: flex; align-items: center; gap: 5px; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-thinking { display: flex; align-items: center; gap: 6px; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; align-self: flex-start; border-bottom-left-radius: 2px; }
         .dot { width: 7px; height: 7px; background: var(--text-secondary); border-radius: 50%; animation: bounceDot 1.4s infinite ease-in-out both; }
         .dot:nth-child(1) { animation-delay: -0.32s; }
         .dot:nth-child(2) { animation-delay: -0.16s; }
         @keyframes bounceDot { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
 
-        .chat-input-area { padding: 12px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+        .chat-input-area { padding: 12px 16px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center; }
 
         /* Draggable Admin Panel */
         .draggable-admin-panel {
@@ -255,7 +259,7 @@
 
     <div id="loading-screen">
         <img src="logo.png" alt="Logo" class="animated-logo" style="width: 60px; height: 60px;">
-        <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING SYSTEM...</span>
+        <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING DOMINION SYSTEM...</span>
         <div class="progress-bar-container">
             <div class="progress-bar" id="loading-bar"></div>
         </div>
@@ -264,7 +268,7 @@
     <div id="announcement-bar">
         <span class="announcement-sender-badge" id="announcement-sender"><i class="fa-solid fa-user-shield"></i> ADMIN</span>
         <span class="announcement-title-badge" id="announcement-title-badge" style="display:none;">OWNER</span>
-        <span id="announcement-text">Sistem berjalan normal.</span>
+        <span id="announcement-text">Sistem Dominion Bot berjalan normal.</span>
     </div>
 
     <div class="modal-overlay active" id="name-modal">
@@ -314,7 +318,7 @@
         <div class="nav-container">
             <a href="#" class="brand" onclick="switchPage('home-page')">
                 <img src="logo.png" alt="BLDS Logo" class="animated-logo">
-                <span class="brand-text text-glow-blds">BLDS FEEDBACK</span>
+                <span class="brand-text text-glow-blds">DOMINION BOT</span>
             </a>
             <div class="nav-menu" style="display: flex; align-items: center; gap: 10px;">
                 <button class="theme-toggle" id="theme-btn" title="Switch Theme">
@@ -329,15 +333,15 @@
         <section id="home-page" class="page-section active">
             <div class="hero">
                 <img src="logo.png" alt="BLDS Logo" class="animated-logo">
-                <h1 class="text-glow-blds">BLACKLIGHTDOMS FEEDBACK</h1>
-                <p>Silakan pilih menu di bawah untuk mengirim feedback, chat dengan Dominion Bot, atau memasukkan Special Code.</p>
+                <h1 class="text-glow-blds">DOMINION BOT & BLDS CENTER</h1>
+                <p>AI Chatbot resmi komunitas BlackLightDoms. Tanya apa saja atau uji kemampuan coding, matematika, sains, hingga lore eksklusif BLDS!</p>
                 
                 <div class="hero-action-buttons">
-                    <button class="hero-btn hero-btn-primary" onclick="switchPage('feedback-page')">
-                        <i class="fa-solid fa-comments"></i> Feedback
-                    </button>
-                    <button class="hero-btn hero-btn-primary" onclick="switchPage('chat-page')" style="background: linear-gradient(135deg, #6366f1, #a855f7); color: white;">
+                    <button class="hero-btn hero-btn-primary" onclick="switchPage('chat-page')" style="background: linear-gradient(135deg, #ffffff, #d1d5db); color: #0a0a0c;">
                         <i class="fa-solid fa-robot"></i> Dominion Bot
+                    </button>
+                    <button class="hero-btn hero-btn-secondary" onclick="switchPage('feedback-page')">
+                        <i class="fa-solid fa-comments"></i> Feedback
                     </button>
                     <button class="hero-btn hero-btn-secondary" onclick="switchPage('special-page')">
                         <i class="fa-solid fa-key"></i> Special Code
@@ -423,30 +427,38 @@
         </section>
 
         <section id="chat-page" class="page-section">
-            <div style="max-width: 650px; margin: 0 auto; width: 100%;">
-                <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto; margin-bottom: 15px;">
-                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
-                </button>
+            <div style="max-width: 750px; margin: 0 auto; width: 100%;">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto;">
+                        <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
+                    </button>
+                    <button class="btn-secondary" onclick="clearChatHistory()" style="width: auto; border-color: rgba(239,68,68,0.4); color: #f87171;">
+                        <i class="fa-solid fa-trash-can"></i> Hapus Riwayat Chat
+                    </button>
+                </div>
 
                 <div class="glass-card chat-container">
                     <div class="chat-header">
-                        <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
-                        <div>
-                            <div style="font-weight: 700; font-size: 0.95rem;">Dominion Bot</div>
-                            <div style="font-size: 0.72rem; color: #34d399; display: flex; align-items: center; gap: 4px;">
-                                <span style="width: 6px; height: 6px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Online & Ready
+                        <div class="bot-profile-info">
+                            <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+                            <div>
+                                <div style="font-weight: 700; font-size: 0.95rem;">Dominion Bot <span style="font-size: 0.68rem; padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-left: 6px;">BLDS AI v2.6</span></div>
+                                <div style="font-size: 0.72rem; color: #34d399; display: flex; align-items: center; gap: 4px;">
+                                    <span style="width: 6px; height: 6px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Online & Secured
+                                </div>
                             </div>
                         </div>
+                        <div id="token-status" style="font-size: 0.72rem; color: var(--text-muted);">Ready</div>
                     </div>
 
                     <div class="chat-messages" id="chat-messages">
                         <div class="chat-bubble bot">
-                            Halo! 👋 Aku **Dominion Bot**, asisten virtual AI pribadi kamu di BlackLightDoms. Ada yang bisa aku bantu hari ini, atau mau ngobrol santai? 🤖✨
+                            Halo! 👋 Aku <strong>Dominion Bot</strong>, AI Asisten resmi komunitas <strong>BlackLightDoms (BLDS)</strong>. Aku siap membantumu menjawab pertanyaan umum, coding, sains, sejarah, matematika, hingga informasi lengkap seputar komunitas BLDS! Ada yang bisa kubantu hari ini? 🤖✨
                         </div>
                     </div>
 
                     <div class="chat-input-area">
-                        <input type="text" id="chat-input" class="styled-input" placeholder="Ketik pesan ke Dominion Bot..." autocomplete="off">
+                        <input type="text" id="chat-input" class="styled-input" placeholder="Tanya apa saja ke Dominion Bot (Ketik 'BLDS info' untuk lore)..." autocomplete="off">
                         <button class="btn-primary" id="chat-send-btn" style="width: auto; padding: 10px 18px;" onclick="sendChatMessage()">
                             <i class="fa-solid fa-paper-plane"></i>
                         </button>
@@ -481,13 +493,13 @@
 
     <div class="glass-card draggable-admin-panel" id="admin-panel">
         <div class="panel-header" id="admin-panel-header">
-            <span><i class="fa-solid fa-user-gear"></i> Admin Floating Panel</span>
+            <span><i class="fa-solid fa-user-gear"></i> Admin Dashboard Panel</span>
             <i class="fa-solid fa-arrows-up-down-left-right" style="opacity: 0.7;"></i>
         </div>
         <div class="panel-body">
             
             <div class="input-group" style="margin-bottom: 12px;">
-                <label>Nama Admin Anda (Diubah di Panel)</label>
+                <label>Nama Admin Anda</label>
                 <input type="text" id="panel-admin-name-input" class="styled-input" placeholder="Ubah nama admin...">
             </div>
 
@@ -568,32 +580,80 @@
             </div>
 
             <div class="copyright-tag">
-                Blacklightdoms©2026
+                Blacklightdoms©2026 • Powered by Dominion Bot AI
             </div>
         </div>
     </footer>
 
     <script>
-        /* FIREBASE REALTIME DATABASE CONFIG */
+        /* FIREBASE CONFIG */
         const firebaseConfig = {
-            databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app/"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         let db = null;
         try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+            }
         } catch (e) {
-            console.warn("Firebase initialization warning:", e);
+            console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
         }
+
+        /* BLDS INTERNAL KNOWLEDGE DATABASE & LORE */
+        const BLDS_KNOWLEDGE = {
+            name: "BLACKLIGHTDOMS (BLDS)",
+            founder: "Michael Lorenzo (BladeS)",
+            ownerFriends: ["William Nayottama", "Prince Felix"],
+            headStaff: ["Anindya"],
+            timeline: [
+                { date: "05-03-2024", event: "BLDS Born" },
+                { date: "15-05-2024", event: "WhatsApp Community Created" },
+                { date: "12-09-2024", event: "Discord Community Created" },
+                { date: "20-08-2025", event: "Massive Remake" }
+            ],
+            lore: {
+                blacklightCore: "Pusat energi dan inti kesatuan komunitas BlackLightDoms.",
+                tenFlames: {
+                    greaterFlames: [
+                        { name: "Vision", desc: "Pandangan jauh ke depan dan visi masa depan." },
+                        { name: "Discipline", desc: "Keteguhan dan kedisiplinan dalam setiap aksi." },
+                        { name: "Loyalty", desc: "Kesetiaan tanpa batas antar anggota komunitas." },
+                        { name: "Ambition", desc: "Tekad kuat untuk terus berkembang dan mendominasi." },
+                        { name: "Resilience", desc: "Ketahanan mental dalam menghadapi segala rintangan." }
+                    ],
+                    lesserFlames: [
+                        { name: "Hope", desc: "Harapan abadi dalam setiap langkah." },
+                        { name: "Awareness", desc: "Kesadaran penuh terhadap situasi sekitar." },
+                        { name: "Patience", desc: "Kesabaran dalam proses pembelajaran." },
+                        { name: "Courage", desc: "Keberanian menghadapi tantangan baru." },
+                        { name: "Unity", desc: "Persatuan dan solidaritas yang erat." }
+                    ]
+                }
+            }
+        };
+
+        /* BANNED WORDS / SECURITY FILTER */
+        const UNSAFE_KEYWORDS = [
+            "nsfw", "porn", "sexual", "18+", "gore", "darah", "kekerasan ekstrem", 
+            "penculikan", "penyiksaan", "senjata", "malware", "virus", "phishing", 
+            "hack akun", "exploit", "cheat game", "bikin gambar", "buat gambar", "edit gambar"
+        ];
 
         /* KNOWN SPECIAL CODES ROLES SETUP */
         const KNOWN_CODES = {
-            "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true, Priority: 10 },
-            "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
-            "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
-            "BLDS-ANINDYA-004": { Name: "Anindya BLDS", Role: "Headstaff", CanAdmin: true, Priority: 5 },
-            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true, Priority: 5 }
+            "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true },
+            "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true },
+            "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: true },
+            "BLDS-ANINDYA-004": { Name: "Anindya BLDS", Role: "Headstaff", CanAdmin: true },
+            "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true }
         };
 
         let bannedUsers = [];
@@ -617,6 +677,7 @@
             initFirebaseListeners();
             makePanelDraggable();
             initAdminNameInput();
+            loadChatHistoryFromStorage();
 
             document.getElementById("chat-input").addEventListener("keypress", (e) => {
                 if (e.key === "Enter") sendChatMessage();
@@ -716,78 +777,196 @@
             }
         }
 
-        /* --- DOMINION BOT LOGIC (Thinking Animation + Typewriter Transition + Emojis) --- */
+        /* --- ADVANCED DOMINION BOT AI LOGIC --- */
         function sendChatMessage() {
             const inputField = document.getElementById("chat-input");
             const messageText = inputField.value.trim();
             if (!messageText) return;
 
-            const chatMessages = document.getElementById("chat-messages");
+            const lowerMsg = messageText.toLowerCase();
 
-            // Append User Message
-            const userBubble = document.createElement("div");
-            userBubble.className = "chat-bubble user";
-            userBubble.innerText = messageText;
-            chatMessages.appendChild(userBubble);
+            // 1. Safety Check / Guardrails
+            for (let word of UNSAFE_KEYWORDS) {
+                if (lowerMsg.includes(word)) {
+                    appendChatMessage(messageText, "user");
+                    inputField.value = "";
+                    
+                    if (lowerMsg.includes("gambar") || lowerMsg.includes("image") || lowerMsg.includes("foto")) {
+                        appendBotMessage("Maaf, Dominion Bot belum mendukung pembuatan gambar.");
+                    } else {
+                        appendBotMessage("⚠️ Maaf, Dominion Bot menolak permintaan tersebut demi menjaga keamanan, kenyamanan, serta etika komunitas BlackLightDoms.");
+                    }
+                    saveChatHistoryToStorage();
+                    return;
+                }
+            }
 
+            appendChatMessage(messageText, "user");
             inputField.value = "";
-            chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Show Thinking Animation
+            const chatMessages = document.getElementById("chat-messages");
             const thinkingId = "thinking_" + Date.now();
             const thinkingBubble = document.createElement("div");
             thinkingBubble.className = "chat-thinking";
             thinkingBubble.id = thinkingId;
-            thinkingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span> <span style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 4px;">Dominion Bot sedang mikir... 🤔</span>`;
+            thinkingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span> <span style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 4px;">Dominion Bot berpikir... 🤖</span>`;
             chatMessages.appendChild(thinkingBubble);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Generate Smart Bot Response after delay
             setTimeout(() => {
                 const thinkingElem = document.getElementById(thinkingId);
                 if (thinkingElem) thinkingElem.remove();
 
-                const botReplyText = generateDominionBotResponse(messageText);
-
-                const botBubble = document.createElement("div");
-                botBubble.className = "chat-bubble bot";
-                chatMessages.appendChild(botBubble);
-
-                // Typewriter Transition Effect
-                let charIndex = 0;
-                function typeWriter() {
-                    if (charIndex < botReplyText.length) {
-                        botBubble.innerHTML += botReplyText.charAt(charIndex);
-                        charIndex++;
-                        chatMessages.scrollTop = chatMessages.scrollHeight;
-                        setTimeout(typeWriter, 18);
-                    }
-                }
-                typeWriter();
-
-            }, 1200);
+                const botReplyText = generateIntelligentBotReply(lowerMsg, messageText);
+                appendBotMessageWithTyping(botReplyText);
+                saveChatHistoryToStorage();
+            }, 900);
         }
 
-        function generateDominionBotResponse(userInput) {
-            const input = userInput.toLowerCase();
+        function appendChatMessage(text, sender) {
+            const chatMessages = document.getElementById("chat-messages");
+            const bubble = document.createElement("div");
+            bubble.className = `chat-bubble ${sender}`;
+            bubble.innerText = text;
+            chatMessages.appendChild(bubble);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
 
-            if (input.includes("halo") || input.includes("hi") || input.includes("hai")) {
-                return "Halo juga! 👋 Senang banget bisa ngobrol sama kamu hari ini. Ada yang bisa Dominion Bot bantu terkait platform BlackLightDoms? ✨🚀";
-            } else if (input.includes("feedback") || input.includes("saran") || input.includes("kritik")) {
-                return "Kamu mau kasih masukan ya? 💡 Gampang banget! Tinggal klik tombol 'Feedback' di halaman utama, terus isi ulasan serta rating bintang sesuai pengalaman kamu ya! ⭐📝";
-            } else if (input.includes("pembuat") || input.includes("owner") || input.includes("siapa kamu")) {
-                return "Aku adalah **Dominion Bot**, AI Asisten resmi buatan tim BlackLightDoms! 🤖👑 Platform ini dirancang super keren buat interaksi dan feedback komunitas kita! 🔥";
-            } else if (input.includes("bantuan") || input.includes("help") || input.includes("fitur")) {
-                return "Tentu saja! 🛠️ Di sini kamu bisa kirim feedback, cek rating platform secara real-time, atau masukkan Special Code khusus staff kalau kamu punya akses admin! 🔑✨";
-            } else if (input.includes("terima kasih") || input.includes("makasih")) {
-                return "Sama-sama! 🙏 Kalau ada hal lain yang mau ditanyain atau dibahas, jangan ragu buat panggil aku lagi ya! Semangat terus! 🌟💪";
-            } else {
-                const randomReplies = [
-                    `Hmm, pertanyaan yang menarik banget! 🤔 Menurutku di BlackLightDoms semua fitur udah dirancang maksimal buat kenyamanan kalian! 🚀✨`,
-                    `Wah begitu ya! 🎯 Dominion Bot selalu siap nemenin aktivitas kamu di platform ini kapanpun kamu butuh! 😎🔥`,
-                    `Menarik sekali! 💡 Jangan lupa buat cek menu feedback atau jelajahi fitur-fitur keren lainnya ya kawan! ✨🙌`
-                ];
-                return randomReplies[Math.floor(Math.random() * randomReplies.length)];
+        function appendBotMessage(text) {
+            const chatMessages = document.getElementById("chat-messages");
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble bot";
+            bubble.innerHTML = formatBotOutput(text);
+            chatMessages.appendChild(bubble);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function appendBotMessageWithTyping(fullText) {
+            const chatMessages = document.getElementById("chat-messages");
+            const bubble = document.createElement("div");
+            bubble.className = "chat-bubble bot";
+            chatMessages.appendChild(bubble);
+
+            let charIndex = 0;
+            function typeWriter() {
+                if (charIndex < fullText.length) {
+                    bubble.innerHTML = formatBotOutput(fullText.substring(0, charIndex + 1));
+                    charIndex++;
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                    setTimeout(typeWriter, 12);
+                }
+            }
+            typeWriter();
+        }
+
+        function formatBotOutput(text) {
+            // Basic formatting for code blocks or bold text simulation
+            return text
+                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+                .replace(/`(.*?)`/g, '<code>$1</code>');
+        }
+
+        function generateIntelligentBotReply(lower, original) {
+            // BLDS Specific Knowledge Queries
+            if (lower.includes("blds") || lower.includes("blacklightdoms") || lower.includes("komunitas")) {
+                return `**BLACKLIGHTDOMS (BLDS)** adalah komunitas resmi yang didirikan pada **05-03-2024** oleh **Michael Lorenzo (BladeS)**.\n\n` +
+                       `👑 **Owner Friends:** William Nayottama & Prince Felix\n` +
+                       `🛡️ **Head Staff:** Anindya\n\n` +
+                       `📅 **Timeline Komunitas:**\n` +
+                       `- 05-03-2024: BLDS Born\n` +
+                       `- 15-05-2024: WhatsApp Community Created\n` +
+                       `- 12-09-2024: Discord Community Created\n` +
+                       `- 20-08-2025: Massive Remake\n\n` +
+                       `✨ **Lore & Core:** Memiliki Blacklight Core serta Ten Flames (Greater Flames: Vision, Discipline, Loyalty, Ambition, Resilience & Lesser Flames: Hope, Awareness, Patience, Courage, Unity).`;
+            }
+
+            if (lower.includes("founder") || lower.includes("lorenzo") || lower.includes("blade")) {
+                return `Founder utama dari BlackLightDoms (BLDS) adalah **Michael Lorenzo (BladeS)**, yang memimpin visi dan perkembangan komunitas ini sejak lahir pada 5 Maret 2024! 🚀👑`;
+            }
+
+            if (lower.includes("owner friends") || lower.includes("william") || lower.includes("prince")) {
+                return `Owner Friends resmi di BlackLightDoms adalah **William Nayottama** dan **Prince Felix** yang turut membangun dan mengawal perjalanan BLDS bersama Founder! ✨`;
+            }
+
+            if (lower.includes("head staff") || lower.includes("anindya")) {
+                return `Head Staff terpercaya di BlackLightDoms dipegang oleh **Anindya** yang mengawasi kedisiplinan dan aktivitas anggota. 🛡️`;
+            }
+
+            if (lower.includes("flames") || lower.includes("lore") || lower.includes("blacklight core")) {
+                return `🔥 **Ten Flames Lore BLDS:**\n` +
+                       `• **Greater Flames:** Vision, Discipline, Loyalty, Ambition, Resilience.\n` +
+                       `• **Lesser Flames:** Hope, Awareness, Patience, Courage, Unity.\n` +
+                       `Semuanya bersumber dari **Blacklight Core** sebagai pusat kekuatan komunitas kita! ✨`;
+            }
+
+            // Coding / Technical Assistant
+            if (lower.includes("html") || lower.includes("css") || lower.includes("js") || lower.includes("javascript")) {
+                return `Tentu! HTML, CSS, dan JavaScript adalah fondasi web modern. Contoh struktur HTML dasar:\n\`\`\`html\n<!DOCTYPE html>\n<html lang=\"id\">\n<head>\n  <title>BLDS App</title>\n</head>\n<body>\n  <h1>Halo BlackLightDoms!</h1>\n</body>\n</html>\n\`\`\`\nAda kendala debugging atau bagian styling yang ingin dibahas? 💻✨`;
+            }
+
+            if (lower.includes("python") || lower.includes("coding") || lower.includes("debug")) {
+                return `Sebagai AI Coding Assistant, aku siap membantumu menulis, menganalisis, atau melakukan debugging kode. Silakan paste kode kamu di sini! 🛠️`;
+            }
+
+            if (lower.includes("roblox") || lower.includes("game")) {
+                return `🎮 Roblox adalah platform game creation yang sangat populer! Di BLDS, banyak member yang suka membahas game, scripting Lua Roblox Studio, hingga mabar bareng. Mau tahu tips atau diskusi game apa nih?`;
+            }
+
+            if (lower.includes("matematika") || lower.includes("math") || lower.includes("hitung")) {
+                return `🔢 Aku siap membantu menyelesaikan soal matematika, aljabar, kalkulus, atau statistika. Coba tuliskan soalnya di sini!`;
+            }
+
+            if (lower.includes("sains") || lower.includes("fisika") || lower.includes("kimia")) {
+                return `🔬 Sains mencakup fisika, kimia, dan biologi. Ada materi sekolah atau konsep sains tertentu yang ingin aku jelaskan dengan bahasa yang mudah dipahami?`;
+            }
+
+            if (lower.includes("sejarah") || lower.includes("history")) {
+                return `📜 Sejarah merekam perjalanan peradaban manusia. Kamu ingin membahas sejarah dunia, sejarah nasional, atau timeline berdirinya BlackLightDoms?`;
+            }
+
+            if (lower.includes("buat artikel") || lower.includes("tulis artikel") || lower.includes("cerita") || lower.includes("puisi")) {
+                return `✍️ Aku bisa membantumu menulis artikel, cerita kreatif, atau puisi dengan gaya bahasa yang natural dan menarik. Apa tema yang ingin kamu buat?`;
+            }
+
+            if (lower.includes("cv") || lower.includes("email") || lower.includes("caption")) {
+                return `📄 Tentu! Aku bisa membantumu menyusun draf email profesional, format CV, atau caption media sosial yang estetik dan engaging.`;
+            }
+
+            if (lower.includes("translate") || lower.includes("terjemah")) {
+                return `🌐 Aku bisa menerjemahkan berbagai bahasa (Inggris, Jepang, Korea, Sunda, Jawa, dll). Ketik teks yang ingin diterjemahkan beserta tujuannya ya!`;
+            }
+
+            // General greeting or fallback
+            if (lower.includes("halo") || lower.includes("hi") || lower.includes("hai")) {
+                return `Halo juga! 👋 Senang bisa mengobrol denganmu melalui Dominion Bot. Ada hal menarik seputar teknologi, coding, atau komunitas BLDS yang ingin kita bahas? 🤖✨`;
+            }
+
+            return `Pertanyaan yang sangat menarik! 💡 Sebagai **Dominion Bot**, aku dirancang untuk membantu menjawab pertanyaan umum, materi sekolah, coding, sains, hingga lore eksklusif komunitas **BlackLightDoms**. Ada hal spesifik yang ingin kamu eksplorasi lebih lanjut? 🚀🔥`;
+        }
+
+        function saveChatHistoryToStorage() {
+            const chatMessages = document.getElementById("chat-messages").innerHTML;
+            localStorage.setItem("blds_chat_history", chatMessages);
+        }
+
+        function loadChatHistoryFromStorage() {
+            const savedChat = localStorage.getItem("blds_chat_history");
+            if (savedChat) {
+                document.getElementById("chat-messages").innerHTML = savedChat;
+            }
+        }
+
+        function clearChatHistory() {
+            if (confirm("Hapus seluruh riwayat percakapan chat?")) {
+                localStorage.removeItem("blds_chat_history");
+                document.getElementById("chat-messages").innerHTML = `
+                    <div class="chat-bubble bot">
+                        Riwayat chat telah dibersihkan. Halo kembali! 👋 Ada yang bisa dibantu oleh Dominion Bot? 🤖✨
+                    </div>
+                `;
+                showToast("Riwayat chat dibersihkan! 🗑️", "success");
             }
         }
 
@@ -1062,7 +1241,7 @@
                 const known = KNOWN_CODES[rawVal];
                 const namePart = rawVal.split('-')[1] || "STAFF";
 
-                currentUser.role = known ? known.Role : "Staff Admin";
+                currentUser.role = known ? "Staff Admin" : "Staff Admin";
                 currentUser.code = rawVal;
                 
                 const finalName = currentUser.name || (known ? known.Name : `${namePart} BLDS`);
@@ -1073,11 +1252,11 @@
                 document.getElementById("panel-admin-name-input").value = finalName;
 
                 playAudioAlert();
-                showToast(`Access Granted: ${currentUser.role} 🔑`, "success");
+                showToast(`Access Granted: Staff Admin 🔑`, "success");
 
                 if (currentUser.isAdmin) {
                     document.getElementById("admin-panel").classList.add("active");
-                    showToast("Admin Floating Panel Diaktifkan! ⚙️", "info");
+                    showToast("Admin Dashboard Diaktifkan! ⚙️", "info");
                     switchPage('feedback-page');
                 } else {
                     switchPage('home-page');
@@ -1165,7 +1344,7 @@
             showToast("Admin Code berhasil digenerate! ✨", "success");
         }
 
-        function openActivityTimeline() { showToast("User Activity Timeline: 14 Active Sessions Online.", "info"); }
+        function openActivityTimeline() { showToast("User Activity Timeline: Active Sessions Online.", "info"); }
         function triggerKillSwitch() { if (confirm("Jalankan Session Kill Switch?")) showToast("Session Kill Switch diaktifkan!", "error"); }
         function triggerLockdown() { if (confirm("Aktifkan Master Lockdown?")) showToast("Master Lockdown Aktif!", "error"); }
 
@@ -1175,7 +1354,7 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_command_center_complete.html';
+            a.download = 'dominion_bot_blds_complete.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
