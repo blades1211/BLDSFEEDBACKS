@@ -4,14 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BlackLightDoms - Premium Feedback & Command Center</title>
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter & JetBrains Mono -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
-    <!-- Firebase SDKs (Compat) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -161,14 +158,14 @@
         .hero { text-align: center; padding: 20px 10px 40px 10px; display: flex; flex-direction: column; align-items: center; }
         .hero h1 { font-size: 2.2rem; margin-bottom: 8px; line-height: 1.2; }
         .hero p { font-size: 0.92rem; color: var(--text-secondary); max-width: 500px; margin-bottom: 25px; }
-        .hero-action-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 450px; }
-        .hero-btn { flex: 1; min-width: 150px; padding: 14px 20px; font-size: 0.9rem; font-weight: 700; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .hero-action-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 600px; }
+        .hero-btn { flex: 1; min-width: 140px; padding: 14px 20px; font-size: 0.9rem; font-weight: 700; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 10px; }
         .hero-btn-primary { background: var(--accent-white); color: var(--bg-base); border: none; }
         .hero-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow-strong); }
         .hero-btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
         .hero-btn-secondary:hover { border-color: var(--accent-white); transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
 
-        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; width: 100%; }
+        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; }
         .rating-summary-card { padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
         .avg-rating-value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
         .avg-stars-display { color: #facc15; font-size: 1.1rem; }
@@ -208,6 +205,24 @@
         .title-badge-custom { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; border: 1px solid var(--border-color); background: var(--bg-surface); }
         .admin-actions { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; gap: 8px; flex-wrap: wrap; }
 
+        /* Dominion Bot Chat UI Styling */
+        .chat-container { display: flex; flex-direction: column; height: 500px; max-width: 650px; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden; }
+        .chat-header { padding: 14px 20px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; gap: 12px; }
+        .bot-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-white); color: var(--bg-base); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; box-shadow: 0 0 12px var(--accent-glow-strong); }
+        .chat-messages { flex: 1; padding: 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; background: var(--bg-input); }
+        .chat-bubble { max-width: 80%; padding: 12px 16px; border-radius: 12px; font-size: 0.88rem; line-height: 1.5; word-wrap: break-word; }
+        .chat-bubble.bot { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .chat-bubble.user { background: var(--accent-white); color: var(--bg-base); font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
+        
+        /* Thinking Animation */
+        .chat-thinking { display: flex; align-items: center; gap: 5px; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; align-self: flex-start; border-bottom-left-radius: 2px; }
+        .dot { width: 7px; height: 7px; background: var(--text-secondary); border-radius: 50%; animation: bounceDot 1.4s infinite ease-in-out both; }
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+        @keyframes bounceDot { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+
+        .chat-input-area { padding: 12px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; gap: 10px; }
+
         /* Draggable Admin Panel */
         .draggable-admin-panel {
             position: fixed; bottom: 30px; right: 30px; width: 340px; z-index: 9000; display: none; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
@@ -236,11 +251,10 @@
         <div class="glow-sphere glow-sphere-2"></div>
     </div>
 
-    <!-- AUDIO ALERT -->
     <audio id="github-audio-alert" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <div id="loading-screen">
-        <div class="animated-logo" style="width: 50px; height: 50px; border-radius: 50%; background: var(--accent-white); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--bg-base);">B</div>
+        <img src="logo.png" alt="Logo" class="animated-logo" style="width: 60px; height: 60px;">
         <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING SYSTEM...</span>
         <div class="progress-bar-container">
             <div class="progress-bar" id="loading-bar"></div>
@@ -253,9 +267,9 @@
         <span id="announcement-text">Sistem berjalan normal.</span>
     </div>
 
-    <!-- Modal Nama Pengguna -->
     <div class="modal-overlay active" id="name-modal">
         <div class="modal-box glass-card">
+            <img src="logo.png" alt="Logo" class="animated-logo" style="width: 50px; height: 50px; margin-bottom: 10px;">
             <h2 class="text-glow-blds" style="font-size: 1.3rem;">IDENTIFIKASI PENGGUNA</h2>
             <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; margin-bottom: 15px;">Masukkan nama Anda untuk mengakses platform BLDS.</p>
             
@@ -269,7 +283,6 @@
         </div>
     </div>
 
-    <!-- Custom Title & Name Modal -->
     <div class="modal-overlay" id="title-modal">
         <div class="modal-box glass-card">
             <h3>Pengaturan Profil Admin</h3>
@@ -297,10 +310,10 @@
         </div>
     </div>
 
-    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
             <a href="#" class="brand" onclick="switchPage('home-page')">
+                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
                 <span class="brand-text text-glow-blds">BLDS FEEDBACK</span>
             </a>
             <div class="nav-menu" style="display: flex; align-items: center; gap: 10px;">
@@ -311,18 +324,20 @@
         </div>
     </header>
 
-    <!-- Main Dynamic Section -->
     <main>
         
-        <!-- PAGE 1: HOME PAGE -->
         <section id="home-page" class="page-section active">
             <div class="hero">
+                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
                 <h1 class="text-glow-blds">BLACKLIGHTDOMS FEEDBACK</h1>
-                <p>Silakan pilih menu di bawah untuk mengirim feedback atau memasukkan Special Code Anda.</p>
+                <p>Silakan pilih menu di bawah untuk mengirim feedback, chat dengan Dominion Bot, atau memasukkan Special Code.</p>
                 
                 <div class="hero-action-buttons">
                     <button class="hero-btn hero-btn-primary" onclick="switchPage('feedback-page')">
                         <i class="fa-solid fa-comments"></i> Feedback
+                    </button>
+                    <button class="hero-btn hero-btn-primary" onclick="switchPage('chat-page')" style="background: linear-gradient(135deg, #6366f1, #a855f7); color: white;">
+                        <i class="fa-solid fa-robot"></i> Dominion Bot
                     </button>
                     <button class="hero-btn hero-btn-secondary" onclick="switchPage('special-page')">
                         <i class="fa-solid fa-key"></i> Special Code
@@ -331,7 +346,6 @@
             </div>
         </section>
 
-        <!-- PAGE 2: FEEDBACK PAGE -->
         <section id="feedback-page" class="page-section">
             <div class="feedback-container">
                 
@@ -339,7 +353,6 @@
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
                 </button>
 
-                <!-- RATING SUMMARY BOX -->
                 <div class="glass-card rating-summary-card">
                     <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rata-Rata Rating Platform</div>
                     <div class="avg-rating-value" id="avg-rating-text">0.0</div>
@@ -350,7 +363,7 @@
                 </div>
 
                 <div class="glass-card form-card">
-                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback (Publik)</h2>
+                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback</h2>
                     <form id="feedback-form">
                         <div class="input-group">
                             <label>Nama Anda</label>
@@ -401,7 +414,7 @@
                     <div class="feedback-list" id="feedback-feed">
                         <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted);">
                             <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.2rem; margin-bottom: 8px;"></i>
-                            <p>Memuat feedback publik...</p>
+                            <p>Memuat feedback...</p>
                         </div>
                     </div>
                 </div>
@@ -409,7 +422,39 @@
             </div>
         </section>
 
-        <!-- PAGE 3: SPECIAL CODE PAGE -->
+        <section id="chat-page" class="page-section">
+            <div style="max-width: 650px; margin: 0 auto; width: 100%;">
+                <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto; margin-bottom: 15px;">
+                    <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
+                </button>
+
+                <div class="glass-card chat-container">
+                    <div class="chat-header">
+                        <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem;">Dominion Bot</div>
+                            <div style="font-size: 0.72rem; color: #34d399; display: flex; align-items: center; gap: 4px;">
+                                <span style="width: 6px; height: 6px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Online & Ready
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="chat-messages" id="chat-messages">
+                        <div class="chat-bubble bot">
+                            Halo! 👋 Aku **Dominion Bot**, asisten virtual AI pribadi kamu di BlackLightDoms. Ada yang bisa aku bantu hari ini, atau mau ngobrol santai? 🤖✨
+                        </div>
+                    </div>
+
+                    <div class="chat-input-area">
+                        <input type="text" id="chat-input" class="styled-input" placeholder="Ketik pesan ke Dominion Bot..." autocomplete="off">
+                        <button class="btn-primary" id="chat-send-btn" style="width: auto; padding: 10px 18px;" onclick="sendChatMessage()">
+                            <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <section id="special-page" class="page-section">
             <div style="max-width: 450px; margin: 0 auto; width: 100%;">
                 
@@ -434,7 +479,6 @@
 
     </main>
 
-    <!-- DRAGGABLE FLOATING ADMIN PANEL -->
     <div class="glass-card draggable-admin-panel" id="admin-panel">
         <div class="panel-header" id="admin-panel-header">
             <span><i class="fa-solid fa-user-gear"></i> Admin Floating Panel</span>
@@ -443,7 +487,7 @@
         <div class="panel-body">
             
             <div class="input-group" style="margin-bottom: 12px;">
-                <label>Nama Admin Anda</label>
+                <label>Nama Admin Anda (Diubah di Panel)</label>
                 <input type="text" id="panel-admin-name-input" class="styled-input" placeholder="Ubah nama admin...">
             </div>
 
@@ -451,7 +495,6 @@
                 <i class="fa-solid fa-paint-brush"></i> Ubah Title & Efek
             </button>
 
-            <!-- Inbox Pesan Sistem -->
             <div class="input-group" style="margin-bottom: 12px;">
                 <label>Inbox Pesan Sistem</label>
                 <div id="admin-inbox-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
@@ -462,15 +505,6 @@
                 </button>
             </div>
 
-            <!-- Admin Approval Queue -->
-            <div class="input-group" style="margin-bottom: 12px;">
-                <label>Admin Approval Queue</label>
-                <div id="approval-queue-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
-                    <span style="color: var(--text-muted);">Tidak ada antrean approval.</span>
-                </div>
-            </div>
-
-            <!-- Admin Code Generator -->
             <div class="input-group" style="margin-bottom: 12px;">
                 <label>Admin Code Generator</label>
                 <div style="display: flex; gap: 6px;">
@@ -480,7 +514,6 @@
                 <div id="generated-code-output" style="font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; margin-top: 4px;"></div>
             </div>
 
-            <!-- Fitur Tambahan & File Code Generator -->
             <div class="input-group" style="margin-bottom: 12px;">
                 <label>Fitur Pendukung & Export</label>
                 <div style="display: flex; gap: 6px; flex-wrap: wrap;">
@@ -508,7 +541,6 @@
         </div>
     </div>
 
-    <!-- Send Inbox Modal -->
     <div class="modal-overlay" id="inbox-modal">
         <div class="modal-box glass-card">
             <h3>Kirim Pesan Sistem</h3>
@@ -524,7 +556,6 @@
 
     <div id="toast-container"></div>
 
-    <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="social-links">
@@ -543,26 +574,28 @@
     </footer>
 
     <script>
-        /* FIREBASE CONFIG TERHUBUNG PERMANEN */
+        /* FIREBASE CONFIG */
         const firebaseConfig = {
-            apiKey: "AIzaSyCOSl8oDM6gnZRIOHiOSTlXKOVQ4xLX2nc",
-            authDomain: "blds-2806d.firebaseapp.com",
-            databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "blds-2806d",
-            storageBucket: "blds-2806d.firebasestorage.app",
-            messagingSenderId: "653918116860",
-            appId: "1:653918116860:web:4458b7df805c577c7f3079",
-            measurementId: "G-5QK3T8JH6Z"
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
+            projectId: "YOUR_PROJECT",
+            storageBucket: "YOUR_PROJECT.appspot.com",
+            messagingSenderId: "YOUR_SENDER_ID",
+            appId: "YOUR_APP_ID"
         };
 
         let db = null;
         try {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
+            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+                firebase.initializeApp(firebaseConfig);
+                db = firebase.database();
+            }
         } catch (e) {
-            console.warn("Firebase inisialisasi gagal:", e);
+            console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
         }
 
+        /* KNOWN SPECIAL CODES ROLES SETUP */
         const KNOWN_CODES = {
             "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true, Priority: 10 },
             "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true, Priority: 9 },
@@ -592,6 +625,10 @@
             initFirebaseListeners();
             makePanelDraggable();
             initAdminNameInput();
+
+            document.getElementById("chat-input").addEventListener("keypress", (e) => {
+                if (e.key === "Enter") sendChatMessage();
+            });
         });
 
         function initLoadingScreen() {
@@ -625,12 +662,13 @@
             const inputName = document.getElementById("user-input-name").value.trim();
             if (inputName) {
                 currentUser.name = inputName;
+                localStorage.getItem("blds_user_name");
                 localStorage.setItem("blds_user_name", inputName);
                 document.getElementById("fb-name").value = inputName;
                 document.getElementById("panel-admin-name-input").value = inputName;
                 document.getElementById("name-modal").classList.remove("active");
                 playAudioAlert();
-                showToast(`Selamat datang, ${inputName}!`, "success");
+                showToast(`Selamat datang, ${inputName}! 👋`, "success");
             }
         });
 
@@ -687,6 +725,84 @@
             }
         }
 
+        /* --- DOMINION BOT LOGIC (Thinking Animation + Typewriter Transition + Emojis) --- */
+        function sendChatMessage() {
+            const inputField = document.getElementById("chat-input");
+            const messageText = inputField.value.trim();
+            if (!messageText) return;
+
+            const chatMessages = document.getElementById("chat-messages");
+
+            // Append User Message
+            const userBubble = document.createElement("div");
+            userBubble.className = "chat-bubble user";
+            userBubble.innerText = messageText;
+            chatMessages.appendChild(userBubble);
+
+            inputField.value = "";
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Show Thinking Animation
+            const thinkingId = "thinking_" + Date.now();
+            const thinkingBubble = document.createElement("div");
+            thinkingBubble.className = "chat-thinking";
+            thinkingBubble.id = thinkingId;
+            thinkingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span> <span style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 4px;">Dominion Bot sedang mikir... 🤔</span>`;
+            chatMessages.appendChild(thinkingBubble);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            // Generate Smart Bot Response after delay (Simulating AI thinking)
+            setTimeout(() => {
+                // Remove thinking animation
+                const thinkingElem = document.getElementById(thinkingId);
+                if (thinkingElem) thinkingElem.remove();
+
+                const botReplyText = generateDominionBotResponse(messageText);
+
+                // Append Bot Bubble for Typewriter Effect
+                const botBubble = document.createElement("div");
+                botBubble.className = "chat-bubble bot";
+                chatMessages.appendChild(botBubble);
+
+                // Typewriter Transition Effect
+                let charIndex = 0;
+                function typeWriter() {
+                    if (charIndex < botReplyText.length) {
+                        botBubble.innerHTML += botReplyText.charAt(charIndex);
+                        charIndex++;
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+                        setTimeout(typeWriter, 18); // Kecepatan transisi teks muncul perlahan
+                    }
+                }
+                typeWriter();
+
+            }, 1200); // Waktu mikir bot (1.2 detik)
+        }
+
+        function generateDominionBotResponse(userInput) {
+            const input = userInput.toLowerCase();
+
+            if (input.includes("halo") || input.includes("hi") || input.includes("hai")) {
+                return "Halo juga! 👋 Senang banget bisa ngobrol sama kamu hari ini. Ada yang bisa Dominion Bot bantu terkait platform BlackLightDoms? ✨🚀";
+            } else if (input.includes("feedback") || input.includes("saran") || input.includes("kritik")) {
+                return "Kamu mau kasih masukan ya? 💡 Gampang banget! Tinggal klik tombol 'Feedback' di halaman utama, terus isi ulasan serta rating bintang sesuai pengalaman kamu ya! ⭐📝";
+            } else if (input.includes("pembuat") || input.includes("owner") || input.includes("siapa kamu")) {
+                return "Aku adalah **Dominion Bot**, AI Asisten resmi buatan tim BlackLightDoms! 🤖👑 Platform ini dirancang super keren buat interaksi dan feedback komunitas kita! 🔥";
+            } else if (input.includes("bantuan") || input.includes("help") || input.includes("fitur")) {
+                return "Tentu saja! 🛠️ Di sini kamu bisa kirim feedback, cek rating platform secara real-time, atau masukkan Special Code khusus staff kalau kamu punya akses admin! 🔑✨";
+            } else if (input.includes("terima kasih") || input.includes("makasih")) {
+                return "Sama-sama! 🙏 Kalau ada hal lain yang mau ditanyain atau dibahas, jangan ragu buat panggil aku lagi ya! Semangat terus! 🌟💪";
+            } else {
+                const randomReplies = [
+                    `Hmm, pertanyaan yang menarik banget! 🤔 Menurutku di BlackLightDoms semua fitur udah dirancang maksimal buat kenyamanan kalian! 🚀✨`,
+                    `Wah begitu ya! 🎯 Dominion Bot selalu siap nemenin aktivitas kamu di platform ini kapanpun kamu butuh! 😎🔥`,
+                    `Menarik sekali! 💡 Jangan lupa buat cek menu feedback atau jelajahi fitur-fitur keren lainnya ya kawan! ✨🙌`
+                ];
+                return randomReplies[Math.floor(Math.random() * randomReplies.length)];
+            }
+        }
+
+        /* STAR RATING INPUT */
         function initStarRating() {
             const stars = document.querySelectorAll("#star-rating i");
             stars.forEach(star => {
@@ -708,17 +824,17 @@
             });
         }
 
-        /* FEEDBACK SUBMISSION KE FIREBASE CLOUD */
+        /* FEEDBACK SUBMISSION */
         document.getElementById("feedback-form").addEventListener("submit", (e) => {
             e.preventDefault();
 
             if (bannedUsers.includes(currentUser.name.toLowerCase())) {
-                showToast("Anda telah di-BAN dari memberikan feedback!", "error");
+                showToast("Anda telah di-BAN dari memberikan feedback! 🚫", "error");
                 return;
             }
 
             if (selectedRating === 0) {
-                showToast("Silakan pilih rating bintang!", "error");
+                showToast("Silakan pilih rating bintang dulu ya! ⭐", "error");
                 return;
             }
 
@@ -742,15 +858,20 @@
                     submitBtn.disabled = false;
                     if (!err) {
                         playAudioAlert();
-                        showToast("Feedback publik berhasil dikirim ke Cloud!", "success");
+                        showToast("Feedback berhasil dikirim! 🎉", "success");
                         resetFeedbackForm();
-                    } else {
-                        showToast("Gagal mengirim ke Firebase. Cek koneksi!", "error");
                     }
                 });
             } else {
-                submitBtn.disabled = false;
-                showToast("Database tidak terhubung!", "error");
+                setTimeout(() => {
+                    feedbackData.id = "local_" + Date.now();
+                    allFeedbacks.unshift(feedbackData);
+                    applyFilterAndSearch();
+                    submitBtn.disabled = false;
+                    playAudioAlert();
+                    showToast("Feedback terkirim (Mode Lokal)! 🚀", "success");
+                    resetFeedbackForm();
+                }, 400);
             }
         });
 
@@ -761,7 +882,6 @@
             highlightStars(0);
         }
 
-        /* REAL-TIME LISTENERS DARI FIREBASE CLOUD */
         function initFirebaseListeners() {
             if (db) {
                 db.ref("WebsiteSettings/AnnouncementData").on("value", (snapshot) => {
@@ -780,6 +900,7 @@
                         }
 
                         document.getElementById("announcement-bar").style.display = "flex";
+                        playAudioAlert();
                     } else {
                         document.getElementById("announcement-bar").style.display = "none";
                     }
@@ -794,9 +915,7 @@
                     const data = snapshot.val();
                     allFeedbacks = [];
                     if (data) {
-                        Object.keys(data).forEach(key => {
-                            allFeedbacks.push({ id: key, ...data[key] });
-                        });
+                        Object.keys(data).forEach(key => allFeedbacks.push({ id: key, ...data[key] }));
                     }
                     applyFilterAndSearch();
                 });
@@ -814,6 +933,9 @@
                         }).join("");
                     }
                 });
+            } else {
+                allFeedbacks = [];
+                applyFilterAndSearch();
             }
         }
 
@@ -844,13 +966,9 @@
 
             let starsHtml = "";
             for (let i = 1; i <= 5; i++) {
-                if (i <= fullStars) {
-                    starsHtml += `<i class="fa-solid fa-star"></i>`;
-                } else if (i === fullStars + 1 && hasHalf) {
-                    starsHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
-                } else {
-                    starsHtml += `<i class="fa-regular fa-star"></i>`;
-                }
+                if (i <= fullStars) starsHtml += `<i class="fa-solid fa-star"></i>`;
+                else if (i === fullStars + 1 && hasHalf) starsHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
+                else starsHtml += `<i class="fa-regular fa-star"></i>`;
             }
             starsContainer.innerHTML = starsHtml;
         }
@@ -877,7 +995,7 @@
                 feedContainer.innerHTML = `
                     <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted); padding: 30px;">
                         <i class="fa-solid fa-inbox" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
-                        <p>Belum ada feedback publik.</p>
+                        <p>Belum ada feedback.</p>
                     </div>`;
                 return;
             }
@@ -945,6 +1063,7 @@
             }).join("");
         }
 
+        /* SPECIAL CODE VERIFICATION */
         document.getElementById("code-form").addEventListener("submit", (e) => {
             e.preventDefault();
             const rawVal = document.getElementById("special-code-input").value.trim().toUpperCase();
@@ -965,20 +1084,21 @@
                 document.getElementById("panel-admin-name-input").value = finalName;
 
                 playAudioAlert();
-                showToast(`Access Granted: ${currentUser.role}`, "success");
+                showToast(`Access Granted: ${currentUser.role} 🔑`, "success");
 
                 if (currentUser.isAdmin) {
                     document.getElementById("admin-panel").classList.add("active");
-                    showToast("Admin Floating Panel Diaktifkan!", "info");
+                    showToast("Admin Floating Panel Diaktifkan! ⚙️", "info");
                     switchPage('feedback-page');
                 } else {
                     switchPage('home-page');
                 }
             } else {
-                showToast("Format Kode tidak sesuai! (Gunakan BLDS-NAMA-NOMOR)", "error");
+                showToast("Format Kode tidak sesuai! (Gunakan BLDS-NAMA-NOMOR) ❌", "error");
             }
         });
 
+        /* DRAGGABLE FLOATING ADMIN PANEL */
         function makePanelDraggable() {
             const panel = document.getElementById("admin-panel");
             const header = document.getElementById("admin-panel-header");
@@ -1045,7 +1165,7 @@
             document.getElementById("modal-inbox-text").value = "";
             closeSendInboxModal();
             playAudioAlert();
-            showToast("Pesan sistem terkirim!", "success");
+            showToast("Pesan sistem terkirim! 📬", "success");
         }
 
         function generateAdminCode() {
@@ -1053,12 +1173,12 @@
             const randNum = Math.floor(100 + Math.random() * 900);
             const code = `BLDS-${nameInput}-${randNum}`;
             document.getElementById("generated-code-output").innerText = code;
-            showToast("Admin Code berhasil digenerate!", "success");
+            showToast("Admin Code berhasil digenerate! ✨", "success");
         }
 
         function openActivityTimeline() { showToast("User Activity Timeline: 14 Active Sessions Online.", "info"); }
-        function triggerKillSwitch() { if (confirm("Jalankan Session Kill Switch untuk semua user?")) { showToast("Session Kill Switch diaktifkan!", "error"); } }
-        function triggerLockdown() { if (confirm("Aktifkan Master Lockdown pada sistem?")) { showToast("Master Lockdown Aktif!", "error"); } }
+        function triggerKillSwitch() { if (confirm("Jalankan Session Kill Switch?")) showToast("Session Kill Switch diaktifkan!", "error"); }
+        function triggerLockdown() { if (confirm("Aktifkan Master Lockdown?")) showToast("Master Lockdown Aktif!", "error"); }
 
         function downloadFullCodeAsFile() {
             const htmlContent = document.documentElement.outerHTML;
@@ -1066,19 +1186,20 @@
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_cloud.html';
+            a.download = 'blds_feedback_command_center_complete.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             playAudioAlert();
-            showToast("Full Code berhasil didownload!", "success");
+            showToast("Full Code berhasil didownload! 💾", "success");
         }
 
         function promptReply(fbId) {
             const replyText = prompt("Masukkan balasan Admin:");
             if (replyText) {
                 const senderName = currentUser.name || "Developer";
+
                 if (db) {
                     db.ref("Feedback/" + fbId).update({
                         Reply: replyText,
@@ -1086,34 +1207,49 @@
                         ReplyTitle: currentUser.customTitle,
                         ReplyColor: currentUser.customColor
                     });
+                } else {
+                    const item = allFeedbacks.find(f => f.id === fbId);
+                    if (item) {
+                        item.Reply = replyText;
+                        item.ReplySender = senderName;
+                        item.ReplyTitle = currentUser.customTitle;
+                        item.ReplyColor = currentUser.customColor;
+                        applyFilterAndSearch();
+                    }
                 }
                 playAudioAlert();
-                showToast("Balasan terkirim!", "success");
+                showToast("Balasan terkirim! 💬", "success");
             }
         }
 
         function deleteFeedback(fbId) {
-            if (confirm("Apakah Anda yakin ingin menghapus feedback ini?")) {
+            if (confirm("Hapus feedback ini?")) {
                 if (db) { db.ref("Feedback/" + fbId).remove(); }
-                showToast("Feedback berhasil dihapus!", "success");
+                else { allFeedbacks = allFeedbacks.filter(f => f.id !== fbId); applyFilterAndSearch(); }
+                showToast("Feedback dihapus! 🗑️", "success");
             }
         }
 
         function banUser(userName) {
-            if (confirm(`Yakin ingin mem-BAN pengguna ${userName}?`)) {
+            if (confirm(`Ban pengguna ${userName}?`)) {
                 if (db) { db.ref("BannedUsers").push(userName); }
-                showToast(`Pengguna ${userName} telah di-BAN!`, "error");
+                else { bannedUsers.push(userName.toLowerCase()); }
+                showToast(`Pengguna ${userName} di-BAN! 🚫`, "error");
             }
         }
 
         function changeStatus(fbId, newStatus) {
             if (db) { db.ref("Feedback/" + fbId).update({ Status: newStatus }); }
+            else {
+                const item = allFeedbacks.find(f => f.id === fbId);
+                if (item) { item.Status = newStatus; applyFilterAndSearch(); }
+            }
             showToast(`Status diubah: ${newStatus}`, "success");
         }
 
         function updateAnnouncement() {
             const text = document.getElementById("admin-announcement-input").value.trim();
-            if (!text) { showToast("Teks pengumuman tidak boleh kosong!", "error"); return; }
+            if (!text) { showToast("Teks pengumuman kosong!", "error"); return; }
 
             const senderName = currentUser.name || "ADMIN";
             const titleText = currentUser.customTitle || "OWNER";
@@ -1121,16 +1257,23 @@
 
             if (db) {
                 db.ref("WebsiteSettings/AnnouncementData").set({ text: text, sender: senderName, title: titleText, titleColor: colorText });
+            } else {
+                document.getElementById("announcement-text").innerText = text;
+                document.getElementById("announcement-sender").innerHTML = `<i class="fa-solid fa-user-shield"></i> ${escapeHtml(senderName)}`;
+                const titleBadge = document.getElementById("announcement-title-badge");
+                titleBadge.innerText = titleText; titleBadge.style.color = colorText; titleBadge.style.display = "inline-flex";
+                document.getElementById("announcement-bar").style.display = "flex";
             }
             playAudioAlert();
-            showToast("Pengumuman Global diperbarui!", "success");
+            showToast("Pengumuman Global diperbarui! 📢", "success");
         }
 
         function deleteAnnouncement() {
-            if (confirm("Apakah Anda yakin ingin menghapus Pengumuman Global?")) {
+            if (confirm("Hapus pengumuman?")) {
                 if (db) { db.ref("WebsiteSettings/AnnouncementData").remove(); }
+                else { document.getElementById("announcement-bar").style.display = "none"; }
                 document.getElementById("admin-announcement-input").value = "";
-                showToast("Pengumuman Global berhasil dihapus!", "success");
+                showToast("Pengumuman dihapus!", "success");
             }
         }
 
@@ -1160,7 +1303,7 @@
                 currentUser.customColor = colorInput;
             }
 
-            showToast("Profil Admin diperbarui!", "success");
+            showToast("Profil Admin diperbarui! ✨", "success");
             closeTitleModal();
         }
 
