@@ -555,10 +555,12 @@
 
             if (savedName) {
                 globalUser.name = savedName;
-                globalUser.isAdmin = savedAdmin;
                 globalUser.role = savedRole;
                 globalUser.customTitle = savedTitle;
                 globalUser.customColor = savedColor;
+                
+                // Pastikan admin status hanya aktif jika benar-benar tervalidasi via Special Code
+                globalUser.isAdmin = savedAdmin;
 
                 document.getElementById("fb-input-name").value = savedName;
                 document.getElementById("panel-admin-name-field").value = savedName;
@@ -566,8 +568,13 @@
                 if (globalUser.isAdmin) {
                     document.getElementById("floating-admin-panel").classList.add("active");
                     document.getElementById("shortcut-admin-btn").style.display = "inline-flex";
+                } else {
+                    document.getElementById("floating-admin-panel").classList.remove("active");
+                    document.getElementById("shortcut-admin-btn").style.display = "none";
                 }
             } else {
+                globalUser.isAdmin = false;
+                localStorage.removeItem("blds_v4_admin");
                 document.getElementById("modal-name").classList.add("active");
             }
         }
@@ -577,10 +584,18 @@
             const val = document.getElementById("input-username-val").value.trim();
             if (val) {
                 globalUser.name = val;
+                globalUser.isAdmin = false; // Regular user tidak memiliki hak admin
                 localStorage.setItem("blds_v4_name", val);
+                localStorage.setItem("blds_v4_admin", "false");
+                
                 document.getElementById("fb-input-name").value = val;
                 document.getElementById("panel-admin-name-field").value = val;
                 document.getElementById("modal-name").classList.remove("active");
+                
+                // Sembunyikan panel admin jika bukan admin
+                document.getElementById("floating-admin-panel").classList.remove("active");
+                document.getElementById("shortcut-admin-btn").style.display = "none";
+
                 playAudioNotification();
                 showToast(`Selamat datang, ${val}!`, "success");
             }
@@ -941,8 +956,8 @@
                 globalUser.isAdmin = staffData.CanAdmin;
 
                 localStorage.setItem("blds_v4_name", staffData.Name);
-                localStorage.setItem("blds_v4_admin", globalUser.isAdmin);
-                localStorage.setItem("blds_v4_role", globalUser.role);
+                localStorage.setItem("blds_v4_admin", "true");
+                localStorage.setItem("blds_v4_role", staffData.Role);
 
                 document.getElementById("panel-admin-name-field").value = staffData.Name;
                 document.getElementById("fb-input-name").value = staffData.Name;
@@ -954,11 +969,15 @@
                     document.getElementById("floating-admin-panel").classList.add("active");
                     document.getElementById("shortcut-admin-btn").style.display = "inline-flex";
                     switchPage('page-feedback');
-                } else {
-                    switchPage('page-home');
                 }
             } else {
-                showToast("Special Code tidak valid!", "error");
+                // Jika special code salah, pastikan akses admin tidak diberikan/dicabut
+                globalUser.isAdmin = false;
+                localStorage.setItem("blds_v4_admin", "false");
+                document.getElementById("floating-admin-panel").classList.remove("active");
+                document.getElementById("shortcut-admin-btn").style.display = "none";
+
+                showToast("Special Code tidak valid! Panel admin tidak diaktifkan.", "error");
             }
         });
 
