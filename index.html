@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackLightDoms - Premium Feedback & Command Center v5</title>
+    <title>BlackLightDoms - Premium Feedback & Command Center v4</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -180,7 +180,7 @@
         .fb-date { font-size: 0.7rem; color: var(--text-muted); }
         .fb-stars-display { color: #facc15; font-size: 0.78rem; }
         
-        .status-pill { padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+        .status-pill { padding: 2px 8px; border-radius: 20px; font-size: 0.65s; font-weight: 700; text-transform: uppercase; font-size: 0.65rem; }
         .st-support { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
         .st-reviewed { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139,92,246,0.3); }
         .st-progress { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
@@ -204,7 +204,7 @@
         .dev-reply-box { margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent-white); border-radius: 6px; }
         .dev-reply-header { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.78rem; margin-bottom: 3px; }
         .admin-title-tag { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid var(--border-color); background: var(--bg-surface); }
-        .admin-tools-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
+        .admin-tools-row { display: flex; gap: 5px; flex-wrap: wrap; }
 
         /* Draggable Admin Panel */
         .draggable-admin-panel {
@@ -238,7 +238,7 @@
 
     <div id="loading-screen">
         <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--accent-white); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--bg-base); font-size: 1.2rem;">B</div>
-        <span class="text-glow" style="font-size: 1rem; margin-top: 12px;">LOADING SYSTEM v5...</span>
+        <span class="text-glow" style="font-size: 1rem; margin-top: 12px;">LOADING SYSTEM v4...</span>
     </div>
 
     <div id="announcement-bar">
@@ -247,10 +247,10 @@
     </div>
 
     <!-- Modal Identifikasi Nama -->
-    <div class="modal-overlay" id="modal-name">
+    <div class="modal-overlay active" id="modal-name">
         <div class="modal-box glass-card">
             <h2 class="text-glow" style="font-size: 1.2rem; margin-bottom: 4px;">IDENTIFIKASI PENGGUNA</h2>
-            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan nama Anda untuk mengakses fitur BLDS.</p>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan nama Anda untuk mengakses fitur lengkap BLDS.</p>
             <form id="form-name-submit">
                 <div class="input-group">
                     <label>Nama Anda</label>
@@ -290,8 +290,8 @@
         <div class="nav-container">
             <a href="#" class="brand text-glow" onclick="switchPage('page-home')">BLDS FEEDBACK</a>
             <div style="display: flex; align-items: center; gap: 8px;">
-                <button class="btn-secondary" id="admin-mode-toggle-btn" style="font-size: 0.72rem; padding: 4px 10px; border-color: #38bdf8; color: #38bdf8;" onclick="toggleAdminModeManual()">
-                    <i class="fa-solid fa-shield-halved"></i> <span id="admin-mode-label">Mode Admin: OFF</span>
+                <button class="btn-secondary" id="shortcut-admin-btn" style="display:none; font-size: 0.72rem; padding: 4px 10px; border-color: #38bdf8; color: #38bdf8;" onclick="toggleAdminPanel()">
+                    <i class="fa-solid fa-shield-halved"></i> Panel Admin Aktif
                 </button>
                 <button class="theme-toggle" id="theme-toggler" title="Ganti Tema">
                     <i class="fa-solid fa-moon"></i>
@@ -340,7 +340,7 @@
                     <form id="form-submit-feedback">
                         <div class="input-group">
                             <label>Nama Anda</label>
-                            <input type="text" id="fb-input-name" class="styled-input" placeholder="Masukkan nama Anda..." required autocomplete="off">
+                            <input type="text" id="fb-input-name" class="styled-input" readonly placeholder="Nama Anda...">
                         </div>
                         <div style="margin: 8px 0 14px 0;">
                             <label style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rating Pengalaman</label>
@@ -433,8 +433,8 @@
 
             <!-- Quick Controls Info -->
             <div class="input-group" style="margin-bottom: 10px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color);">
-                <label style="color: #60a5fa;"><i class="fa-solid fa-circle-info"></i> Panel Kontrol Aktif</label>
-                <p style="font-size: 0.72rem; color: var(--text-secondary);">Tombol **Like, Reply, Ubah Status, Ban, & Delete** kini selalu aktif di setiap kartu feedback saat Mode Admin ON!</p>
+                <label style="color: #60a5fa;"><i class="fa-solid fa-circle-info"></i> Info Kontrol Admin</label>
+                <p style="font-size: 0.72rem; color: var(--text-secondary);">Tombol **Reply, Status, Ban, & Hapus** aktif langsung di setiap Kartu Feedback!</p>
             </div>
 
             <!-- System Inbox -->
@@ -463,7 +463,7 @@
                 <label>Export File & Fitur</label>
                 <div style="display: flex; gap: 5px; margin-top: 4px;">
                     <button class="btn-secondary" style="font-size: 0.72rem; flex: 1; border-color: #ef4444; color: #ef4444;" onclick="triggerLockdownAction()">Lockdown</button>
-                    <button class="btn-primary" style="font-size: 0.72rem; flex: 1;" onclick="downloadFullCodeV5()"><i class="fa-solid fa-download"></i> Full Code v5</button>
+                    <button class="btn-primary" style="font-size: 0.72rem; flex: 1;" onclick="downloadFullCodeV4()"><i class="fa-solid fa-download"></i> Full Code v4</button>
                 </div>
             </div>
 
@@ -542,7 +542,7 @@
             code: "",
             customTitle: "OWNER",
             customColor: "#ffffff",
-            isAdmin: true // Default true agar tombol admin langsung bisa diakses bebas
+            isAdmin: false
         };
 
         let activeRating = 0;
@@ -565,31 +565,27 @@
         }
 
         function checkUserSessionData() {
-            const savedName = localStorage.getItem("blds_v5_name");
-            const savedAdmin = localStorage.getItem("blds_v5_admin");
-            const savedRole = localStorage.getItem("blds_v5_role") || "Member";
-            const savedTitle = localStorage.getItem("blds_v5_title") || "OWNER";
-            const savedColor = localStorage.getItem("blds_v5_color") || "#ffffff";
-
-            if (savedAdmin !== null) {
-                globalUser.isAdmin = (savedAdmin === "true");
-            } else {
-                globalUser.isAdmin = true; // Default ON agar tidak ribet
-                localStorage.setItem("blds_v5_admin", "true");
-            }
-
-            updateAdminModeUI();
+            const savedName = localStorage.getItem("blds_v4_name");
+            const savedAdmin = localStorage.getItem("blds_v4_admin") === "true";
+            const savedRole = localStorage.getItem("blds_v4_role") || "Member";
+            const savedTitle = localStorage.getItem("blds_v4_title") || "OWNER";
+            const savedColor = localStorage.getItem("blds_v4_color") || "#ffffff";
 
             if (savedName) {
                 globalUser.name = savedName;
+                globalUser.isAdmin = savedAdmin;
                 globalUser.role = savedRole;
                 globalUser.customTitle = savedTitle;
                 globalUser.customColor = savedColor;
 
                 document.getElementById("fb-input-name").value = savedName;
                 document.getElementById("panel-admin-name-field").value = savedName;
+
+                if (globalUser.isAdmin) {
+                    document.getElementById("floating-admin-panel").classList.add("active");
+                    document.getElementById("shortcut-admin-btn").style.display = "inline-flex";
+                }
             } else {
-                // Munculkan modal nama jika belum ada nama terekam
                 document.getElementById("modal-name").classList.add("active");
             }
         }
@@ -599,7 +595,7 @@
             const val = document.getElementById("input-username-val").value.trim();
             if (val) {
                 globalUser.name = val;
-                localStorage.setItem("blds_v5_name", val);
+                localStorage.setItem("blds_v4_name", val);
                 document.getElementById("fb-input-name").value = val;
                 document.getElementById("panel-admin-name-field").value = val;
                 document.getElementById("modal-name").classList.remove("active");
@@ -613,35 +609,14 @@
                 const newN = e.target.value.trim();
                 if (newN) {
                     globalUser.name = newN;
-                    localStorage.setItem("blds_v5_name", newN);
+                    localStorage.setItem("blds_v4_name", newN);
                     document.getElementById("fb-input-name").value = newN;
                 }
             });
         }
 
-        function toggleAdminModeManual() {
-            globalUser.isAdmin = !globalUser.isAdmin;
-            localStorage.setItem("blds_v5_admin", globalUser.isAdmin);
-            updateAdminModeUI();
-            playAudioNotification();
-            showToast(`Mode Admin: ${globalUser.isAdmin ? 'ON' : 'OFF'}`, globalUser.isAdmin ? 'success' : 'info');
-            renderFilteredFeedbacks();
-        }
-
-        function updateAdminModeUI() {
-            const btnLabel = document.getElementById("admin-mode-label");
-            const panel = document.getElementById("floating-admin-panel");
-            if (globalUser.isAdmin) {
-                btnLabel.innerText = "Mode Admin: ON";
-                panel.classList.add("active");
-            } else {
-                btnLabel.innerText = "Mode Admin: OFF";
-                panel.classList.remove("active");
-            }
-        }
-
         function initThemeSystem() {
-            let currentTh = localStorage.getItem("blds_v5_theme");
+            let currentTh = localStorage.getItem("blds_v4_theme");
             if (!currentTh) {
                 const h = new Date().getHours();
                 currentTh = (h >= 18 || h < 6) ? "dark" : "light";
@@ -653,7 +628,7 @@
                 const cur = document.documentElement.getAttribute("data-theme");
                 const nextTh = cur === "dark" ? "light" : "dark";
                 document.documentElement.setAttribute("data-theme", nextTh);
-                localStorage.setItem("blds_v5_theme", nextTh);
+                localStorage.setItem("blds_v4_theme", nextTh);
                 updateThemeButtonIcon(nextTh);
             });
         }
@@ -705,16 +680,8 @@
         /* SUBMIT FEEDBACK */
         document.getElementById("form-submit-feedback").addEventListener("submit", (e) => {
             e.preventDefault();
-            const currentNameInput = document.getElementById("fb-input-name").value.trim();
-            if (!currentNameInput) {
-                showToast("Masukkan nama Anda terlebih dahulu!", "error");
-                return;
-            }
-            globalUser.name = currentNameInput;
-            localStorage.setItem("blds_v5_name", currentNameInput);
-
-            if (bannedList.includes(currentNameInput.toLowerCase())) {
-                showToast("Nama Anda telah di-BAN dari memberikan feedback!", "error");
+            if (bannedList.includes(globalUser.name.toLowerCase())) {
+                showToast("Anda telah di-BAN dari memberikan feedback!", "error");
                 return;
             }
             if (activeRating === 0) {
@@ -728,7 +695,7 @@
             btn.disabled = true;
 
             const payload = {
-                Name: currentNameInput,
+                Name: globalUser.name,
                 Rating: activeRating,
                 Suggestion: sug,
                 Criticism: cri,
@@ -863,7 +830,7 @@
 
             container.innerHTML = filtered.map(fb => {
                 const dateString = new Date(fb.Timestamp).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
-                const starsStr = Array.from({ length: 5 }, (_, i) => `<i class="fa-${i < fb.Rating ? 'solid' : 'regular'} fa-star"></i>`).join("");
+                const starsStr = Array.from({ length: 5 }, (_, i) => `<i class="fa-${i < fb.Rating ? 'solid' : 'regular'} fa-star"></i>`.replace('','')).join("");
                 const statusCls = `st-${(fb.Status || 'Support').toLowerCase().replace(' ', '-')}`;
                 const badgeStyle = fb.ReplyColor ? `color: ${fb.ReplyColor}; border-color: ${fb.ReplyColor};` : '';
 
@@ -928,7 +895,7 @@
                                         <option value="Implemented" ${fb.Status === 'Implemented' ? 'selected' : ''}>Implemented</option>
                                         <option value="Rejected" ${fb.Status === 'Rejected' ? 'selected' : ''}>Rejected</option>
                                     </select>
-                                    <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px; border-color: #f59e0b; color: #f59e0b;" onclick="adminBanUser('${sanitizeHtml(fb.Name)}')">
+                                    <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px; border-color: #f59e0b; color: #f59e0b;" onclick="adminBanUser('${fb.Name}')">
                                         <i class="fa-solid fa-ban"></i> Ban
                                     </button>
                                     <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px; border-color: #ef4444; color: #ef4444;" onclick="adminDeleteFeedback('${fb.id}')">
@@ -959,17 +926,11 @@
         }
 
         function toggleLikeFeedback(id) {
-            let activeName = document.getElementById("fb-input-name").value.trim() || globalUser.name;
-            if (!activeName) {
-                // Paksa buka modal identifikasi jika nama belum terisi
-                document.getElementById("modal-name").classList.add("active");
+            if (!globalUser.name) {
                 showToast("Masukkan nama Anda terlebih dahulu!", "error");
                 return;
             }
-            globalUser.name = activeName;
-            localStorage.setItem("blds_v5_name", activeName);
-
-            const keySafe = activeName.replace(/[.#$[\]]/g, "_");
+            const keySafe = globalUser.name.replace(/[.#$[\]]/g, "_");
             const refLike = db.ref(`Feedback/${id}/Likes/${keySafe}`);
 
             refLike.once("value", (snap) => {
@@ -999,19 +960,24 @@
                 
                 const finalN = globalUser.name || (staffData ? staffData.Name : `${nameExt} BLDS`);
                 globalUser.name = finalN;
-                globalUser.isAdmin = true;
+                globalUser.isAdmin = staffData ? staffData.CanAdmin : true;
 
-                localStorage.setItem("blds_v5_name", finalN);
-                localStorage.setItem("blds_v5_admin", "true");
-                localStorage.setItem("blds_v5_role", globalUser.role);
+                localStorage.setItem("blds_v4_name", finalN);
+                localStorage.setItem("blds_v4_admin", globalUser.isAdmin);
+                localStorage.setItem("blds_v4_role", globalUser.role);
 
                 document.getElementById("panel-admin-name-field").value = finalN;
-                document.getElementById("fb-input-name").value = finalN;
-                updateAdminModeUI();
 
                 playAudioNotification();
                 showToast(`Access Granted: ${globalUser.role}`, "success");
-                switchPage('page-feedback');
+
+                if (globalUser.isAdmin) {
+                    document.getElementById("floating-admin-panel").classList.add("active");
+                    document.getElementById("shortcut-admin-btn").style.display = "inline-flex";
+                    switchPage('page-feedback');
+                } else {
+                    switchPage('page-home');
+                }
             } else {
                 showToast("Format Kode salah! Gunakan format BLDS-NAMA-NOMOR", "error");
             }
@@ -1105,19 +1071,19 @@
             }
         }
 
-        function downloadFullCodeV5() {
+        function downloadFullCodeV4() {
             const htmlContent = document.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'blds_feedback_cloud_v5.html';
+            a.download = 'blds_feedback_cloud_v4.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
             playAudioNotification();
-            showToast("Full Code v5 berhasil didownload!", "success");
+            showToast("Full Code v4 berhasil didownload!", "success");
         }
 
         function adminPromptReply(id) {
@@ -1193,15 +1159,15 @@
 
             if (n) {
                 globalUser.name = n;
-                localStorage.setItem("blds_v5_name", n);
+                localStorage.setItem("blds_v4_name", n);
                 document.getElementById("fb-input-name").value = n;
                 document.getElementById("panel-admin-name-field").value = n;
             }
             if (t) {
                 globalUser.customTitle = t;
                 globalUser.customColor = c;
-                localStorage.setItem("blds_v5_title", t);
-                localStorage.setItem("blds_v5_color", c);
+                localStorage.setItem("blds_v4_title", t);
+                localStorage.setItem("blds_v4_color", c);
             }
             showToast("Pengaturan Admin disimpan!", "success");
             closeAdminTitleModal();
