@@ -3,45 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BlackLightDoms - Dominion Bot & Command Center</title>
+    <title>BlackLightDoms - Premium Feedback & Command Center v5</title>
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
     
+    <!-- Firebase SDKs (Compat v9.23.0) -->
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
     <style>
         :root {
-            --bg-base: #0a0a0c;
-            --bg-surface: rgba(18, 18, 22, 0.75);
-            --bg-card: rgba(26, 26, 32, 0.7);
-            --bg-input: rgba(15, 15, 18, 0.85);
+            --bg-base: #070709;
+            --bg-surface: rgba(16, 16, 20, 0.9);
+            --bg-card: rgba(22, 22, 28, 0.85);
+            --bg-input: rgba(12, 12, 15, 0.98);
             --border-color: rgba(255, 255, 255, 0.12);
-            --border-glow: rgba(255, 255, 255, 0.35);
-            --text-primary: #f0f0f5;
-            --text-secondary: #a0a0ab;
-            --text-muted: #666673;
+            --border-glow: rgba(255, 255, 255, 0.4);
+            --text-primary: #f4f4f8;
+            --text-secondary: #9898a6;
+            --text-muted: #5e5e6c;
             --accent-white: #ffffff;
             --accent-glow: rgba(255, 255, 255, 0.25);
             --accent-glow-strong: rgba(255, 255, 255, 0.6);
-            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-main: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
-            --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-            --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         [data-theme="light"] {
-            --bg-base: #f4f4f7;
-            --bg-surface: rgba(255, 255, 255, 0.88);
-            --bg-card: rgba(255, 255, 255, 0.8);
-            --bg-input: rgba(240, 240, 245, 0.95);
+            --bg-base: #f0f0f4;
+            --bg-surface: rgba(255, 255, 255, 0.95);
+            --bg-card: rgba(255, 255, 255, 0.9);
+            --bg-input: rgba(245, 245, 250, 0.98);
             --border-color: rgba(0, 0, 0, 0.12);
             --border-glow: rgba(0, 0, 0, 0.3);
-            --text-primary: #121215;
-            --text-secondary: #52525e;
-            --text-muted: #888896;
+            --text-primary: #101014;
+            --text-secondary: #50505c;
+            --text-muted: #888894;
             --accent-white: #000000;
             --accent-glow: rgba(0, 0, 0, 0.15);
             --accent-glow-strong: rgba(0, 0, 0, 0.4);
@@ -53,38 +52,27 @@
             font-family: var(--font-main);
             background-color: var(--bg-base);
             color: var(--text-primary);
-            overflow-x: hidden;
             min-height: 100vh;
-            line-height: 1.5;
-            font-size: 0.88rem;
-            transition: background-color 0.4s ease, color 0.4s ease;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            font-size: 0.88rem;
+            line-height: 1.5;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
 
-        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; overflow: hidden; pointer-events: none; }
-        .glow-sphere { position: absolute; border-radius: 50%; filter: blur(120px); opacity: 0.15; animation: floatOrb 18s infinite alternate ease-in-out; }
-        .glow-sphere-1 { width: 450px; height: 450px; background: #ffffff; top: -100px; left: -100px; }
-        .glow-sphere-2 { width: 500px; height: 500px; background: #888888; bottom: -150px; right: -100px; animation-delay: -9s; }
-        @keyframes floatOrb { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(60px, 40px) scale(1.05); } 100% { transform: translate(-40px, 80px) scale(0.95); } }
+        /* Ambient Lighting */
+        .ambient-bg { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; pointer-events: none; overflow: hidden; }
+        .glow-sphere { position: absolute; border-radius: 50%; filter: blur(140px); opacity: 0.12; animation: floatOrb 15s infinite alternate ease-in-out; }
+        .glow-1 { width: 400px; height: 400px; background: #ffffff; top: -50px; left: -50px; }
+        .glow-2 { width: 450px; height: 450px; background: #777777; bottom: -50px; right: -50px; animation-delay: -7s; }
+        @keyframes floatOrb { 0% { transform: translate(0,0); } 100% { transform: translate(40px, 60px); } }
 
-        .animated-logo {
-            animation: floatingLogo 4s ease-in-out infinite;
-            filter: drop-shadow(0 0 16px var(--accent-glow-strong));
-            transition: var(--transition-smooth);
-            width: 36px; height: 36px;
-        }
-        .hero img.animated-logo { width: 100px; height: 100px; }
-        @keyframes floatingLogo { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-
-        .text-glow-blds {
+        .text-glow {
             font-weight: 800;
-            letter-spacing: 1.5px;
-            color: var(--text-primary);
-            text-shadow: 0 0 12px var(--accent-glow), 0 0 25px var(--accent-glow-strong);
-            animation: pulseTextGlow 3s infinite alternate ease-in-out;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px var(--accent-glow), 0 0 20px var(--accent-glow-strong);
         }
-        @keyframes pulseTextGlow { 0% { text-shadow: 0 0 8px var(--accent-glow); } 100% { text-shadow: 0 0 22px var(--accent-glow-strong); } }
 
         .glass-card {
             background: var(--bg-card);
@@ -92,236 +80,220 @@
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid var(--border-color);
             border-radius: 14px;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            transition: var(--transition-smooth);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .glass-card:hover { border-color: var(--border-glow); box-shadow: 0 10px 30px 0 var(--accent-glow); }
+        .glass-card:hover { border-color: var(--border-glow); box-shadow: 0 10px 35px var(--accent-glow); }
 
+        /* Modal Overlays */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.82); backdrop-filter: blur(10px);
             z-index: 10000; display: flex; align-items: center; justify-content: center;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         .modal-overlay.active { opacity: 1; pointer-events: all; }
-        .modal-box { width: 90%; max-width: 420px; padding: 30px 24px; text-align: center; transform: scale(0.92); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .modal-box { width: 90%; max-width: 400px; padding: 25px; text-align: center; transform: scale(0.95); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
         .modal-overlay.active .modal-box { transform: scale(1); }
 
-        .input-group { margin: 15px 0; text-align: left; }
-        .input-group label { display: block; font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .input-group { margin: 14px 0; text-align: left; }
+        .input-group label { display: block; font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 5px; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
         .styled-input, .styled-textarea, .styled-select {
             width: 100%; padding: 10px 14px; background: var(--bg-input); border: 1px solid var(--border-color);
-            border-radius: 8px; color: var(--text-primary); font-family: var(--font-main); font-size: 0.88rem; outline: none; transition: var(--transition-fast);
+            border-radius: 8px; color: var(--text-primary); font-family: var(--font-main); font-size: 0.88rem; outline: none; transition: border-color 0.2s;
         }
-        .styled-input:focus, .styled-textarea:focus, .styled-select:focus { border-color: var(--accent-white); box-shadow: 0 0 10px var(--accent-glow); }
+        .styled-input:focus, .styled-textarea:focus, .styled-select:focus { border-color: var(--accent-white); box-shadow: 0 0 8px var(--accent-glow); }
 
         .btn-primary {
-            width: 100%; padding: 12px; background: var(--accent-white); color: var(--bg-base); border: none; border-radius: 8px;
-            font-weight: 700; font-size: 0.88rem; cursor: pointer; letter-spacing: 0.5px; text-transform: uppercase; transition: var(--transition-fast);
-            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            width: 100%; padding: 11px; background: var(--accent-white); color: var(--bg-base); border: none; border-radius: 8px;
+            font-weight: 700; font-size: 0.85rem; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: transform 0.2s, opacity 0.2s;
         }
         .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-glow-strong); }
         .btn-secondary {
-            background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); padding: 8px 14px;
-            border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.82rem; transition: var(--transition-fast);
+            background: transparent; color: var(--text-primary); border: 1px solid var(--border-color); padding: 7px 12px;
+            border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: all 0.2s;
         }
         .btn-secondary:hover { border-color: var(--accent-white); background: rgba(255,255,255,0.05); }
 
+        /* Loading Screen */
         #loading-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.5s ease, visibility 0.5s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-base); z-index: 99999;
+            display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.4s ease, visibility 0.4s;
         }
         #loading-screen.hidden { opacity: 0; visibility: hidden; }
-        .progress-bar-container { width: 180px; height: 3px; background: var(--border-color); border-radius: 3px; margin-top: 20px; overflow: hidden; }
-        .progress-bar { width: 0%; height: 100%; background: var(--accent-white); box-shadow: 0 0 10px var(--accent-white); transition: width 0.3s ease; }
 
+        /* Announcement Bar */
         #announcement-bar {
-            position: sticky; top: 0; z-index: 1005; background: rgba(20, 20, 26, 0.92); border-bottom: 1px solid var(--border-glow);
-            backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); padding: 10px 20px; font-size: 0.9rem;
-            display: none; align-items: center; justify-content: center; gap: 10px; flex-wrap: wrap; box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+            position: sticky; top: 0; z-index: 1050; background: rgba(18, 18, 24, 0.95); border-bottom: 1px solid var(--border-glow);
+            backdrop-filter: blur(12px); padding: 10px 16px; font-size: 0.85rem; display: none; align-items: center; justify-content: center; gap: 10px;
         }
-        .announcement-sender-badge { background: var(--accent-white); color: var(--bg-base); font-weight: 700; font-size: 0.72rem; padding: 2px 8px; border-radius: 16px; text-transform: uppercase; }
-        .announcement-title-badge { background: var(--bg-surface); color: var(--text-primary); font-weight: 800; font-size: 0.68rem; padding: 2px 8px; border-radius: 16px; border: 1px solid var(--border-glow); text-transform: uppercase; }
+        .announcement-badge { background: var(--accent-white); color: var(--bg-base); font-weight: 800; font-size: 0.7rem; padding: 2px 8px; border-radius: 12px; text-transform: uppercase; }
 
-        header { position: relative; z-index: 1000; background: var(--bg-surface); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border-color); }
-        .nav-container { max-width: 1000px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
-        .brand { display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text-primary); }
-        .brand-text { font-weight: 800; font-size: 1.1rem; }
-        .theme-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: var(--transition-fast); }
+        /* Header */
+        header { position: sticky; top: 0; z-index: 1000; background: var(--bg-surface); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border-color); }
+        .nav-container { max-width: 950px; margin: 0 auto; padding: 12px 20px; display: flex; align-items: center; justify-content: space-between; }
+        .brand { text-decoration: none; color: var(--text-primary); font-weight: 800; font-size: 1.05rem; }
+        .theme-toggle { background: transparent; border: 1px solid var(--border-color); color: var(--text-primary); width: 34px; height: 34px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s; }
 
-        main { max-width: 900px; width: 100%; margin: 0 auto; padding: 30px 16px; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .page-section { width: 100%; display: none; animation: fadeIn 0.4s ease forwards; }
-        .page-section.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Main Section */
+        main { max-width: 850px; width: 100%; margin: 0 auto; padding: 25px 15px; flex: 1; display: flex; flex-direction: column; }
+        .page-section { display: none; width: 100%; }
+        .page-section.active { display: block; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
-        .hero { text-align: center; padding: 20px 10px 40px 10px; display: flex; flex-direction: column; align-items: center; }
-        .hero h1 { font-size: 2.2rem; margin-bottom: 8px; line-height: 1.2; }
-        .hero p { font-size: 0.92rem; color: var(--text-secondary); max-width: 500px; margin-bottom: 25px; }
-        .hero-action-buttons { display: flex; gap: 15px; justify-content: center; flex-wrap: wrap; width: 100%; max-width: 600px; }
-        .hero-btn { flex: 1; min-width: 140px; padding: 14px 20px; font-size: 0.9rem; font-weight: 700; border-radius: 10px; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; transition: var(--transition-fast); display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .hero-btn-primary { background: var(--accent-white); color: var(--bg-base); border: none; }
-        .hero-btn-primary:hover { transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow-strong); }
-        .hero-btn-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); backdrop-filter: blur(10px); }
-        .hero-btn-secondary:hover { border-color: var(--accent-white); transform: translateY(-3px); box-shadow: 0 8px 25px var(--accent-glow); }
+        /* Hero */
+        .hero { text-align: center; padding: 30px 10px 50px 10px; display: flex; flex-direction: column; align-items: center; }
+        .hero h1 { font-size: 2rem; margin-bottom: 10px; }
+        .hero p { color: var(--text-secondary); max-width: 480px; margin-bottom: 25px; font-size: 0.9rem; }
+        .hero-buttons { display: flex; gap: 12px; width: 100%; max-width: 400px; justify-content: center; }
+        .hero-btn { flex: 1; padding: 13px; font-weight: 700; border-radius: 10px; text-transform: uppercase; letter-spacing: 0.8px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 0.85rem; transition: 0.2s; }
+        .hero-primary { background: var(--accent-white); color: var(--bg-base); border: none; }
+        .hero-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px var(--accent-glow-strong); }
+        .hero-secondary { background: var(--bg-card); color: var(--text-primary); border: 1px solid var(--border-color); }
+        .hero-secondary:hover { border-color: var(--accent-white); transform: translateY(-2px); }
 
-        .feedback-container { display: flex; flex-direction: column; gap: 25px; max-width: 700px; margin: 0 auto; }
-        .rating-summary-card { padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
-        .avg-rating-value { font-size: 2.2rem; font-weight: 800; line-height: 1; }
-        .avg-stars-display { color: #facc15; font-size: 1.1rem; }
-        .total-reviews-count { font-size: 0.8rem; color: var(--text-secondary); }
-
-        .form-card { padding: 25px; }
-        .form-card h2 { font-size: 1.15rem; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
-        .stars-container { display: flex; gap: 8px; font-size: 1.5rem; color: var(--text-muted); cursor: pointer; }
-        .stars-container i { transition: var(--transition-fast); }
-        .stars-container i.active, .stars-container i:hover { color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.5); }
-
-        .controls-bar { display: flex; gap: 10px; margin-bottom: 15px; flex-wrap: wrap; }
-        .search-box { flex: 1; min-width: 180px; position: relative; }
-        .search-box i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
-        .search-box input { padding-left: 36px; }
-        .filter-select { width: auto; min-width: 140px; }
-
-        .feedback-list { display: flex; flex-direction: column; gap: 15px; }
-        .feedback-card { padding: 20px; position: relative; }
-        .fb-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
-        .fb-user-info { display: flex; align-items: center; gap: 10px; }
-        .fb-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border-color); font-size: 0.85rem; }
-        .fb-name { font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; }
-        .fb-date { font-size: 0.72rem; color: var(--text-muted); }
-        .fb-stars { color: #facc15; font-size: 0.8rem; }
-        .status-badge { padding: 3px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
-        .status-support { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
-        .status-reviewed { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139, 92, 246, 0.4); }
-        .status-in-progress { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-        .status-implemented { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-        .status-rejected { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-
-        .fb-body { margin: 10px 0; font-size: 0.88rem; color: var(--text-secondary); }
-        .fb-section-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-top: 8px; }
-        .dev-reply-card { margin-top: 12px; padding: 12px; background: rgba(255, 255, 255, 0.03); border-left: 3px solid var(--accent-white); border-radius: 6px; }
-        .dev-reply-header { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.8rem; margin-bottom: 4px; }
-        .title-badge-custom { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-left: 6px; border: 1px solid var(--border-color); background: var(--bg-surface); }
-        .admin-actions { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-color); display: flex; gap: 8px; flex-wrap: wrap; }
-
-        /* Dominion Bot Chat UI Styling (ChatGPT / Gemini / Claude Inspired) */
-        .chat-container { display: flex; flex-direction: column; height: 560px; max-width: 750px; margin: 0 auto; width: 100%; border-radius: 14px; overflow: hidden; }
-        .chat-header { padding: 14px 20px; background: var(--bg-surface); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; }
-        .bot-profile-info { display: flex; align-items: center; gap: 12px; }
-        .bot-avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent-white); color: var(--bg-base); display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; box-shadow: 0 0 12px var(--accent-glow-strong); }
-        .chat-messages { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px; background: var(--bg-input); }
-        .chat-bubble { max-width: 82%; padding: 14px 18px; border-radius: 12px; font-size: 0.88rem; line-height: 1.6; word-wrap: break-word; }
-        .chat-bubble.bot { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .chat-bubble.user { background: var(--accent-white); color: var(--bg-base); font-weight: 500; align-self: flex-end; border-bottom-right-radius: 2px; }
+        /* Feedback Layout */
+        .feedback-wrapper { display: flex; flex-direction: column; gap: 20px; }
+        .rating-card { padding: 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+        .avg-number { font-size: 2.2rem; font-weight: 800; line-height: 1; }
+        .avg-stars { color: #facc15; font-size: 1rem; }
         
-        /* Code Block Styling inside chat */
-        .chat-bubble pre { background: #111116; border: 1px solid var(--border-color); padding: 12px; border-radius: 8px; overflow-x: auto; font-family: var(--font-mono); font-size: 0.8rem; margin: 8px 0; color: #38bdf8; }
-        .chat-bubble code { font-family: var(--font-mono); background: rgba(255,255,255,0.08); padding: 2px 5px; border-radius: 4px; font-size: 0.82rem; }
+        .form-card { padding: 22px; }
+        .form-card h2 { font-size: 1.1rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+        .stars-selector { display: flex; gap: 8px; font-size: 1.4rem; color: var(--text-muted); cursor: pointer; }
+        .stars-selector i { transition: 0.15s; }
+        .stars-selector i.active, .stars-selector i:hover { color: #facc15; text-shadow: 0 0 10px rgba(250, 204, 21, 0.4); }
 
-        /* Thinking Animation */
-        .chat-thinking { display: flex; align-items: center; gap: 6px; padding: 12px 16px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 12px; align-self: flex-start; border-bottom-left-radius: 2px; }
-        .dot { width: 7px; height: 7px; background: var(--text-secondary); border-radius: 50%; animation: bounceDot 1.4s infinite ease-in-out both; }
-        .dot:nth-child(1) { animation-delay: -0.32s; }
-        .dot:nth-child(2) { animation-delay: -0.16s; }
-        @keyframes bounceDot { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+        .controls-row { display: flex; gap: 10px; margin-bottom: 14px; flex-wrap: wrap; }
+        .search-container { flex: 1; min-width: 170px; position: relative; }
+        .search-container i { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
+        .search-container input { padding-left: 36px; }
 
-        .chat-input-area { padding: 12px 16px; background: var(--bg-surface); border-top: 1px solid var(--border-color); display: flex; gap: 10px; align-items: center; }
+        /* Feedback Cards & Features */
+        .feedback-list { display: flex; flex-direction: column; gap: 14px; }
+        .feedback-card { padding: 18px; position: relative; }
+        .fb-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+        .fb-user { display: flex; align-items: center; gap: 10px; }
+        .fb-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: center; font-weight: 700; border: 1px solid var(--border-color); font-size: 0.8rem; }
+        .fb-name { font-weight: 700; font-size: 0.88rem; }
+        .fb-date { font-size: 0.7rem; color: var(--text-muted); }
+        .fb-stars-display { color: #facc15; font-size: 0.78rem; }
+        
+        .status-pill { padding: 2px 8px; border-radius: 20px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; }
+        .st-support { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59,130,246,0.3); }
+        .st-reviewed { background: rgba(139, 92, 246, 0.15); color: #c084fc; border: 1px solid rgba(139,92,246,0.3); }
+        .st-progress { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245,158,11,0.3); }
+        .st-implemented { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16,185,129,0.3); }
+        .st-rejected { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239,68,68,0.3); }
+
+        .fb-content { margin: 8px 0; font-size: 0.85rem; color: var(--text-secondary); }
+        .section-tag { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-top: 6px; }
+        
+        /* Collapsible Unbox Details */
+        .unbox-container { margin-top: 8px; border-top: 1px dashed var(--border-color); padding-top: 6px; display: none; }
+        .unbox-container.show { display: block; }
+        .unbox-btn { background: transparent; border: none; color: var(--text-secondary); cursor: pointer; font-size: 0.75rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; }
+        .unbox-btn:hover { color: var(--accent-white); }
+
+        /* Footer Actions (Like & Admin Controls) */
+        .fb-footer-row { display: flex; align-items: center; justify-content: space-between; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border-color); flex-wrap: wrap; gap: 8px; }
+        .like-action-btn { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; display: inline-flex; align-items: center; gap: 5px; transition: 0.2s; }
+        .like-action-btn:hover, .like-action-btn.liked { border-color: #ef4444; color: #ef4444; background: rgba(239,68,68,0.08); }
+
+        .dev-reply-box { margin-top: 10px; padding: 10px; background: rgba(255,255,255,0.03); border-left: 3px solid var(--accent-white); border-radius: 6px; }
+        .dev-reply-header { display: flex; align-items: center; gap: 6px; font-weight: 700; font-size: 0.78rem; margin-bottom: 3px; }
+        .admin-title-tag { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 12px; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; border: 1px solid var(--border-color); background: var(--bg-surface); }
+        .admin-tools-row { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; }
 
         /* Draggable Admin Panel */
         .draggable-admin-panel {
-            position: fixed; bottom: 30px; right: 30px; width: 340px; z-index: 9000; display: none; overflow: hidden; box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            position: fixed; bottom: 25px; right: 25px; width: 330px; z-index: 9000; display: none; box-shadow: 0 15px 35px rgba(0,0,0,0.5); overflow: hidden;
         }
         .draggable-admin-panel.active { display: block; }
-        .panel-header { padding: 12px 16px; background: rgba(255,255,255,0.05); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: move; font-weight: 700; font-size: 0.85rem; }
-        .panel-body { padding: 16px; max-height: 400px; overflow-y: auto; }
+        .panel-header { padding: 10px 14px; background: rgba(255,255,255,0.04); border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; cursor: move; font-weight: 700; font-size: 0.8rem; }
+        .panel-content { padding: 14px; max-height: 380px; overflow-y: auto; }
 
-        /* Toast Container */
-        #toast-container { position: fixed; bottom: 20px; left: 20px; z-index: 11000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
-        .toast { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 12px 18px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 10px; font-size: 0.85rem; pointer-events: auto; backdrop-filter: blur(10px); animation: slideInToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        @keyframes slideInToast { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+        /* Toast Notifications */
+        #toast-box { position: fixed; bottom: 20px; left: 20px; z-index: 11000; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+        .toast-item { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-primary); padding: 10px 16px; border-radius: 8px; box-shadow: 0 5px 20px rgba(0,0,0,0.4); font-size: 0.82rem; display: flex; align-items: center; gap: 8px; backdrop-filter: blur(10px); animation: slideToast 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideToast { from { opacity: 0; transform: translateX(-25px); } to { opacity: 1; transform: translateX(0); } }
 
-        footer { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 20px; text-align: center; margin-top: auto; }
-        .footer-content { max-width: 900px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
-        .social-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .social-btn { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 0.85rem; padding: 6px 12px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border-color); transition: var(--transition-fast); }
-        .social-btn:hover { color: var(--text-primary); border-color: var(--accent-white); }
-        .copyright-tag { font-size: 0.78rem; color: var(--text-muted); }
+        footer { background: var(--bg-surface); border-top: 1px solid var(--border-color); padding: 18px; text-align: center; margin-top: auto; }
+        .footer-links { display: flex; gap: 12px; justify-content: center; margin-bottom: 8px; flex-wrap: wrap; }
+        .social-link-btn { display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); text-decoration: none; font-weight: 600; font-size: 0.8rem; padding: 5px 10px; border-radius: 6px; background: var(--bg-card); border: 1px solid var(--border-color); transition: 0.2s; }
+        .social-link-btn:hover { color: var(--text-primary); border-color: var(--accent-white); }
+        .copyright { font-size: 0.75rem; color: var(--text-muted); }
     </style>
 </head>
 <body>
 
     <div class="ambient-bg">
-        <div class="glow-sphere glow-sphere-1"></div>
-        <div class="glow-sphere glow-sphere-2"></div>
+        <div class="glow-sphere glow-1"></div>
+        <div class="glow-sphere glow-2"></div>
     </div>
 
-    <audio id="github-audio-alert" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
+    <!-- AUDIO NOTIFICATION -->
+    <audio id="success-sound" src="https://raw.githubusercontent.com/github/audio/master/success.ogg" preload="auto"></audio>
 
     <div id="loading-screen">
-        <img src="logo.png" alt="Logo" class="animated-logo" style="width: 60px; height: 60px;">
-        <span class="text-glow-blds" style="font-size: 1.1rem; margin-top: 15px;">LOADING DOMINION SYSTEM...</span>
-        <div class="progress-bar-container">
-            <div class="progress-bar" id="loading-bar"></div>
-        </div>
+        <div style="width: 45px; height: 45px; border-radius: 50%; background: var(--accent-white); display: flex; align-items: center; justify-content: center; font-weight: 900; color: var(--bg-base); font-size: 1.2rem;">B</div>
+        <span class="text-glow" style="font-size: 1rem; margin-top: 12px;">LOADING SYSTEM v5...</span>
     </div>
 
     <div id="announcement-bar">
-        <span class="announcement-sender-badge" id="announcement-sender"><i class="fa-solid fa-user-shield"></i> ADMIN</span>
-        <span class="announcement-title-badge" id="announcement-title-badge" style="display:none;">OWNER</span>
-        <span id="announcement-text">Sistem Dominion Bot berjalan normal.</span>
+        <span class="announcement-badge" id="announcement-badge-sender"><i class="fa-solid fa-shield-halved"></i> ADMIN</span>
+        <span id="announcement-text-view">Sistem berjalan normal.</span>
     </div>
 
-    <div class="modal-overlay active" id="name-modal">
+    <!-- Modal Identifikasi Nama -->
+    <div class="modal-overlay" id="modal-name">
         <div class="modal-box glass-card">
-            <img src="logo.png" alt="Logo" class="animated-logo" style="width: 50px; height: 50px; margin-bottom: 10px;">
-            <h2 class="text-glow-blds" style="font-size: 1.3rem;">IDENTIFIKASI PENGGUNA</h2>
-            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; margin-bottom: 15px;">Masukkan nama Anda untuk mengakses platform BLDS.</p>
-            
-            <form id="name-form">
+            <h2 class="text-glow" style="font-size: 1.2rem; margin-bottom: 4px;">IDENTIFIKASI PENGGUNA</h2>
+            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan nama Anda untuk mengakses fitur BLDS.</p>
+            <form id="form-name-submit">
                 <div class="input-group">
                     <label>Nama Anda</label>
-                    <input type="text" id="user-input-name" class="styled-input" placeholder="Nama Lengkap / Panggilan..." required autocomplete="off">
+                    <input type="text" id="input-username-val" class="styled-input" placeholder="Nama Lengkap / Panggilan..." required autocomplete="off">
                 </div>
                 <button type="submit" class="btn-primary">Masuk Platform <i class="fa-solid fa-arrow-right"></i></button>
             </form>
         </div>
     </div>
 
-    <div class="modal-overlay" id="title-modal">
+    <!-- Modal Admin Title & Style Customizer -->
+    <div class="modal-overlay" id="modal-admin-title">
         <div class="modal-box glass-card">
-            <h3>Pengaturan Profil Admin</h3>
-            <p style="font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px;">Atur Nama Display, Title & Efek Anda.</p>
-            
+            <h3>Pengaturan Title Admin</h3>
+            <p style="font-size: 0.75rem; color: var(--text-secondary); margin-top: 4px;">Atur nama, title teks, dan warna aksen Anda.</p>
             <div class="input-group">
-                <label>Nama Admin</label>
-                <input type="text" id="custom-admin-name" class="styled-input" placeholder="Nama Admin Anda...">
+                <label>Nama Display</label>
+                <input type="text" id="custom-name-field" class="styled-input">
             </div>
-
             <div class="input-group">
                 <label>Title Teks</label>
-                <input type="text" id="custom-title-text" class="styled-input" placeholder="Contoh: OWNER / ADMIN">
+                <input type="text" id="custom-title-field" class="styled-input" placeholder="Contoh: OWNER / DEVELOPER">
             </div>
-
             <div class="input-group">
-                <label>Warna Title</label>
-                <input type="color" id="custom-title-color" class="styled-input" value="#ffffff" style="height: 40px; padding: 2px;">
+                <label>Warna Title Badge</label>
+                <input type="color" id="custom-color-field" class="styled-input" value="#ffffff" style="height: 38px; padding: 2px;">
             </div>
-
-            <div style="display: flex; gap: 8px; margin-top: 15px;">
-                <button type="button" class="btn-secondary" onclick="closeTitleModal()" style="flex: 1;">Batal</button>
-                <button type="button" class="btn-primary" onclick="saveCustomTitle()" style="flex: 1;">Simpan</button>
+            <div style="display: flex; gap: 8px; margin-top: 14px;">
+                <button type="button" class="btn-secondary" onclick="closeAdminTitleModal()" style="flex:1;">Batal</button>
+                <button type="button" class="btn-primary" onclick="saveAdminTitleModal()" style="flex:1;">Simpan</button>
             </div>
         </div>
     </div>
 
+    <!-- Header Navigation -->
     <header>
         <div class="nav-container">
-            <a href="#" class="brand" onclick="switchPage('home-page')">
-                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
-                <span class="brand-text text-glow-blds">DOMINION BOT</span>
-            </a>
-            <div class="nav-menu" style="display: flex; align-items: center; gap: 10px;">
-                <button class="theme-toggle" id="theme-btn" title="Switch Theme">
+            <a href="#" class="brand text-glow" onclick="switchPage('page-home')">BLDS FEEDBACK</a>
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button class="btn-secondary" id="admin-mode-toggle-btn" style="font-size: 0.72rem; padding: 4px 10px; border-color: #38bdf8; color: #38bdf8;" onclick="toggleAdminModeManual()">
+                    <i class="fa-solid fa-shield-halved"></i> <span id="admin-mode-label">Mode Admin: OFF</span>
+                </button>
+                <button class="theme-toggle" id="theme-toggler" title="Ganti Tema">
                     <i class="fa-solid fa-moon"></i>
                 </button>
             </div>
@@ -329,85 +301,79 @@
     </header>
 
     <main>
-        
-        <section id="home-page" class="page-section active">
+        <!-- PAGE 1: HOME -->
+        <section id="page-home" class="page-section active">
             <div class="hero">
-                <img src="logo.png" alt="BLDS Logo" class="animated-logo">
-                <h1 class="text-glow-blds">DOMINION BOT & BLDS CENTER</h1>
-                <p>AI Chatbot resmi komunitas BlackLightDoms. Tanya apa saja atau uji kemampuan coding, matematika, sains, hingga lore eksklusif BLDS!</p>
-                
-                <div class="hero-action-buttons">
-                    <button class="hero-btn hero-btn-primary" onclick="switchPage('chat-page')" style="background: linear-gradient(135deg, #ffffff, #d1d5db); color: #0a0a0c;">
-                        <i class="fa-solid fa-robot"></i> Dominion Bot
-                    </button>
-                    <button class="hero-btn hero-btn-secondary" onclick="switchPage('feedback-page')">
+                <h1 class="text-glow">BLACKLIGHTDOMS FEEDBACK</h1>
+                <p>Pilih menu di bawah untuk mengirim feedback publik atau memasukkan Special Code Anda.</p>
+                <div class="hero-buttons">
+                    <button class="hero-btn hero-primary" onclick="switchPage('page-feedback')">
                         <i class="fa-solid fa-comments"></i> Feedback
                     </button>
-                    <button class="hero-btn hero-btn-secondary" onclick="switchPage('special-page')">
+                    <button class="hero-btn hero-secondary" onclick="switchPage('page-special')">
                         <i class="fa-solid fa-key"></i> Special Code
                     </button>
                 </div>
             </div>
         </section>
 
-        <section id="feedback-page" class="page-section">
-            <div class="feedback-container">
-                
-                <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto; align-self: flex-start;">
+        <!-- PAGE 2: FEEDBACK -->
+        <section id="page-feedback" class="page-section">
+            <div class="feedback-wrapper">
+                <button class="btn-secondary" onclick="switchPage('page-home')" style="width: auto; align-self: flex-start;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
                 </button>
 
-                <div class="glass-card rating-summary-card">
-                    <div style="font-size: 0.8rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rata-Rata Rating Platform</div>
-                    <div class="avg-rating-value" id="avg-rating-text">0.0</div>
-                    <div class="avg-stars-display" id="avg-stars-container">
+                <!-- RATING SUMMARY -->
+                <div class="glass-card rating-card">
+                    <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rata-Rata Rating Platform</div>
+                    <div class="avg-number" id="stats-avg-val">0.0</div>
+                    <div class="avg-stars" id="stats-stars-box">
                         <i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i><i class="fa-regular fa-star"></i>
                     </div>
-                    <div class="total-reviews-count" id="total-reviews-text">0 Ulasan Feedback</div>
+                    <div style="font-size: 0.78rem; color: var(--text-secondary);" id="stats-total-reviews">0 Ulasan Feedback</div>
                 </div>
 
+                <!-- SUBMIT FORM -->
                 <div class="glass-card form-card">
-                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback</h2>
-                    <form id="feedback-form">
+                    <h2><i class="fa-solid fa-pen-to-square"></i> Kirim Feedback (Publik)</h2>
+                    <form id="form-submit-feedback">
                         <div class="input-group">
                             <label>Nama Anda</label>
-                            <input type="text" id="fb-name" class="styled-input" readonly placeholder="Nama Anda...">
+                            <input type="text" id="fb-input-name" class="styled-input" placeholder="Masukkan nama Anda..." required autocomplete="off">
                         </div>
-                        
-                        <div style="margin: 10px 0 18px 0;">
-                            <label style="font-size: 0.78rem; color: var(--text-secondary); text-transform: uppercase;">Rating Pengalaman</label>
-                            <div class="stars-container" id="star-rating" style="margin-top: 5px;">
-                                <i class="fa-solid fa-star" data-rating="1"></i>
-                                <i class="fa-solid fa-star" data-rating="2"></i>
-                                <i class="fa-solid fa-star" data-rating="3"></i>
-                                <i class="fa-solid fa-star" data-rating="4"></i>
-                                <i class="fa-solid fa-star" data-rating="5"></i>
+                        <div style="margin: 8px 0 14px 0;">
+                            <label style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase; font-weight: 700;">Rating Pengalaman</label>
+                            <div class="stars-selector" id="stars-picker" style="margin-top: 4px;">
+                                <i class="fa-solid fa-star" data-val="1"></i>
+                                <i class="fa-solid fa-star" data-val="2"></i>
+                                <i class="fa-solid fa-star" data-val="3"></i>
+                                <i class="fa-solid fa-star" data-val="4"></i>
+                                <i class="fa-solid fa-star" data-val="5"></i>
                             </div>
                         </div>
-
                         <div class="input-group">
                             <label>Saran (Suggestion)</label>
-                            <textarea id="fb-suggestion" class="styled-textarea" rows="3" placeholder="Saran Anda..." required></textarea>
+                            <textarea id="fb-input-suggestion" class="styled-textarea" rows="3" placeholder="Saran Anda..." required></textarea>
                         </div>
-
                         <div class="input-group">
                             <label>Kritik (Criticism)</label>
-                            <textarea id="fb-criticism" class="styled-textarea" rows="3" placeholder="Kritik Anda..." required></textarea>
+                            <textarea id="fb-input-criticism" class="styled-textarea" rows="3" placeholder="Kritik Anda..." required></textarea>
                         </div>
-
                         <button type="submit" id="fb-submit-btn" class="btn-primary">
                             <i class="fa-solid fa-paper-plane"></i> Submit Feedback
                         </button>
                     </form>
                 </div>
 
-                <div class="feed-section">
-                    <div class="controls-bar">
-                        <div class="search-box">
+                <!-- CONTROLS & FEED -->
+                <div>
+                    <div class="controls-row">
+                        <div class="search-container">
                             <i class="fa-solid fa-magnifying-glass"></i>
-                            <input type="text" id="search-input" class="styled-input" placeholder="Cari nama...">
+                            <input type="text" id="filter-search-input" class="styled-input" placeholder="Cari nama...">
                         </div>
-                        <select id="filter-select" class="styled-select filter-select">
+                        <select id="filter-sort-select" class="styled-select" style="width: auto; min-width: 130px;">
                             <option value="newest">Terbaru</option>
                             <option value="oldest">Terlama</option>
                             <option value="highest">Rating Tertinggi</option>
@@ -415,240 +381,153 @@
                         </select>
                     </div>
 
-                    <div class="feedback-list" id="feedback-feed">
-                        <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted);">
-                            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.2rem; margin-bottom: 8px;"></i>
-                            <p>Memuat feedback...</p>
+                    <div class="feedback-list" id="feedback-feed-container">
+                        <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted); padding: 25px;">
+                            <i class="fa-solid fa-spinner fa-spin" style="font-size: 1.1rem; margin-bottom: 6px;"></i>
+                            <p>Memuat feedback publik...</p>
                         </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <section id="chat-page" class="page-section">
-            <div style="max-width: 750px; margin: 0 auto; width: 100%;">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                    <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto;">
-                        <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
-                    </button>
-                    <button class="btn-secondary" onclick="clearChatHistory()" style="width: auto; border-color: rgba(239,68,68,0.4); color: #f87171;">
-                        <i class="fa-solid fa-trash-can"></i> Hapus Riwayat Chat
-                    </button>
-                </div>
-
-                <div class="glass-card chat-container">
-                    <div class="chat-header">
-                        <div class="bot-profile-info">
-                            <div class="bot-avatar"><i class="fa-solid fa-robot"></i></div>
-                            <div>
-                                <div style="font-weight: 700; font-size: 0.95rem;">Dominion Bot <span style="font-size: 0.68rem; padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 4px; margin-left: 6px;">BLDS AI v2.6</span></div>
-                                <div style="font-size: 0.72rem; color: #34d399; display: flex; align-items: center; gap: 4px;">
-                                    <span style="width: 6px; height: 6px; background: #34d399; border-radius: 50%; display: inline-block;"></span> Online & Secured
-                                </div>
-                            </div>
-                        </div>
-                        <div id="token-status" style="font-size: 0.72rem; color: var(--text-muted);">Ready</div>
-                    </div>
-
-                    <div class="chat-messages" id="chat-messages">
-                        <div class="chat-bubble bot">
-                            Halo! 👋 Aku <strong>Dominion Bot</strong>, AI Asisten resmi komunitas <strong>BlackLightDoms (BLDS)</strong>. Aku siap membantumu menjawab pertanyaan umum, coding, sains, sejarah, matematika, hingga informasi lengkap seputar komunitas BLDS! Ada yang bisa kubantu hari ini? 🤖✨
-                        </div>
-                    </div>
-
-                    <div class="chat-input-area">
-                        <input type="text" id="chat-input" class="styled-input" placeholder="Tanya apa saja ke Dominion Bot (Ketik 'BLDS info' untuk lore)..." autocomplete="off">
-                        <button class="btn-primary" id="chat-send-btn" style="width: auto; padding: 10px 18px;" onclick="sendChatMessage()">
-                            <i class="fa-solid fa-paper-plane"></i>
-                        </button>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section id="special-page" class="page-section">
-            <div style="max-width: 450px; margin: 0 auto; width: 100%;">
-                
-                <button class="btn-secondary" onclick="switchPage('home-page')" style="width: auto; margin-bottom: 15px;">
+        <!-- PAGE 3: SPECIAL CODE -->
+        <section id="page-special" class="page-section">
+            <div style="max-width: 420px; margin: 0 auto; width: 100%;">
+                <button class="btn-secondary" onclick="switchPage('page-home')" style="width: auto; margin-bottom: 14px;">
                     <i class="fa-solid fa-arrow-left"></i> Kembali ke Home
                 </button>
-
                 <div class="glass-card form-card" style="text-align: center;">
-                    <i class="fa-solid fa-shield-halved text-glow-blds" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                    <i class="fa-solid fa-shield-halved text-glow" style="font-size: 1.8rem; margin-bottom: 8px;"></i>
                     <h2 style="justify-content: center;">SPECIAL CODE</h2>
-                    <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 15px;">Masukkan kode rahasia/staff Anda (Format: BLDS-NAMA-NOMOR).</p>
-                    
-                    <form id="code-form">
+                    <p style="font-size: 0.78rem; color: var(--text-secondary); margin-bottom: 14px;">Masukkan kode rahasia/staff Anda (Format: BLDS-NAMA-NOMOR).</p>
+                    <form id="form-special-submit">
                         <div class="input-group">
-                            <input type="text" id="special-code-input" class="styled-input" style="text-align: center; font-family: var(--font-mono); font-size: 1rem; letter-spacing: 1.5px;" placeholder="BLDS-NAMA-001" required autocomplete="off">
+                            <input type="text" id="special-code-val" class="styled-input" style="text-align: center; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 1px;" placeholder="BLDS-NAMA-001" required autocomplete="off">
                         </div>
                         <button type="submit" class="btn-primary">Verify Code <i class="fa-solid fa-key"></i></button>
                     </form>
                 </div>
             </div>
         </section>
-
     </main>
 
-    <div class="glass-card draggable-admin-panel" id="admin-panel">
-        <div class="panel-header" id="admin-panel-header">
-            <span><i class="fa-solid fa-user-gear"></i> Admin Dashboard Panel</span>
-            <i class="fa-solid fa-arrows-up-down-left-right" style="opacity: 0.7;"></i>
+    <!-- DRAGGABLE FLOATING ADMIN PANEL -->
+    <div class="glass-card draggable-admin-panel" id="floating-admin-panel">
+        <div class="panel-header" id="panel-drag-header">
+            <span><i class="fa-solid fa-user-gear"></i> Admin Floating Panel</span>
+            <div style="display: flex; gap: 8px; align-items: center;">
+                <i class="fa-solid fa-minus" style="cursor:pointer;" onclick="toggleAdminPanel()" title="Minimize"></i>
+                <i class="fa-solid fa-arrows-up-down-left-right" style="opacity: 0.6;"></i>
+            </div>
         </div>
-        <div class="panel-body">
-            
-            <div class="input-group" style="margin-bottom: 12px;">
-                <label>Nama Admin Anda</label>
-                <input type="text" id="panel-admin-name-input" class="styled-input" placeholder="Ubah nama admin...">
+        <div class="panel-content">
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label>Nama Admin Aktif</label>
+                <input type="text" id="panel-admin-name-field" class="styled-input" placeholder="Nama admin...">
             </div>
 
-            <button class="btn-secondary" style="width: 100%; margin-bottom: 12px;" onclick="openTitleModal()">
+            <button class="btn-secondary" style="width: 100%; margin-bottom: 10px;" onclick="openAdminTitleModal()">
                 <i class="fa-solid fa-paint-brush"></i> Ubah Title & Efek
             </button>
 
-            <div class="input-group" style="margin-bottom: 12px;">
+            <!-- Quick Controls Info -->
+            <div class="input-group" style="margin-bottom: 10px; background: rgba(255,255,255,0.02); padding: 8px; border-radius: 6px; border: 1px solid var(--border-color);">
+                <label style="color: #60a5fa;"><i class="fa-solid fa-circle-info"></i> Panel Kontrol Aktif</label>
+                <p style="font-size: 0.72rem; color: var(--text-secondary);">Tombol **Like, Reply, Ubah Status, Ban, & Delete** kini selalu aktif di setiap kartu feedback saat Mode Admin ON!</p>
+            </div>
+
+            <!-- System Inbox -->
+            <div class="input-group" style="margin-bottom: 10px;">
                 <label>Inbox Pesan Sistem</label>
-                <div id="admin-inbox-list" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 8px; padding: 8px; max-height: 100px; overflow-y: auto; font-size: 0.78rem; margin-bottom: 8px;">
+                <div id="admin-inbox-box" style="background: var(--bg-input); border: 1px solid var(--border-color); border-radius: 6px; padding: 6px; max-height: 90px; overflow-y: auto; font-size: 0.75rem; margin-bottom: 6px;">
                     <span style="color: var(--text-muted);">Tidak ada pesan baru.</span>
                 </div>
-                <button class="btn-secondary" style="width: 100%; font-size: 0.78rem;" onclick="openSendInboxModal()">
+                <button class="btn-secondary" style="width: 100%; font-size: 0.75rem;" onclick="openInboxModal()">
                     <i class="fa-solid fa-paper-plane"></i> Kirim Pesan Sistem
                 </button>
             </div>
 
-            <div class="input-group" style="margin-bottom: 12px;">
+            <!-- Code Generator -->
+            <div class="input-group" style="margin-bottom: 10px;">
                 <label>Admin Code Generator</label>
-                <div style="display: flex; gap: 6px;">
-                    <input type="text" id="gen-admin-name" class="styled-input" placeholder="Nama..." style="font-size: 0.8rem; padding: 6px;">
-                    <button class="btn-secondary" style="font-size: 0.75rem; white-space: nowrap;" onclick="generateAdminCode()">Generate</button>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="gen-name-input" class="styled-input" placeholder="Nama..." style="font-size: 0.78rem; padding: 5px;">
+                    <button class="btn-secondary" style="font-size: 0.72rem; white-space: nowrap;" onclick="generateCodeAction()">Generate</button>
                 </div>
-                <div id="generated-code-output" style="font-family: var(--font-mono); font-size: 0.8rem; color: #38bdf8; margin-top: 4px;"></div>
+                <div id="gen-code-result" style="font-family: var(--font-mono); font-size: 0.75rem; color: #38bdf8; margin-top: 3px;"></div>
             </div>
 
-            <div class="input-group" style="margin-bottom: 12px;">
-                <label>Fitur Pendukung & Export</label>
-                <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1;" onclick="openActivityTimeline()">Timeline</button>
-                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1;" onclick="triggerKillSwitch()">Kill Switch</button>
-                </div>
-                <div style="display: flex; gap: 6px; margin-top: 6px;">
-                    <button class="btn-secondary" style="font-size: 0.75rem; flex: 1; border-color: #ef4444; color: #ef4444;" onclick="triggerLockdown()">Lockdown</button>
-                    <button class="btn-primary" style="font-size: 0.75rem; flex: 1;" onclick="downloadFullCodeAsFile()"><i class="fa-solid fa-download"></i> Full Code</button>
+            <!-- File Download & Utility -->
+            <div class="input-group" style="margin-bottom: 10px;">
+                <label>Export File & Fitur</label>
+                <div style="display: flex; gap: 5px; margin-top: 4px;">
+                    <button class="btn-secondary" style="font-size: 0.72rem; flex: 1; border-color: #ef4444; color: #ef4444;" onclick="triggerLockdownAction()">Lockdown</button>
+                    <button class="btn-primary" style="font-size: 0.72rem; flex: 1;" onclick="downloadFullCodeV5()"><i class="fa-solid fa-download"></i> Full Code v5</button>
                 </div>
             </div>
 
-            <div class="input-group" style="margin-top: 10px;">
-                <label>Update Global Announcement</label>
-                <input type="text" id="admin-announcement-input" class="styled-input" placeholder="Pengumuman baru...">
-                <div style="display: flex; gap: 6px; margin-top: 8px;">
-                    <button class="btn-primary" style="flex: 2;" onclick="updateAnnouncement()">
-                        <i class="fa-solid fa-broadcast-tower"></i> Broadcast
-                    </button>
-                    <button class="btn-secondary" style="flex: 1; border-color: #ef4444; color: #ef4444;" onclick="deleteAnnouncement()">
-                        <i class="fa-solid fa-trash"></i> Hapus
-                    </button>
+            <div class="input-group" style="margin-top: 8px;">
+                <label>Broadcast Pengumuman Global</label>
+                <input type="text" id="admin-broadcast-field" class="styled-input" placeholder="Pengumuman baru...">
+                <div style="display: flex; gap: 5px; margin-top: 6px;">
+                    <button class="btn-primary" style="flex: 2; font-size: 0.75rem;" onclick="submitGlobalAnnouncement()">Broadcast</button>
+                    <button class="btn-secondary" style="flex: 1; font-size: 0.75rem; border-color: #ef4444; color: #ef4444;" onclick="removeGlobalAnnouncement()">Hapus</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal-overlay" id="inbox-modal">
+    <!-- Inbox Modal Custom -->
+    <div class="modal-overlay" id="modal-inbox-send">
         <div class="modal-box glass-card">
             <h3>Kirim Pesan Sistem</h3>
             <div class="input-group">
-                <textarea id="modal-inbox-text" class="styled-textarea" rows="4" placeholder="Tulis pesan sistem..."></textarea>
+                <textarea id="inbox-msg-text" class="styled-textarea" rows="4" placeholder="Tulis pesan sistem..."></textarea>
             </div>
             <div style="display: flex; gap: 8px;">
-                <button class="btn-secondary" onclick="closeSendInboxModal()" style="flex: 1;">Batal</button>
-                <button class="btn-primary" onclick="submitSystemMessage()" style="flex: 1;">Kirim</button>
+                <button class="btn-secondary" onclick="closeInboxModal()" style="flex:1;">Batal</button>
+                <button class="btn-primary" onclick="submitInboxMessage()" style="flex:1;">Kirim</button>
             </div>
         </div>
     </div>
 
-    <div id="toast-container"></div>
+    <div id="toast-box"></div>
 
     <footer>
-        <div class="footer-content">
-            <div class="social-links">
-                <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank" class="social-btn">
-                    <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp Group
-                </a>
-                <a href="https://discord.gg/7bAEeyeajJ" target="_blank" class="social-btn">
-                    <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord Community
-                </a>
-            </div>
-
-            <div class="copyright-tag">
-                Blacklightdoms©2026 • Powered by Dominion Bot AI
-            </div>
+        <div class="footer-links">
+            <a href="https://chat.whatsapp.com/LYhSQn3vXhO6qpVWyoJEoR?s=cl&p=a&ilr=1" target="_blank" class="social-link-btn">
+                <i class="fa-brands fa-whatsapp" style="color: #25D366;"></i> WhatsApp Group
+            </a>
+            <a href="https://discord.gg/7bAEeyeajJ" target="_blank" class="social-link-btn">
+                <i class="fa-brands fa-discord" style="color: #5865F2;"></i> Discord Community
+            </a>
         </div>
+        <div class="copyright">Blacklightdoms©2026</div>
     </footer>
 
+    <!-- FIREBASE AND APP LOGIC SCRIPT -->
     <script>
-        /* FIREBASE CONFIG */
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            apiKey: "AIzaSyCOSl8oDM6gnZRIOHiOSTlXKOVQ4xLX2nc",
+            authDomain: "blds-2806d.firebaseapp.com",
+            databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "blds-2806d",
+            storageBucket: "blds-2806d.firebasestorage.app",
+            messagingSenderId: "653918116860",
+            appId: "1:653918116860:web:4458b7df805c577c7f3079",
+            measurementId: "G-5QK3T8JH6Z"
         };
 
         let db = null;
         try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-            }
-        } catch (e) {
-            console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        } catch (err) {
+            console.warn("Firebase init warning:", err);
         }
 
-        /* BLDS INTERNAL KNOWLEDGE DATABASE & LORE */
-        const BLDS_KNOWLEDGE = {
-            name: "BLACKLIGHTDOMS (BLDS)",
-            founder: "Michael Lorenzo (BladeS)",
-            ownerFriends: ["William Nayottama", "Prince Felix"],
-            headStaff: ["Anindya"],
-            timeline: [
-                { date: "05-03-2024", event: "BLDS Born" },
-                { date: "15-05-2024", event: "WhatsApp Community Created" },
-                { date: "12-09-2024", event: "Discord Community Created" },
-                { date: "20-08-2025", event: "Massive Remake" }
-            ],
-            lore: {
-                blacklightCore: "Pusat energi dan inti kesatuan komunitas BlackLightDoms.",
-                tenFlames: {
-                    greaterFlames: [
-                        { name: "Vision", desc: "Pandangan jauh ke depan dan visi masa depan." },
-                        { name: "Discipline", desc: "Keteguhan dan kedisiplinan dalam setiap aksi." },
-                        { name: "Loyalty", desc: "Kesetiaan tanpa batas antar anggota komunitas." },
-                        { name: "Ambition", desc: "Tekad kuat untuk terus berkembang dan mendominasi." },
-                        { name: "Resilience", desc: "Ketahanan mental dalam menghadapi segala rintangan." }
-                    ],
-                    lesserFlames: [
-                        { name: "Hope", desc: "Harapan abadi dalam setiap langkah." },
-                        { name: "Awareness", desc: "Kesadaran penuh terhadap situasi sekitar." },
-                        { name: "Patience", desc: "Kesabaran dalam proses pembelajaran." },
-                        { name: "Courage", desc: "Keberanian menghadapi tantangan baru." },
-                        { name: "Unity", desc: "Persatuan dan solidaritas yang erat." }
-                    ]
-                }
-            }
-        };
-
-        /* BANNED WORDS / SECURITY FILTER */
-        const UNSAFE_KEYWORDS = [
-            "nsfw", "porn", "sexual", "18+", "gore", "darah", "kekerasan ekstrem", 
-            "penculikan", "penyiksaan", "senjata", "malware", "virus", "phishing", 
-            "hack akun", "exploit", "cheat game", "bikin gambar", "buat gambar", "edit gambar"
-        ];
-
-        /* KNOWN SPECIAL CODES ROLES SETUP */
-        const KNOWN_CODES = {
+        const PRESET_STAFF_CODES = {
             "BLDS-LORENZO-001": { Name: "Lorenzo BLDS", Role: "Owner", CanAdmin: true },
             "BLDS-NAYOTTAMA-002": { Name: "Nayottama BLDS", Role: "Owner Friend", CanAdmin: true },
             "BLDS-PRINCE-003": { Name: "Prince BLDS", Role: "Owner Friend", CanAdmin: true },
@@ -656,107 +535,132 @@
             "BLDS-KENYA-005": { Name: "Kenya BLDS", Role: "Admin", CanAdmin: true }
         };
 
-        let bannedUsers = [];
-        let currentUser = {
+        let bannedList = [];
+        let globalUser = {
             name: "",
             role: "Member",
             code: "",
             customTitle: "OWNER",
             customColor: "#ffffff",
-            isAdmin: false
+            isAdmin: true // Default true agar tombol admin langsung bisa diakses bebas
         };
 
-        let selectedRating = 0;
-        let allFeedbacks = [];
+        let activeRating = 0;
+        let globalFeedbacksData = [];
 
         document.addEventListener("DOMContentLoaded", () => {
-            initLoadingScreen();
-            initTheme();
-            checkUserSession();
-            initStarRating();
-            initFirebaseListeners();
-            makePanelDraggable();
-            initAdminNameInput();
-            loadChatHistoryFromStorage();
-
-            document.getElementById("chat-input").addEventListener("keypress", (e) => {
-                if (e.key === "Enter") sendChatMessage();
-            });
+            initLoading();
+            initThemeSystem();
+            checkUserSessionData();
+            initStarPicker();
+            initCloudListeners();
+            initDraggableAdminPanel();
+            initLiveNameSync();
         });
 
-        function initLoadingScreen() {
-            const progressBar = document.getElementById("loading-bar");
-            const loadingScreen = document.getElementById("loading-screen");
-            let progress = 0;
-
-            const interval = setInterval(() => {
-                progress += 25;
-                progressBar.style.width = progress + "%";
-                if (progress >= 100) {
-                    clearInterval(interval);
-                    setTimeout(() => loadingScreen.classList.add("hidden"), 300);
-                }
-            }, 150);
+        function initLoading() {
+            setTimeout(() => {
+                document.getElementById("loading-screen").classList.add("hidden");
+            }, 350);
         }
 
-        function checkUserSession() {
-            const savedName = localStorage.getItem("blds_user_name");
-            if (savedName) {
-                currentUser.name = savedName;
-                document.getElementById("fb-name").value = savedName;
-                document.getElementById("panel-admin-name-input").value = savedName;
+        function checkUserSessionData() {
+            const savedName = localStorage.getItem("blds_v5_name");
+            const savedAdmin = localStorage.getItem("blds_v5_admin");
+            const savedRole = localStorage.getItem("blds_v5_role") || "Member";
+            const savedTitle = localStorage.getItem("blds_v5_title") || "OWNER";
+            const savedColor = localStorage.getItem("blds_v5_color") || "#ffffff";
+
+            if (savedAdmin !== null) {
+                globalUser.isAdmin = (savedAdmin === "true");
             } else {
-                document.getElementById("name-modal").classList.add("active");
+                globalUser.isAdmin = true; // Default ON agar tidak ribet
+                localStorage.setItem("blds_v5_admin", "true");
+            }
+
+            updateAdminModeUI();
+
+            if (savedName) {
+                globalUser.name = savedName;
+                globalUser.role = savedRole;
+                globalUser.customTitle = savedTitle;
+                globalUser.customColor = savedColor;
+
+                document.getElementById("fb-input-name").value = savedName;
+                document.getElementById("panel-admin-name-field").value = savedName;
+            } else {
+                // Munculkan modal nama jika belum ada nama terekam
+                document.getElementById("modal-name").classList.add("active");
             }
         }
 
-        document.getElementById("name-form").addEventListener("submit", (e) => {
+        document.getElementById("form-name-submit").addEventListener("submit", (e) => {
             e.preventDefault();
-            const inputName = document.getElementById("user-input-name").value.trim();
-            if (inputName) {
-                currentUser.name = inputName;
-                localStorage.setItem("blds_user_name", inputName);
-                document.getElementById("fb-name").value = inputName;
-                document.getElementById("panel-admin-name-input").value = inputName;
-                document.getElementById("name-modal").classList.remove("active");
-                playAudioAlert();
-                showToast(`Selamat datang, ${inputName}! 👋`, "success");
+            const val = document.getElementById("input-username-val").value.trim();
+            if (val) {
+                globalUser.name = val;
+                localStorage.setItem("blds_v5_name", val);
+                document.getElementById("fb-input-name").value = val;
+                document.getElementById("panel-admin-name-field").value = val;
+                document.getElementById("modal-name").classList.remove("active");
+                playAudioNotification();
+                showToast(`Selamat datang, ${val}!`, "success");
             }
         });
 
-        function initAdminNameInput() {
-            const panelInput = document.getElementById("panel-admin-name-input");
-            panelInput.addEventListener("input", (e) => {
-                const newName = e.target.value.trim();
-                if (newName) {
-                    currentUser.name = newName;
-                    localStorage.setItem("blds_user_name", newName);
-                    document.getElementById("fb-name").value = newName;
+        function initLiveNameSync() {
+            document.getElementById("panel-admin-name-field").addEventListener("input", (e) => {
+                const newN = e.target.value.trim();
+                if (newN) {
+                    globalUser.name = newN;
+                    localStorage.setItem("blds_v5_name", newN);
+                    document.getElementById("fb-input-name").value = newN;
                 }
             });
         }
 
-        function initTheme() {
-            let savedTheme = localStorage.getItem("blds_theme");
-            if (!savedTheme) {
-                const hour = new Date().getHours();
-                savedTheme = (hour >= 18 || hour < 6) ? "dark" : "light";
-            }
-            document.documentElement.setAttribute("data-theme", savedTheme);
-            updateThemeIcon(savedTheme);
+        function toggleAdminModeManual() {
+            globalUser.isAdmin = !globalUser.isAdmin;
+            localStorage.setItem("blds_v5_admin", globalUser.isAdmin);
+            updateAdminModeUI();
+            playAudioNotification();
+            showToast(`Mode Admin: ${globalUser.isAdmin ? 'ON' : 'OFF'}`, globalUser.isAdmin ? 'success' : 'info');
+            renderFilteredFeedbacks();
+        }
 
-            document.getElementById("theme-btn").addEventListener("click", () => {
-                const currentTheme = document.documentElement.getAttribute("data-theme");
-                const newTheme = currentTheme === "dark" ? "light" : "dark";
-                document.documentElement.setAttribute("data-theme", newTheme);
-                localStorage.setItem("blds_theme", newTheme);
-                updateThemeIcon(newTheme);
+        function updateAdminModeUI() {
+            const btnLabel = document.getElementById("admin-mode-label");
+            const panel = document.getElementById("floating-admin-panel");
+            if (globalUser.isAdmin) {
+                btnLabel.innerText = "Mode Admin: ON";
+                panel.classList.add("active");
+            } else {
+                btnLabel.innerText = "Mode Admin: OFF";
+                panel.classList.remove("active");
+            }
+        }
+
+        function initThemeSystem() {
+            let currentTh = localStorage.getItem("blds_v5_theme");
+            if (!currentTh) {
+                const h = new Date().getHours();
+                currentTh = (h >= 18 || h < 6) ? "dark" : "light";
+            }
+            document.documentElement.setAttribute("data-theme", currentTh);
+            updateThemeButtonIcon(currentTh);
+
+            document.getElementById("theme-toggler").addEventListener("click", () => {
+                const cur = document.documentElement.getAttribute("data-theme");
+                const nextTh = cur === "dark" ? "light" : "dark";
+                document.documentElement.setAttribute("data-theme", nextTh);
+                localStorage.setItem("blds_v5_theme", nextTh);
+                updateThemeButtonIcon(nextTh);
             });
         }
 
-        function updateThemeIcon(theme) {
-            const icon = document.querySelector("#theme-btn i");
-            icon.className = theme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
+        function updateThemeButtonIcon(th) {
+            const iconEl = document.querySelector("#theme-toggler i");
+            iconEl.className = th === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
         }
 
         function switchPage(pageId) {
@@ -765,737 +669,563 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function playAudioAlert() {
+        function playAudioNotification() {
             try {
-                const audio = document.getElementById("github-audio-alert");
-                if (audio) {
-                    audio.currentTime = 0;
-                    audio.play().catch(e => console.log("Audio play prevented:", e));
+                const aud = document.getElementById("success-sound");
+                if (aud) {
+                    aud.currentTime = 0;
+                    aud.play().catch(e => console.log("Audio prevented:", e));
                 }
             } catch (err) {
-                console.warn("Audio alert error:", err);
+                console.warn("Audio error:", err);
             }
         }
 
-        /* --- ADVANCED DOMINION BOT AI LOGIC --- */
-        function sendChatMessage() {
-            const inputField = document.getElementById("chat-input");
-            const messageText = inputField.value.trim();
-            if (!messageText) return;
-
-            const lowerMsg = messageText.toLowerCase();
-
-            // 1. Safety Check / Guardrails
-            for (let word of UNSAFE_KEYWORDS) {
-                if (lowerMsg.includes(word)) {
-                    appendChatMessage(messageText, "user");
-                    inputField.value = "";
-                    
-                    if (lowerMsg.includes("gambar") || lowerMsg.includes("image") || lowerMsg.includes("foto")) {
-                        appendBotMessage("Maaf, Dominion Bot belum mendukung pembuatan gambar.");
-                    } else {
-                        appendBotMessage("⚠️ Maaf, Dominion Bot menolak permintaan tersebut demi menjaga keamanan, kenyamanan, serta etika komunitas BlackLightDoms.");
-                    }
-                    saveChatHistoryToStorage();
-                    return;
-                }
-            }
-
-            appendChatMessage(messageText, "user");
-            inputField.value = "";
-
-            const chatMessages = document.getElementById("chat-messages");
-            const thinkingId = "thinking_" + Date.now();
-            const thinkingBubble = document.createElement("div");
-            thinkingBubble.className = "chat-thinking";
-            thinkingBubble.id = thinkingId;
-            thinkingBubble.innerHTML = `<span class="dot"></span><span class="dot"></span><span class="dot"></span> <span style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 4px;">Dominion Bot berpikir... 🤖</span>`;
-            chatMessages.appendChild(thinkingBubble);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            setTimeout(() => {
-                const thinkingElem = document.getElementById(thinkingId);
-                if (thinkingElem) thinkingElem.remove();
-
-                const botReplyText = generateIntelligentBotReply(lowerMsg, messageText);
-                appendBotMessageWithTyping(botReplyText);
-                saveChatHistoryToStorage();
-            }, 900);
-        }
-
-        function appendChatMessage(text, sender) {
-            const chatMessages = document.getElementById("chat-messages");
-            const bubble = document.createElement("div");
-            bubble.className = `chat-bubble ${sender}`;
-            bubble.innerText = text;
-            chatMessages.appendChild(bubble);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function appendBotMessage(text) {
-            const chatMessages = document.getElementById("chat-messages");
-            const bubble = document.createElement("div");
-            bubble.className = "chat-bubble bot";
-            bubble.innerHTML = formatBotOutput(text);
-            chatMessages.appendChild(bubble);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
-        function appendBotMessageWithTyping(fullText) {
-            const chatMessages = document.getElementById("chat-messages");
-            const bubble = document.createElement("div");
-            bubble.className = "chat-bubble bot";
-            chatMessages.appendChild(bubble);
-
-            let charIndex = 0;
-            function typeWriter() {
-                if (charIndex < fullText.length) {
-                    bubble.innerHTML = formatBotOutput(fullText.substring(0, charIndex + 1));
-                    charIndex++;
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                    setTimeout(typeWriter, 12);
-                }
-            }
-            typeWriter();
-        }
-
-        function formatBotOutput(text) {
-            // Basic formatting for code blocks or bold text simulation
-            return text
-                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                .replace(/\*(.*?)\*/g, '<em>$1</em>')
-                .replace(/```([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
-                .replace(/`(.*?)`/g, '<code>$1</code>');
-        }
-
-        function generateIntelligentBotReply(lower, original) {
-            // BLDS Specific Knowledge Queries
-            if (lower.includes("blds") || lower.includes("blacklightdoms") || lower.includes("komunitas")) {
-                return `**BLACKLIGHTDOMS (BLDS)** adalah komunitas resmi yang didirikan pada **05-03-2024** oleh **Michael Lorenzo (BladeS)**.\n\n` +
-                       `👑 **Owner Friends:** William Nayottama & Prince Felix\n` +
-                       `🛡️ **Head Staff:** Anindya\n\n` +
-                       `📅 **Timeline Komunitas:**\n` +
-                       `- 05-03-2024: BLDS Born\n` +
-                       `- 15-05-2024: WhatsApp Community Created\n` +
-                       `- 12-09-2024: Discord Community Created\n` +
-                       `- 20-08-2025: Massive Remake\n\n` +
-                       `✨ **Lore & Core:** Memiliki Blacklight Core serta Ten Flames (Greater Flames: Vision, Discipline, Loyalty, Ambition, Resilience & Lesser Flames: Hope, Awareness, Patience, Courage, Unity).`;
-            }
-
-            if (lower.includes("founder") || lower.includes("lorenzo") || lower.includes("blade")) {
-                return `Founder utama dari BlackLightDoms (BLDS) adalah **Michael Lorenzo (BladeS)**, yang memimpin visi dan perkembangan komunitas ini sejak lahir pada 5 Maret 2024! 🚀👑`;
-            }
-
-            if (lower.includes("owner friends") || lower.includes("william") || lower.includes("prince")) {
-                return `Owner Friends resmi di BlackLightDoms adalah **William Nayottama** dan **Prince Felix** yang turut membangun dan mengawal perjalanan BLDS bersama Founder! ✨`;
-            }
-
-            if (lower.includes("head staff") || lower.includes("anindya")) {
-                return `Head Staff terpercaya di BlackLightDoms dipegang oleh **Anindya** yang mengawasi kedisiplinan dan aktivitas anggota. 🛡️`;
-            }
-
-            if (lower.includes("flames") || lower.includes("lore") || lower.includes("blacklight core")) {
-                return `🔥 **Ten Flames Lore BLDS:**\n` +
-                       `• **Greater Flames:** Vision, Discipline, Loyalty, Ambition, Resilience.\n` +
-                       `• **Lesser Flames:** Hope, Awareness, Patience, Courage, Unity.\n` +
-                       `Semuanya bersumber dari **Blacklight Core** sebagai pusat kekuatan komunitas kita! ✨`;
-            }
-
-            // Coding / Technical Assistant
-            if (lower.includes("html") || lower.includes("css") || lower.includes("js") || lower.includes("javascript")) {
-                return `Tentu! HTML, CSS, dan JavaScript adalah fondasi web modern. Contoh struktur HTML dasar:\n\`\`\`html\n<!DOCTYPE html>\n<html lang=\"id\">\n<head>\n  <title>BLDS App</title>\n</head>\n<body>\n  <h1>Halo BlackLightDoms!</h1>\n</body>\n</html>\n\`\`\`\nAda kendala debugging atau bagian styling yang ingin dibahas? 💻✨`;
-            }
-
-            if (lower.includes("python") || lower.includes("coding") || lower.includes("debug")) {
-                return `Sebagai AI Coding Assistant, aku siap membantumu menulis, menganalisis, atau melakukan debugging kode. Silakan paste kode kamu di sini! 🛠️`;
-            }
-
-            if (lower.includes("roblox") || lower.includes("game")) {
-                return `🎮 Roblox adalah platform game creation yang sangat populer! Di BLDS, banyak member yang suka membahas game, scripting Lua Roblox Studio, hingga mabar bareng. Mau tahu tips atau diskusi game apa nih?`;
-            }
-
-            if (lower.includes("matematika") || lower.includes("math") || lower.includes("hitung")) {
-                return `🔢 Aku siap membantu menyelesaikan soal matematika, aljabar, kalkulus, atau statistika. Coba tuliskan soalnya di sini!`;
-            }
-
-            if (lower.includes("sains") || lower.includes("fisika") || lower.includes("kimia")) {
-                return `🔬 Sains mencakup fisika, kimia, dan biologi. Ada materi sekolah atau konsep sains tertentu yang ingin aku jelaskan dengan bahasa yang mudah dipahami?`;
-            }
-
-            if (lower.includes("sejarah") || lower.includes("history")) {
-                return `📜 Sejarah merekam perjalanan peradaban manusia. Kamu ingin membahas sejarah dunia, sejarah nasional, atau timeline berdirinya BlackLightDoms?`;
-            }
-
-            if (lower.includes("buat artikel") || lower.includes("tulis artikel") || lower.includes("cerita") || lower.includes("puisi")) {
-                return `✍️ Aku bisa membantumu menulis artikel, cerita kreatif, atau puisi dengan gaya bahasa yang natural dan menarik. Apa tema yang ingin kamu buat?`;
-            }
-
-            if (lower.includes("cv") || lower.includes("email") || lower.includes("caption")) {
-                return `📄 Tentu! Aku bisa membantumu menyusun draf email profesional, format CV, atau caption media sosial yang estetik dan engaging.`;
-            }
-
-            if (lower.includes("translate") || lower.includes("terjemah")) {
-                return `🌐 Aku bisa menerjemahkan berbagai bahasa (Inggris, Jepang, Korea, Sunda, Jawa, dll). Ketik teks yang ingin diterjemahkan beserta tujuannya ya!`;
-            }
-
-            // General greeting or fallback
-            if (lower.includes("halo") || lower.includes("hi") || lower.includes("hai")) {
-                return `Halo juga! 👋 Senang bisa mengobrol denganmu melalui Dominion Bot. Ada hal menarik seputar teknologi, coding, atau komunitas BLDS yang ingin kita bahas? 🤖✨`;
-            }
-
-            return `Pertanyaan yang sangat menarik! 💡 Sebagai **Dominion Bot**, aku dirancang untuk membantu menjawab pertanyaan umum, materi sekolah, coding, sains, hingga lore eksklusif komunitas **BlackLightDoms**. Ada hal spesifik yang ingin kamu eksplorasi lebih lanjut? 🚀🔥`;
-        }
-
-        function saveChatHistoryToStorage() {
-            const chatMessages = document.getElementById("chat-messages").innerHTML;
-            localStorage.setItem("blds_chat_history", chatMessages);
-        }
-
-        function loadChatHistoryFromStorage() {
-            const savedChat = localStorage.getItem("blds_chat_history");
-            if (savedChat) {
-                document.getElementById("chat-messages").innerHTML = savedChat;
-            }
-        }
-
-        function clearChatHistory() {
-            if (confirm("Hapus seluruh riwayat percakapan chat?")) {
-                localStorage.removeItem("blds_chat_history");
-                document.getElementById("chat-messages").innerHTML = `
-                    <div class="chat-bubble bot">
-                        Riwayat chat telah dibersihkan. Halo kembali! 👋 Ada yang bisa dibantu oleh Dominion Bot? 🤖✨
-                    </div>
-                `;
-                showToast("Riwayat chat dibersihkan! 🗑️", "success");
-            }
-        }
-
-        /* STAR RATING INPUT */
-        function initStarRating() {
-            const stars = document.querySelectorAll("#star-rating i");
-            stars.forEach(star => {
-                star.addEventListener("mouseover", () => highlightStars(parseInt(star.getAttribute("data-rating"))));
-                star.addEventListener("mouseleave", () => highlightStars(selectedRating));
-                star.addEventListener("click", () => {
-                    selectedRating = parseInt(star.getAttribute("data-rating"));
-                    highlightStars(selectedRating);
+        function initStarPicker() {
+            const stars = document.querySelectorAll("#stars-picker i");
+            stars.forEach(st => {
+                st.addEventListener("mouseover", () => paintStars(parseInt(st.getAttribute("data-val"))));
+                st.addEventListener("mouseleave", () => paintStars(activeRating));
+                st.addEventListener("click", () => {
+                    activeRating = parseInt(st.getAttribute("data-val"));
+                    paintStars(activeRating);
                 });
             });
         }
 
-        function highlightStars(rating) {
-            const stars = document.querySelectorAll("#star-rating i");
-            stars.forEach(star => {
-                const r = parseInt(star.getAttribute("data-rating"));
-                if (r <= rating) star.classList.add("active");
-                else star.classList.remove("active");
+        function paintStars(ratingVal) {
+            const stars = document.querySelectorAll("#stars-picker i");
+            stars.forEach(st => {
+                const r = parseInt(st.getAttribute("data-val"));
+                if (r <= ratingVal) st.classList.add("active");
+                else st.classList.remove("active");
             });
         }
 
-        /* FEEDBACK SUBMISSION */
-        document.getElementById("feedback-form").addEventListener("submit", (e) => {
+        /* SUBMIT FEEDBACK */
+        document.getElementById("form-submit-feedback").addEventListener("submit", (e) => {
             e.preventDefault();
+            const currentNameInput = document.getElementById("fb-input-name").value.trim();
+            if (!currentNameInput) {
+                showToast("Masukkan nama Anda terlebih dahulu!", "error");
+                return;
+            }
+            globalUser.name = currentNameInput;
+            localStorage.setItem("blds_v5_name", currentNameInput);
 
-            if (bannedUsers.includes(currentUser.name.toLowerCase())) {
-                showToast("Anda telah di-BAN dari memberikan feedback! 🚫", "error");
+            if (bannedList.includes(currentNameInput.toLowerCase())) {
+                showToast("Nama Anda telah di-BAN dari memberikan feedback!", "error");
+                return;
+            }
+            if (activeRating === 0) {
+                showToast("Silakan pilih rating bintang terlebih dahulu!", "error");
                 return;
             }
 
-            if (selectedRating === 0) {
-                showToast("Silakan pilih rating bintang dulu ya! ⭐", "error");
-                return;
-            }
+            const sug = document.getElementById("fb-input-suggestion").value.trim();
+            const cri = document.getElementById("fb-input-criticism").value.trim();
+            const btn = document.getElementById("fb-submit-btn");
+            btn.disabled = true;
 
-            const suggestion = document.getElementById("fb-suggestion").value.trim();
-            const criticism = document.getElementById("fb-criticism").value.trim();
-            const submitBtn = document.getElementById("fb-submit-btn");
-            submitBtn.disabled = true;
-
-            const feedbackData = {
-                Name: currentUser.name,
-                Rating: selectedRating,
-                Suggestion: suggestion,
-                Criticism: criticism,
+            const payload = {
+                Name: currentNameInput,
+                Rating: activeRating,
+                Suggestion: sug,
+                Criticism: cri,
                 Timestamp: Date.now(),
                 Status: "Support",
-                Reply: ""
+                Reply: "",
+                Likes: {}
             };
 
             if (db) {
-                db.ref("Feedback").push(feedbackData, (err) => {
-                    submitBtn.disabled = false;
+                db.ref("Feedback").push(payload, (err) => {
+                    btn.disabled = false;
                     if (!err) {
-                        playAudioAlert();
-                        showToast("Feedback berhasil dikirim! 🎉", "success");
-                        resetFeedbackForm();
+                        playAudioNotification();
+                        showToast("Feedback publik berhasil dikirim ke Cloud!", "success");
+                        document.getElementById("fb-input-suggestion").value = "";
+                        document.getElementById("fb-input-criticism").value = "";
+                        activeRating = 0;
+                        paintStars(0);
+                    } else {
+                        showToast("Gagal mengirim data ke Firebase!", "error");
                     }
                 });
             } else {
-                setTimeout(() => {
-                    feedbackData.id = "local_" + Date.now();
-                    allFeedbacks.unshift(feedbackData);
-                    applyFilterAndSearch();
-                    submitBtn.disabled = false;
-                    playAudioAlert();
-                    showToast("Feedback terkirim (Mode Lokal)! 🚀", "success");
-                    resetFeedbackForm();
-                }, 400);
+                btn.disabled = false;
+                showToast("Database tidak terhubung!", "error");
             }
         });
 
-        function resetFeedbackForm() {
-            document.getElementById("fb-suggestion").value = "";
-            document.getElementById("fb-criticism").value = "";
-            selectedRating = 0;
-            highlightStars(0);
-        }
-
-        function initFirebaseListeners() {
+        /* CLOUD LISTENERS */
+        function initCloudListeners() {
             if (db) {
-                db.ref("WebsiteSettings/AnnouncementData").on("value", (snapshot) => {
-                    const data = snapshot.val();
-                    if (data && data.text) {
-                        document.getElementById("announcement-text").innerText = data.text;
-                        document.getElementById("announcement-sender").innerHTML = `<i class="fa-solid fa-user-shield"></i> ${escapeHtml(data.sender || 'ADMIN')}`;
-                        
-                        const titleBadge = document.getElementById("announcement-title-badge");
-                        if (data.title) {
-                            titleBadge.innerText = data.title;
-                            titleBadge.style.display = "inline-flex";
-                            if (data.titleColor) titleBadge.style.color = data.titleColor;
-                        } else {
-                            titleBadge.style.display = "none";
-                        }
-
-                        document.getElementById("announcement-bar").style.display = "flex";
-                        playAudioAlert();
+                db.ref("WebsiteSettings/AnnouncementData").on("value", (snap) => {
+                    const dat = snap.val();
+                    const bar = document.getElementById("announcement-bar");
+                    if (dat && dat.text) {
+                        document.getElementById("announcement-text-view").innerText = dat.text;
+                        document.getElementById("announcement-badge-sender").innerHTML = `<i class="fa-solid fa-shield-halved"></i> ${sanitizeHtml(dat.sender || 'ADMIN')}`;
+                        bar.style.display = "flex";
                     } else {
-                        document.getElementById("announcement-bar").style.display = "none";
+                        bar.style.display = "none";
                     }
                 });
 
-                db.ref("BannedUsers").on("value", (snapshot) => {
-                    const data = snapshot.val() || {};
-                    bannedUsers = Object.values(data).map(n => n.toLowerCase());
+                db.ref("BannedUsers").on("value", (snap) => {
+                    const dat = snap.val() || {};
+                    bannedList = Object.values(dat).map(n => n.toLowerCase());
                 });
 
-                db.ref("Feedback").on("value", (snapshot) => {
-                    const data = snapshot.val();
-                    allFeedbacks = [];
-                    if (data) {
-                        Object.keys(data).forEach(key => allFeedbacks.push({ id: key, ...data[key] }));
+                db.ref("Feedback").on("value", (snap) => {
+                    const dat = snap.val();
+                    globalFeedbacksData = [];
+                    if (dat) {
+                        Object.keys(dat).forEach(k => {
+                            globalFeedbacksData.push({ id: k, ...dat[k] });
+                        });
                     }
-                    applyFilterAndSearch();
+                    renderFilteredFeedbacks();
                 });
 
-                db.ref("SystemInbox").on("value", (snapshot) => {
-                    const data = snapshot.val() || {};
-                    const inboxList = document.getElementById("admin-inbox-list");
-                    const keys = Object.keys(data);
+                db.ref("SystemInbox").on("value", (snap) => {
+                    const dat = snap.val() || {};
+                    const inboxBox = document.getElementById("admin-inbox-box");
+                    const keys = Object.keys(dat);
                     if (keys.length === 0) {
-                        inboxList.innerHTML = `<span style="color: var(--text-muted);">Tidak ada pesan sistem.</span>`;
+                        inboxBox.innerHTML = `<span style="color: var(--text-muted);">Tidak ada pesan sistem.</span>`;
                     } else {
-                        inboxList.innerHTML = keys.map(k => {
-                            const msg = data[k];
-                            return `<div style="padding: 4px 0; border-bottom: 1px dashed var(--border-color);"><strong>${escapeHtml(msg.sender)}:</strong> ${escapeHtml(msg.text)}</div>`;
+                        inboxBox.innerHTML = keys.map(k => {
+                            const m = dat[k];
+                            return `<div style="padding: 3px 0; border-bottom: 1px dashed var(--border-color);"><strong>${sanitizeHtml(m.sender)}:</strong> ${sanitizeHtml(m.text)}</div>`;
                         }).join("");
                     }
                 });
-            } else {
-                allFeedbacks = [];
-                applyFilterAndSearch();
             }
         }
 
-        document.getElementById("search-input").addEventListener("input", applyFilterAndSearch);
-        document.getElementById("filter-select").addEventListener("change", applyFilterAndSearch);
+        document.getElementById("filter-search-input").addEventListener("input", renderFilteredFeedbacks);
+        document.getElementById("filter-sort-select").addEventListener("change", renderFilteredFeedbacks);
 
-        function updateAverageRating() {
-            const count = allFeedbacks.length;
-            const avgRatingText = document.getElementById("avg-rating-text");
-            const totalReviewsText = document.getElementById("total-reviews-text");
-            const starsContainer = document.getElementById("avg-stars-container");
+        function computeRatingStats() {
+            const total = globalFeedbacksData.length;
+            const avgValEl = document.getElementById("stats-avg-val");
+            const totalRevEl = document.getElementById("stats-total-reviews");
+            const starsBoxEl = document.getElementById("stats-stars-box");
 
-            if (count === 0) {
-                avgRatingText.innerText = "0.0";
-                totalReviewsText.innerText = "0 Ulasan Feedback";
-                starsContainer.innerHTML = Array.from({ length: 5 }, () => `<i class="fa-regular fa-star"></i>`).join("");
+            if (total === 0) {
+                avgValEl.innerText = "0.0";
+                totalRevEl.innerText = "0 Ulasan Feedback";
+                starsBoxEl.innerHTML = Array.from({length: 5}, () => `<i class="fa-regular fa-star"></i>`).join("");
                 return;
             }
 
-            const totalScore = allFeedbacks.reduce((sum, item) => sum + (Number(item.Rating) || 0), 0);
-            const avg = (totalScore / count).toFixed(1);
+            const sum = globalFeedbacksData.reduce((acc, curr) => acc + (Number(curr.Rating) || 0), 0);
+            const avg = (sum / total).toFixed(1);
 
-            avgRatingText.innerText = avg;
-            totalReviewsText.innerText = `${count} Ulasan Feedback`;
+            avgValEl.innerText = avg;
+            totalRevEl.innerText = `${total} Ulasan Feedback`;
 
-            const fullStars = Math.floor(avg);
-            const hasHalf = (avg - fullStars) >= 0.5;
-
-            let starsHtml = "";
+            const fulls = Math.floor(avg);
+            const hasHalf = (avg - fulls) >= 0.5;
+            let strHtml = "";
             for (let i = 1; i <= 5; i++) {
-                if (i <= fullStars) starsHtml += `<i class="fa-solid fa-star"></i>`;
-                else if (i === fullStars + 1 && hasHalf) starsHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
-                else starsHtml += `<i class="fa-regular fa-star"></i>`;
+                if (i <= fulls) strHtml += `<i class="fa-solid fa-star"></i>`;
+                else if (i === fulls + 1 && hasHalf) strHtml += `<i class="fa-solid fa-star-half-stroke"></i>`;
+                else strHtml += `<i class="fa-regular fa-star"></i>`;
             }
-            starsContainer.innerHTML = starsHtml;
+            starsBoxEl.innerHTML = strHtml;
         }
 
-        function applyFilterAndSearch() {
-            updateAverageRating();
+        function renderFilteredFeedbacks() {
+            computeRatingStats();
 
-            const query = document.getElementById("search-input").value.toLowerCase();
-            const filter = document.getElementById("filter-select").value;
+            const query = document.getElementById("filter-search-input").value.toLowerCase();
+            const sortMode = document.getElementById("filter-sort-select").value;
 
-            let filtered = allFeedbacks.filter(fb => fb.Name.toLowerCase().includes(query));
+            let filtered = globalFeedbacksData.filter(item => item.Name.toLowerCase().includes(query));
 
-            if (filter === "newest") filtered.sort((a, b) => b.Timestamp - a.Timestamp);
-            else if (filter === "oldest") filtered.sort((a, b) => a.Timestamp - b.Timestamp);
-            else if (filter === "highest") filtered.sort((a, b) => b.Rating - a.Rating);
-            else if (filter === "lowest") filtered.sort((a, b) => a.Rating - b.Rating);
+            if (sortMode === "newest") filtered.sort((a, b) => b.Timestamp - a.Timestamp);
+            else if (sortMode === "oldest") filtered.sort((a, b) => a.Timestamp - b.Timestamp);
+            else if (sortMode === "highest") filtered.sort((a, b) => b.Rating - a.Rating);
+            else if (sortMode === "lowest") filtered.sort((a, b) => a.Rating - b.Rating);
 
-            renderFeedbacks(filtered);
-        }
-
-        function renderFeedbacks(items) {
-            const feedContainer = document.getElementById("feedback-feed");
-            if (items.length === 0) {
-                feedContainer.innerHTML = `
-                    <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted); padding: 30px;">
-                        <i class="fa-solid fa-inbox" style="font-size: 1.5rem; margin-bottom: 8px;"></i>
-                        <p>Belum ada feedback.</p>
+            const container = document.getElementById("feedback-feed-container");
+            if (filtered.length === 0) {
+                container.innerHTML = `
+                    <div class="glass-card feedback-card" style="text-align: center; color: var(--text-muted); padding: 25px;">
+                        <i class="fa-solid fa-inbox" style="font-size: 1.4rem; margin-bottom: 6px;"></i>
+                        <p>Belum ada feedback publik.</p>
                     </div>`;
                 return;
             }
 
-            feedContainer.innerHTML = items.map(fb => {
-                const dateStr = new Date(fb.Timestamp).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
-                const starsHtml = Array.from({ length: 5 }, (_, i) => `<i class="fa-${i < fb.Rating ? 'solid' : 'regular'} fa-star"></i>`).join("");
-                const statusClass = `status-${(fb.Status || 'Support').toLowerCase().replace(' ', '-')}`;
-                const customStyle = fb.ReplyColor ? `color: ${fb.ReplyColor}; border-color: ${fb.ReplyColor};` : '';
+            container.innerHTML = filtered.map(fb => {
+                const dateString = new Date(fb.Timestamp).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' });
+                const starsStr = Array.from({ length: 5 }, (_, i) => `<i class="fa-${i < fb.Rating ? 'solid' : 'regular'} fa-star"></i>`).join("");
+                const statusCls = `st-${(fb.Status || 'Support').toLowerCase().replace(' ', '-')}`;
+                const badgeStyle = fb.ReplyColor ? `color: ${fb.ReplyColor}; border-color: ${fb.ReplyColor};` : '';
+
+                const likesObj = fb.Likes || {};
+                const likeCount = Object.keys(likesObj).length;
+                const safeUserKey = globalUser.name ? globalUser.name.replace(/[.#$[\]]/g, "_") : "";
+                const isLikedByMe = safeUserKey && likesObj[safeUserKey];
 
                 return `
                     <div class="glass-card feedback-card">
-                        <div class="fb-header">
-                            <div class="fb-user-info">
+                        <div class="fb-top">
+                            <div class="fb-user">
                                 <div class="fb-avatar">${fb.Name.charAt(0).toUpperCase()}</div>
                                 <div>
-                                    <div class="fb-name">${escapeHtml(fb.Name)}</div>
-                                    <div class="fb-date">${dateStr}</div>
+                                    <div class="fb-name">${sanitizeHtml(fb.Name)}</div>
+                                    <div class="fb-date">${dateString}</div>
                                 </div>
                             </div>
-                            <span class="status-badge ${statusClass}">${fb.Status || 'Support'}</span>
+                            <span class="status-pill ${statusCls}">${fb.Status || 'Support'}</span>
                         </div>
 
-                        <div class="fb-stars">${starsHtml}</div>
+                        <div class="fb-stars-display">${starsStr}</div>
 
-                        <div class="fb-body">
-                            <div class="fb-section-title">Saran:</div>
-                            <p>${escapeHtml(fb.Suggestion)}</p>
-                            <div class="fb-section-title">Kritik:</div>
-                            <p>${escapeHtml(fb.Criticism)}</p>
+                        <div class="fb-content">
+                            <div class="section-tag">Saran:</div>
+                            <p>${sanitizeHtml(fb.Suggestion)}</p>
+
+                            <button class="unbox-btn" onclick="toggleUnboxDetails('${fb.id}')">
+                                <i class="fa-solid fa-chevron-down" id="unbox-ico-${fb.id}"></i> <span id="unbox-lbl-${fb.id}">Lihat Detail Kritik (Unbox)</span>
+                            </button>
+
+                            <div class="unbox-container" id="unbox-box-${fb.id}">
+                                <div class="section-tag" style="margin-top:0;">Kritik Lengkap:</div>
+                                <p style="margin-top: 3px;">${sanitizeHtml(fb.Criticism)}</p>
+                            </div>
                         </div>
 
                         ${fb.Reply ? `
-                            <div class="dev-reply-card">
+                            <div class="dev-reply-box">
                                 <div class="dev-reply-header">
-                                    <i class="fa-solid fa-shield-halved"></i> ${escapeHtml(fb.ReplySender || 'Developer')}
-                                    ${fb.ReplyTitle ? `<span class="title-badge-custom" style="${customStyle}">${escapeHtml(fb.ReplyTitle)}</span>` : ''}
+                                    <i class="fa-solid fa-shield-halved"></i> ${sanitizeHtml(fb.ReplySender || 'Developer')}
+                                    ${fb.ReplyTitle ? `<span class="admin-title-tag" style="${badgeStyle}">${sanitizeHtml(fb.ReplyTitle)}</span>` : ''}
                                 </div>
-                                <p style="font-size:0.85rem; color: var(--text-secondary);">${escapeHtml(fb.Reply)}</p>
+                                <p style="font-size: 0.82rem; color: var(--text-secondary);">${sanitizeHtml(fb.Reply)}</p>
                             </div>
                         ` : ''}
 
-                        ${currentUser.isAdmin ? `
-                            <div class="admin-actions">
-                                <button class="btn-secondary" style="font-size: 0.72rem; padding: 4px 8px;" onclick="promptReply('${fb.id}')">
-                                    <i class="fa-solid fa-reply"></i> Reply
-                                </button>
-                                <button class="btn-secondary" style="font-size: 0.72rem; padding: 4px 8px; border-color: #ef4444; color: #ef4444;" onclick="deleteFeedback('${fb.id}')">
-                                    <i class="fa-solid fa-trash"></i> Hapus
-                                </button>
-                                <button class="btn-secondary" style="font-size: 0.72rem; padding: 4px 8px; border-color: #f59e0b; color: #f59e0b;" onclick="banUser('${fb.Name}')">
-                                    <i class="fa-solid fa-ban"></i> Ban User
-                                </button>
-                                <select class="styled-select" style="font-size: 0.72rem; padding: 3px 6px; width: auto;" onchange="changeStatus('${fb.id}', this.value)">
-                                    <option value="Support" ${fb.Status === 'Support' ? 'selected' : ''}>Support</option>
-                                    <option value="Reviewed" ${fb.Status === 'Reviewed' ? 'selected' : ''}>Reviewed</option>
-                                    <option value="In Progress" ${fb.Status === 'In Progress' ? 'selected' : ''}>In Progress</option>
-                                    <option value="Implemented" ${fb.Status === 'Implemented' ? 'selected' : ''}>Implemented</option>
-                                    <option value="Rejected" ${fb.Status === 'Rejected' ? 'selected' : ''}>Rejected</option>
-                                </select>
-                            </div>
-                        ` : ''}
+                        <div class="fb-footer-row">
+                            <button class="like-action-btn ${isLikedByMe ? 'liked' : ''}" onclick="toggleLikeFeedback('${fb.id}')">
+                                <i class="fa-${isLikedByMe ? 'solid' : 'regular'} fa-heart"></i> <span>${likeCount} Suka</span>
+                            </button>
+
+                            ${globalUser.isAdmin ? `
+                                <div class="admin-tools-row">
+                                    <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px;" onclick="adminPromptReply('${fb.id}')">
+                                        <i class="fa-solid fa-reply"></i> Reply
+                                    </button>
+                                    <select class="styled-select" style="font-size: 0.7rem; padding: 2px 5px; width: auto;" onchange="adminChangeStatus('${fb.id}', this.value)">
+                                        <option value="Support" ${fb.Status === 'Support' ? 'selected' : ''}>Support</option>
+                                        <option value="Reviewed" ${fb.Status === 'Reviewed' ? 'selected' : ''}>Reviewed</option>
+                                        <option value="In Progress" ${fb.Status === 'In Progress' ? 'selected' : ''}>In Progress</option>
+                                        <option value="Implemented" ${fb.Status === 'Implemented' ? 'selected' : ''}>Implemented</option>
+                                        <option value="Rejected" ${fb.Status === 'Rejected' ? 'selected' : ''}>Rejected</option>
+                                    </select>
+                                    <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px; border-color: #f59e0b; color: #f59e0b;" onclick="adminBanUser('${sanitizeHtml(fb.Name)}')">
+                                        <i class="fa-solid fa-ban"></i> Ban
+                                    </button>
+                                    <button class="btn-secondary" style="font-size: 0.7rem; padding: 3px 7px; border-color: #ef4444; color: #ef4444;" onclick="adminDeleteFeedback('${fb.id}')">
+                                        <i class="fa-solid fa-trash"></i> Hapus
+                                    </button>
+                                </div>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
             }).join("");
         }
 
-        /* SPECIAL CODE VERIFICATION */
-        document.getElementById("code-form").addEventListener("submit", (e) => {
-            e.preventDefault();
-            const rawVal = document.getElementById("special-code-input").value.trim().toUpperCase();
-            const codePattern = /^BLDS-[A-Z0-9]+-[0-9]+$/;
+        function toggleUnboxDetails(id) {
+            const box = document.getElementById(`unbox-box-${id}`);
+            const ico = document.getElementById(`unbox-ico-${id}`);
+            const lbl = document.getElementById(`unbox-lbl-${id}`);
 
-            if (codePattern.test(rawVal) || KNOWN_CODES[rawVal]) {
-                const known = KNOWN_CODES[rawVal];
-                const namePart = rawVal.split('-')[1] || "STAFF";
-
-                currentUser.role = known ? "Staff Admin" : "Staff Admin";
-                currentUser.code = rawVal;
-                
-                const finalName = currentUser.name || (known ? known.Name : `${namePart} BLDS`);
-                currentUser.name = finalName;
-                currentUser.isAdmin = known ? known.CanAdmin : true;
-
-                localStorage.setItem("blds_user_name", finalName);
-                document.getElementById("panel-admin-name-input").value = finalName;
-
-                playAudioAlert();
-                showToast(`Access Granted: Staff Admin 🔑`, "success");
-
-                if (currentUser.isAdmin) {
-                    document.getElementById("admin-panel").classList.add("active");
-                    showToast("Admin Dashboard Diaktifkan! ⚙️", "info");
-                    switchPage('feedback-page');
-                } else {
-                    switchPage('home-page');
-                }
+            if (box.classList.contains("show")) {
+                box.classList.remove("show");
+                ico.className = "fa-solid fa-chevron-down";
+                lbl.innerText = "Lihat Detail Kritik (Unbox)";
             } else {
-                showToast("Format Kode tidak sesuai! (Gunakan BLDS-NAMA-NOMOR) ❌", "error");
+                box.classList.add("show");
+                ico.className = "fa-solid fa-chevron-up";
+                lbl.innerText = "Tutup Detail Kritik";
+            }
+        }
+
+        function toggleLikeFeedback(id) {
+            let activeName = document.getElementById("fb-input-name").value.trim() || globalUser.name;
+            if (!activeName) {
+                // Paksa buka modal identifikasi jika nama belum terisi
+                document.getElementById("modal-name").classList.add("active");
+                showToast("Masukkan nama Anda terlebih dahulu!", "error");
+                return;
+            }
+            globalUser.name = activeName;
+            localStorage.setItem("blds_v5_name", activeName);
+
+            const keySafe = activeName.replace(/[.#$[\]]/g, "_");
+            const refLike = db.ref(`Feedback/${id}/Likes/${keySafe}`);
+
+            refLike.once("value", (snap) => {
+                if (snap.exists()) {
+                    refLike.remove();
+                    showToast("Like dibatalkan.", "info");
+                } else {
+                    refLike.set(true);
+                    playAudioNotification();
+                    showToast("Feedback disukai!", "success");
+                }
+            });
+        }
+
+        /* SPECIAL CODE VERIFICATION */
+        document.getElementById("form-special-submit").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const inputVal = document.getElementById("special-code-val").value.trim().toUpperCase();
+            const regexCode = /^BLDS-[A-Z0-9]+-[0-9]+$/;
+
+            if (regexCode.test(inputVal) || PRESET_STAFF_CODES[inputVal]) {
+                const staffData = PRESET_STAFF_CODES[inputVal];
+                const nameExt = inputVal.split('-')[1] || "STAFF";
+
+                globalUser.role = staffData ? staffData.Role : "Staff Admin";
+                globalUser.code = inputVal;
+                
+                const finalN = globalUser.name || (staffData ? staffData.Name : `${nameExt} BLDS`);
+                globalUser.name = finalN;
+                globalUser.isAdmin = true;
+
+                localStorage.setItem("blds_v5_name", finalN);
+                localStorage.setItem("blds_v5_admin", "true");
+                localStorage.setItem("blds_v5_role", globalUser.role);
+
+                document.getElementById("panel-admin-name-field").value = finalN;
+                document.getElementById("fb-input-name").value = finalN;
+                updateAdminModeUI();
+
+                playAudioNotification();
+                showToast(`Access Granted: ${globalUser.role}`, "success");
+                switchPage('page-feedback');
+            } else {
+                showToast("Format Kode salah! Gunakan format BLDS-NAMA-NOMOR", "error");
             }
         });
 
-        /* DRAGGABLE FLOATING ADMIN PANEL */
-        function makePanelDraggable() {
-            const panel = document.getElementById("admin-panel");
-            const header = document.getElementById("admin-panel-header");
+        /* DRAGGABLE ADMIN PANEL */
+        function initDraggableAdminPanel() {
+            const panel = document.getElementById("floating-admin-panel");
+            const header = document.getElementById("panel-drag-header");
 
             let isDragging = false;
-            let currentX, currentY, initialX, initialY;
-            let xOffset = 0, yOffset = 0;
+            let startX, startY, initX = 0, initY = 0;
 
             header.addEventListener("mousedown", dragStart);
-            document.addEventListener("mousemove", drag);
+            document.addEventListener("mousemove", dragMove);
             document.addEventListener("mouseup", dragEnd);
 
             header.addEventListener("touchstart", dragStart, { passive: false });
-            document.addEventListener("touchmove", drag, { passive: false });
+            document.addEventListener("touchmove", dragMove, { passive: false });
             document.addEventListener("touchend", dragEnd);
 
             function dragStart(e) {
                 if (e.type === "touchstart") {
-                    initialX = e.touches[0].clientX - xOffset;
-                    initialY = e.touches[0].clientY - yOffset;
+                    startX = e.touches[0].clientX - initX;
+                    startY = e.touches[0].clientY - initY;
                 } else {
-                    initialX = e.clientX - xOffset;
-                    initialY = e.clientY - yOffset;
+                    startX = e.clientX - initX;
+                    startY = e.clientY - initY;
                 }
-
                 if (e.target === header || header.contains(e.target)) {
                     isDragging = true;
                 }
             }
 
-            function drag(e) {
+            function dragMove(e) {
                 if (isDragging) {
                     e.preventDefault();
                     if (e.type === "touchmove") {
-                        currentX = e.touches[0].clientX - initialX;
-                        currentY = e.touches[0].clientY - initialY;
+                        initX = e.touches[0].clientX - startX;
+                        initY = e.touches[0].clientY - startY;
                     } else {
-                        currentX = e.clientX - initialX;
-                        currentY = e.clientY - initialY;
+                        initX = e.clientX - startX;
+                        initY = e.clientY - startY;
                     }
-
-                    xOffset = currentX;
-                    yOffset = currentY;
-                    panel.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+                    panel.style.transform = `translate3d(${initX}px, ${initY}px, 0)`;
                 }
             }
 
             function dragEnd() {
-                initialX = currentX;
-                initialY = currentY;
                 isDragging = false;
             }
         }
 
-        function openSendInboxModal() { document.getElementById("inbox-modal").classList.add("active"); }
-        function closeSendInboxModal() { document.getElementById("inbox-modal").classList.remove("active"); }
+        function toggleAdminPanel() {
+            const p = document.getElementById("floating-admin-panel");
+            if (p.classList.contains("active")) {
+                p.classList.remove("active");
+                showToast("Panel Admin diminimize.", "info");
+            } else {
+                p.classList.add("active");
+                showToast("Panel Admin dibuka.", "success");
+            }
+        }
 
-        function submitSystemMessage() {
-            const txt = document.getElementById("modal-inbox-text").value.trim();
+        function openInboxModal() { document.getElementById("modal-inbox-send").classList.add("active"); }
+        function closeInboxModal() { document.getElementById("modal-inbox-send").classList.remove("active"); }
+
+        function submitInboxMessage() {
+            const txt = document.getElementById("inbox-msg-text").value.trim();
             if (!txt) { showToast("Pesan tidak boleh kosong!", "error"); return; }
-
-            const msgData = { sender: currentUser.name || "Admin", text: txt, time: Date.now() };
-            if (db) { db.ref("SystemInbox").push(msgData); }
-            document.getElementById("modal-inbox-text").value = "";
-            closeSendInboxModal();
-            playAudioAlert();
-            showToast("Pesan sistem terkirim! 📬", "success");
+            if (db) {
+                db.ref("SystemInbox").push({ sender: globalUser.name || "Admin", text: txt, time: Date.now() });
+            }
+            document.getElementById("inbox-msg-text").value = "";
+            closeInboxModal();
+            playAudioNotification();
+            showToast("Pesan sistem terkirim!", "success");
         }
 
-        function generateAdminCode() {
-            const nameInput = document.getElementById("gen-admin-name").value.trim().toUpperCase() || "STAFF";
-            const randNum = Math.floor(100 + Math.random() * 900);
-            const code = `BLDS-${nameInput}-${randNum}`;
-            document.getElementById("generated-code-output").innerText = code;
-            showToast("Admin Code berhasil digenerate! ✨", "success");
+        function generateCodeAction() {
+            const nameIn = document.getElementById("gen-name-input").value.trim().toUpperCase() || "STAFF";
+            const num = Math.floor(100 + Math.random() * 900);
+            const generated = `BLDS-${nameIn}-${num}`;
+            document.getElementById("gen-code-result").innerText = generated;
+            showToast("Kode admin berhasil digenerate!", "success");
         }
 
-        function openActivityTimeline() { showToast("User Activity Timeline: Active Sessions Online.", "info"); }
-        function triggerKillSwitch() { if (confirm("Jalankan Session Kill Switch?")) showToast("Session Kill Switch diaktifkan!", "error"); }
-        function triggerLockdown() { if (confirm("Aktifkan Master Lockdown?")) showToast("Master Lockdown Aktif!", "error"); }
+        function triggerLockdownAction() {
+            if (confirm("Aktifkan mode Lockdown pada sistem?")) {
+                showToast("Master Lockdown Aktif!", "error");
+            }
+        }
 
-        function downloadFullCodeAsFile() {
+        function downloadFullCodeV5() {
             const htmlContent = document.documentElement.outerHTML;
             const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = 'dominion_bot_blds_complete.html';
+            a.download = 'blds_feedback_cloud_v5.html';
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
-            playAudioAlert();
-            showToast("Full Code berhasil didownload! 💾", "success");
+            playAudioNotification();
+            showToast("Full Code v5 berhasil didownload!", "success");
         }
 
-        function promptReply(fbId) {
-            const replyText = prompt("Masukkan balasan Admin:");
-            if (replyText) {
-                const senderName = currentUser.name || "Developer";
-
+        function adminPromptReply(id) {
+            const rep = prompt("Masukkan balasan Admin:");
+            if (rep) {
                 if (db) {
-                    db.ref("Feedback/" + fbId).update({
-                        Reply: replyText,
-                        ReplySender: senderName,
-                        ReplyTitle: currentUser.customTitle,
-                        ReplyColor: currentUser.customColor
+                    db.ref(`Feedback/${id}`).update({
+                        Reply: rep,
+                        ReplySender: globalUser.name || "Developer",
+                        ReplyTitle: globalUser.customTitle,
+                        ReplyColor: globalUser.customColor
                     });
-                } else {
-                    const item = allFeedbacks.find(f => f.id === fbId);
-                    if (item) {
-                        item.Reply = replyText;
-                        item.ReplySender = senderName;
-                        item.ReplyTitle = currentUser.customTitle;
-                        item.ReplyColor = currentUser.customColor;
-                        applyFilterAndSearch();
-                    }
                 }
-                playAudioAlert();
-                showToast("Balasan terkirim! 💬", "success");
+                playAudioNotification();
+                showToast("Balasan terkirim!", "success");
             }
         }
 
-        function deleteFeedback(fbId) {
-            if (confirm("Hapus feedback ini?")) {
-                if (db) { db.ref("Feedback/" + fbId).remove(); }
-                else { allFeedbacks = allFeedbacks.filter(f => f.id !== fbId); applyFilterAndSearch(); }
-                showToast("Feedback dihapus! 🗑️", "success");
+        function adminDeleteFeedback(id) {
+            if (confirm("Yakin ingin menghapus feedback ini?")) {
+                if (db) { db.ref(`Feedback/${id}`).remove(); }
+                showToast("Feedback dihapus!", "success");
             }
         }
 
-        function banUser(userName) {
-            if (confirm(`Ban pengguna ${userName}?`)) {
-                if (db) { db.ref("BannedUsers").push(userName); }
-                else { bannedUsers.push(userName.toLowerCase()); }
-                showToast(`Pengguna ${userName} di-BAN! 🚫`, "error");
+        function adminBanUser(uName) {
+            if (confirm(`Yakin ingin mem-BAN pengguna ${uName}?`)) {
+                if (db) { db.ref("BannedUsers").push(uName); }
+                showToast(`Pengguna ${uName} di-BAN!`, "error");
             }
         }
 
-        function changeStatus(fbId, newStatus) {
-            if (db) { db.ref("Feedback/" + fbId).update({ Status: newStatus }); }
-            else {
-                const item = allFeedbacks.find(f => f.id === fbId);
-                if (item) { item.Status = newStatus; applyFilterAndSearch(); }
-            }
-            showToast(`Status diubah: ${newStatus}`, "success");
+        function adminChangeStatus(id, newSt) {
+            if (db) { db.ref(`Feedback/${id}`).update({ Status: newSt }); }
+            showToast(`Status diubah: ${newSt}`, "success");
         }
 
-        function updateAnnouncement() {
-            const text = document.getElementById("admin-announcement-input").value.trim();
-            if (!text) { showToast("Teks pengumuman kosong!", "error"); return; }
-
-            const senderName = currentUser.name || "ADMIN";
-            const titleText = currentUser.customTitle || "OWNER";
-            const colorText = currentUser.customColor || "#ffffff";
-
+        function submitGlobalAnnouncement() {
+            const txt = document.getElementById("admin-broadcast-field").value.trim();
+            if (!txt) { showToast("Teks pengumuman kosong!", "error"); return; }
             if (db) {
-                db.ref("WebsiteSettings/AnnouncementData").set({ text: text, sender: senderName, title: titleText, titleColor: colorText });
-            } else {
-                document.getElementById("announcement-text").innerText = text;
-                document.getElementById("announcement-sender").innerHTML = `<i class="fa-solid fa-user-shield"></i> ${escapeHtml(senderName)}`;
-                const titleBadge = document.getElementById("announcement-title-badge");
-                titleBadge.innerText = titleText; titleBadge.style.color = colorText; titleBadge.style.display = "inline-flex";
-                document.getElementById("announcement-bar").style.display = "flex";
+                db.ref("WebsiteSettings/AnnouncementData").set({
+                    text: txt,
+                    sender: globalUser.name || "ADMIN",
+                    title: globalUser.customTitle,
+                    color: globalUser.customColor
+                });
             }
-            playAudioAlert();
-            showToast("Pengumuman Global diperbarui! 📢", "success");
+            playAudioNotification();
+            showToast("Pengumuman Global diperbarui!", "success");
         }
 
-        function deleteAnnouncement() {
-            if (confirm("Hapus pengumuman?")) {
+        function removeGlobalAnnouncement() {
+            if (confirm("Hapus Pengumuman Global?")) {
                 if (db) { db.ref("WebsiteSettings/AnnouncementData").remove(); }
-                else { document.getElementById("announcement-bar").style.display = "none"; }
-                document.getElementById("admin-announcement-input").value = "";
+                document.getElementById("admin-broadcast-field").value = "";
                 showToast("Pengumuman dihapus!", "success");
             }
         }
 
-        function openTitleModal() { 
-            document.getElementById("custom-admin-name").value = currentUser.name || "";
-            document.getElementById("custom-title-text").value = currentUser.customTitle || "OWNER";
-            document.getElementById("custom-title-color").value = currentUser.customColor || "#ffffff";
-            document.getElementById("title-modal").classList.add("active"); 
+        function openAdminTitleModal() {
+            document.getElementById("custom-name-field").value = globalUser.name || "";
+            document.getElementById("custom-title-field").value = globalUser.customTitle || "OWNER";
+            document.getElementById("custom-color-field").value = globalUser.customColor || "#ffffff";
+            document.getElementById("modal-admin-title").classList.add("active");
         }
-        
-        function closeTitleModal() { document.getElementById("title-modal").classList.remove("active"); }
+        function closeAdminTitleModal() { document.getElementById("modal-admin-title").classList.remove("active"); }
 
-        function saveCustomTitle() {
-            const nameInput = document.getElementById("custom-admin-name").value.trim();
-            const titleInput = document.getElementById("custom-title-text").value.trim();
-            const colorInput = document.getElementById("custom-title-color").value;
+        function saveAdminTitleModal() {
+            const n = document.getElementById("custom-name-field").value.trim();
+            const t = document.getElementById("custom-title-field").value.trim();
+            const c = document.getElementById("custom-color-field").value;
 
-            if (nameInput) {
-                currentUser.name = nameInput;
-                localStorage.setItem("blds_user_name", nameInput);
-                document.getElementById("fb-name").value = nameInput;
-                document.getElementById("panel-admin-name-input").value = nameInput;
+            if (n) {
+                globalUser.name = n;
+                localStorage.setItem("blds_v5_name", n);
+                document.getElementById("fb-input-name").value = n;
+                document.getElementById("panel-admin-name-field").value = n;
             }
-
-            if (titleInput) {
-                currentUser.customTitle = titleInput;
-                currentUser.customColor = colorInput;
+            if (t) {
+                globalUser.customTitle = t;
+                globalUser.customColor = c;
+                localStorage.setItem("blds_v5_title", t);
+                localStorage.setItem("blds_v5_color", c);
             }
-
-            showToast("Profil Admin diperbarui! ✨", "success");
-            closeTitleModal();
+            showToast("Pengaturan Admin disimpan!", "success");
+            closeAdminTitleModal();
         }
 
-        function showToast(message, type = "info") {
-            const container = document.getElementById("toast-container");
-            const toast = document.createElement("div");
-            toast.className = "toast";
-
+        function showToast(msg, type = "info") {
+            const box = document.getElementById("toast-box");
+            const item = document.createElement("div");
+            item.className = "toast-item";
             let icon = "fa-circle-info";
             if (type === "success") icon = "fa-circle-check";
             if (type === "error") icon = "fa-triangle-exclamation";
-
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${escapeHtml(message)}</span>`;
-            container.appendChild(toast);
-
+            item.innerHTML = `<i class="fa-solid ${icon}"></i> <span>${sanitizeHtml(msg)}</span>`;
+            box.appendChild(item);
             setTimeout(() => {
-                toast.style.opacity = "0";
-                toast.style.transform = "translateX(100%)";
-                setTimeout(() => toast.remove(), 300);
+                item.style.opacity = "0";
+                item.style.transform = "translateX(-20px)";
+                setTimeout(() => item.remove(), 300);
             }, 3000);
         }
 
-        function escapeHtml(str) {
+        function sanitizeHtml(str) {
             if (!str) return "";
+            if (typeof str !== 'string') str = String(str);
             return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
     </script>
