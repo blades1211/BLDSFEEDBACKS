@@ -574,25 +574,17 @@
     </footer>
 
     <script>
-        /* FIREBASE CONFIG */
+        /* FIREBASE REALTIME DATABASE CONFIG */
         const firebaseConfig = {
-            apiKey: "YOUR_API_KEY",
-            authDomain: "YOUR_PROJECT.firebaseapp.com",
-            databaseURL: "https://YOUR_PROJECT-default-rtdb.firebaseio.com",
-            projectId: "YOUR_PROJECT",
-            storageBucket: "YOUR_PROJECT.appspot.com",
-            messagingSenderId: "YOUR_SENDER_ID",
-            appId: "YOUR_APP_ID"
+            databaseURL: "https://blds-2806d-default-rtdb.asia-southeast1.firebasedatabase.app/"
         };
 
         let db = null;
         try {
-            if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.database();
-            }
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
         } catch (e) {
-            console.warn("Firebase belum terkonfigurasi. Berjalan dalam mode lokal.");
+            console.warn("Firebase initialization warning:", e);
         }
 
         /* KNOWN SPECIAL CODES ROLES SETUP */
@@ -662,7 +654,6 @@
             const inputName = document.getElementById("user-input-name").value.trim();
             if (inputName) {
                 currentUser.name = inputName;
-                localStorage.getItem("blds_user_name");
                 localStorage.setItem("blds_user_name", inputName);
                 document.getElementById("fb-name").value = inputName;
                 document.getElementById("panel-admin-name-input").value = inputName;
@@ -751,15 +742,13 @@
             chatMessages.appendChild(thinkingBubble);
             chatMessages.scrollTop = chatMessages.scrollHeight;
 
-            // Generate Smart Bot Response after delay (Simulating AI thinking)
+            // Generate Smart Bot Response after delay
             setTimeout(() => {
-                // Remove thinking animation
                 const thinkingElem = document.getElementById(thinkingId);
                 if (thinkingElem) thinkingElem.remove();
 
                 const botReplyText = generateDominionBotResponse(messageText);
 
-                // Append Bot Bubble for Typewriter Effect
                 const botBubble = document.createElement("div");
                 botBubble.className = "chat-bubble bot";
                 chatMessages.appendChild(botBubble);
@@ -771,12 +760,12 @@
                         botBubble.innerHTML += botReplyText.charAt(charIndex);
                         charIndex++;
                         chatMessages.scrollTop = chatMessages.scrollHeight;
-                        setTimeout(typeWriter, 18); // Kecepatan transisi teks muncul perlahan
+                        setTimeout(typeWriter, 18);
                     }
                 }
                 typeWriter();
 
-            }, 1200); // Waktu mikir bot (1.2 detik)
+            }, 1200);
         }
 
         function generateDominionBotResponse(userInput) {
